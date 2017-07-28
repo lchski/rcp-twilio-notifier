@@ -1,4 +1,4 @@
-=== WordPress Plugin Template ===
+=== RCP Twilio Notifier ===
 Contributors: lchski
 Tags: wordpress, plugin, template
 Requires at least: 3.9
