@@ -23,4 +23,11 @@
 
 	<rule ref="WordPress-Extra" />
 	<rule ref="WordPress-Docs" />
+
+	<rule ref="WordPress.Files.FileName">
+		<exclude-pattern>*/src/*</exclude-pattern>
+		<properties>
+			<property name="strict_class_file_names" value="false" />
+		</properties>
+	</rule>
 </ruleset>
