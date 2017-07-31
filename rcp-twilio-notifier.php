@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Plugin Name: RCP Twilio Notifier
  * Version: 1.0
  * Plugin URI: https://lucascherkewski.com/
@@ -17,4 +17,12 @@
  * @since 1.0.0
  */
 
-if ( ! defined( 'ABSPATH' ) ) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+// Setup class autoloader.
+require_once dirname( __FILE__ ) . '/src/RcpTwilioNotifier/Autoloader.php';
+RcpTwilioNotifier_Autoloader::register();
+
+$rcptwilionotifier = new RcpTwilioNotifier_Plugin();
