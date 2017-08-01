@@ -58,9 +58,9 @@ class RcpTwilioNotifier_RegionSelectRenderer {
 	private function render_default_option() {
 
 		?>
-		<option value="none">
-			<?php echo esc_html( apply_filters( 'rcptn_region_select_default_option', __( 'Select a region...', 'rcptn' ) ) ); ?>
-		</option>
+			<option value="none">
+				<?php echo esc_html( apply_filters( 'rcptn_region_select_default_option', __( 'Select a region...', 'rcptn' ) ) ); ?>
+			</option>
 		<?php
 
 	}
@@ -74,12 +74,12 @@ class RcpTwilioNotifier_RegionSelectRenderer {
 
 		foreach ( $this->regions as $region ) {
 			?>
-			<option
-				value=<?php echo esc_attr( $region['key'] ); ?>
-				<?php selected( $current_region, $region['key'] ); ?>
-			>
-				<?php echo esc_html( $region['label'] ); ?>
-			</option>
+				<option
+					value=<?php echo esc_attr( $region['key'] ); ?>
+					<?php selected( $current_region, $region['key'] ); ?>
+				>
+					<?php echo esc_html( $region['label'] ); ?>
+				</option>
 			<?php
 		}
 
