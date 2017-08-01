@@ -18,6 +18,9 @@ class RcpTwilioNotifier_RegionEditMemberField extends RcpTwilioNotifier_Abstract
 
 		add_action( 'rcp_edit_member_after', array( $this, 'render_select' ) );
 
+		add_action( 'rcp_user_profile_updated', array( $this, 'save_on_update' ), 10 );
+		add_action( 'rcp_edit_member', array( $this, 'save_on_update' ), 10 );
+
 	}
 
 	/**
@@ -40,6 +43,20 @@ class RcpTwilioNotifier_RegionEditMemberField extends RcpTwilioNotifier_Abstract
 				</td>
 			</tr>
 		<?php
+
+	}
+
+	/**
+	 * Save the new region data on profile update.
+	 *
+	 * @param int $user_id  The ID for the user we’re updating.
+	 */
+	public function save_on_update( $user_id ) {
+
+        // Note the "WPCS: CSRF ok." comments below. This is because this function only fires after RCP has verified its nonces.
+		if ( isset( $_POST['rcptn_region'] ) && in_array( $_POST['rcptn_region'], $this->region_keys, true ) ) { // WPCS: CSRF ok.
+			update_user_meta( $user_id, 'rcptn_region', sanitize_text_field( $_POST['rcptn_region'] ) ); // WPCS: CSRF ok.
+		}
 
 	}
 
