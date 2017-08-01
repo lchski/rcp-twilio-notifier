@@ -26,7 +26,7 @@ class RcpTwilioNotifier_RegionRegistrationField {
 	 */
 	public function render_select() {
 
-		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer();
+		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer( get_current_user_id() );
 
 		?>
 			<p>
