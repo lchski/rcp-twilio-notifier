@@ -26,6 +26,24 @@ abstract class RcpTwilioNotifier_AbstractRegionFieldUi {
 	public function __construct( $regions ) {
 
 		$this->regions = $regions;
+		$this->region_keys = $this->extract_region_keys( $this->regions );
+
+	}
+
+	/**
+	 * Maps a region array to one containing just its keys.
+	 *
+	 * @param array $regions  The full region array.
+	 *
+	 * @return array  The region array, mapped to just its keys.
+	 */
+	protected function extract_region_keys( $regions ) {
+
+		$extractor = function( $region ) {
+			return $region['key'];
+		};
+
+		return array_map( $extractor, $regions );
 
 	}
 

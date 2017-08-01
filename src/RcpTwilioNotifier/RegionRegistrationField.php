@@ -19,6 +19,8 @@ class RcpTwilioNotifier_RegionRegistrationField extends RcpTwilioNotifier_Abstra
 		add_action( 'rcp_after_password_registration_field', array( $this, 'render_select' ) );
 		add_action( 'rcp_profile_editor_after', array( $this, 'render_select' ) );
 
+		add_action( 'rcp_form_errors', array( $this, 'validate_on_register' ) , 10 );
+
 	}
 
 	/**
@@ -34,6 +36,24 @@ class RcpTwilioNotifier_RegionRegistrationField extends RcpTwilioNotifier_Abstra
 				<?php $select_renderer->render(); ?>
 			</p>
 		<?php
+
+	}
+
+	/**
+	 * Validate the posted registration data.
+	 *
+	 * @param array $posted  The posted registration data.
+	 */
+	public function validate_on_register( $posted ) {
+
+		if ( rcp_get_subscription_id() ) {
+			return;
+		}
+
+		// Add an error message if the submitted option isn't one of our valid choices.
+		if ( ! in_array( $posted['rcptn_region'], $this->region_keys, true ) ) {
+			rcp_errors()->add( 'invalid_region', __( 'Please select a valid home region', 'rcptn' ), 'register' );
+		}
 
 	}
 
