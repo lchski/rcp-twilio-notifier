@@ -21,6 +21,8 @@ class RcpTwilioNotifier_RegionRegistrationField extends RcpTwilioNotifier_Abstra
 
 		add_action( 'rcp_form_errors', array( $this, 'validate_on_register' ) , 10 );
 
+		add_action( 'rcp_form_processing', array( $this, 'save_on_register' ), 10, 2 );
+
 	}
 
 	/**
@@ -53,6 +55,20 @@ class RcpTwilioNotifier_RegionRegistrationField extends RcpTwilioNotifier_Abstra
 		// Add an error message if the submitted option isn't one of our valid choices.
 		if ( ! in_array( $posted['rcptn_region'], $this->region_keys, true ) ) {
 			rcp_errors()->add( 'invalid_region', __( 'Please select a valid home region', 'rcptn' ), 'register' );
+		}
+
+	}
+
+	/**
+	 * Save the home region on successful registration.
+	 *
+	 * @param array $posted  The posted registration data.
+	 * @param int   $user_id  The newly created user's ID.
+	 */
+	public function save_on_register( $posted, $user_id ) {
+
+		if ( ! empty( $posted['rcptn_region'] ) ) {
+			update_user_meta( $user_id, 'rcptn_region', sanitize_text_field( $posted['rcptn_region'] ) );
 		}
 
 	}
