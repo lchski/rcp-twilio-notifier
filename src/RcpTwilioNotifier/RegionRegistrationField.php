@@ -64,7 +64,7 @@ class RcpTwilioNotifier_RegionRegistrationField {
 	/**
 	 * Render the dropdown with the regions.
 	 */
-	private function render_select() {
+	public function render_select() {
 
 		?>
 			<p>
