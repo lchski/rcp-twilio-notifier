@@ -15,9 +15,10 @@
 class RcpTwilioNotifier_Plugin {
 
 	/**
-	 * Let’s get going!
+	 * Let's go!
 	 */
-	public function __construct() {
+	public function load() {
 
 	}
+
 }
