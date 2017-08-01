@@ -12,46 +12,6 @@
 class RcpTwilioNotifier_RegionRegistrationField {
 
 	/**
-	 * Regions to choose from in the registration process.
-	 *
-	 * @var array
-	 */
-	private $regions;
-
-	/**
-	 * Set internal state.
-	 */
-	public function __construct() {
-
-		// Set up the regions with our defaults, filtered for customization.
-		$this->regions = apply_filters(
-			'rcptn_regions', array(
-				array(
-					'key' => 'south-east',
-					'label' => __( 'South East', 'rcptn' ),
-				),
-				array(
-					'key' => 'north-east',
-					'label' => __( 'North East', 'rcptn' ),
-				),
-				array(
-					'key' => 'new-england',
-					'label' => __( 'New England', 'rcptn' ),
-				),
-				array(
-					'key' => 'mid-west',
-					'label' => __( 'Mid West', 'rcptn' ),
-				),
-				array(
-					'key' => 'west-coast',
-					'label' => __( 'West Coast', 'rcptn' ),
-				),
-			)
-		);
-
-	}
-
-	/**
 	 * Hooks class functions into WordPress.
 	 */
 	public function init() {
@@ -66,48 +26,14 @@ class RcpTwilioNotifier_RegionRegistrationField {
 	 */
 	public function render_select() {
 
+		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer();
+
 		?>
 			<p>
 				<label for="rcptn_region"><?php esc_html_e( 'Your Home Region', 'rcptn' ); ?></label>
-				<select id="rcptn_region" name="rcptn_region" class="rcptn-registration-select">
-					<?php $this->render_default_option(); ?>
-					<?php $this->render_region_options(); ?>
-				</select>
+				<?php $select_renderer->render(); ?>
 			</p>
 		<?php
-
-	}
-
-	/**
-	 * Render the default dropdown option.
-	 */
-	private function render_default_option() {
-
-		?>
-			<option value="none">
-				<?php echo esc_html( apply_filters( 'rcptn_region_select_default_option', __( 'Select your region...', 'rcptn' ) ) ); ?>
-			</option>
-		<?php
-
-	}
-
-	/**
-	 * Render the various region options.
-	 */
-	private function render_region_options() {
-
-		$current_region = get_user_meta( get_current_user_id(), 'rcptn_region', true );
-
-		foreach ( $this->regions as $region ) {
-			?>
-				<option
-					value=<?php echo esc_attr( $region['key'] ); ?>
-					<?php selected( $current_region, $region['key'] ); ?>
-				>
-					<?php echo esc_html( $region['label'] ); ?>
-				</option>
-			<?php
-		}
 
 	}
 
