@@ -20,6 +20,9 @@ class RcpTwilioNotifier_Plugin {
 	public function load() {
 		$region_registration_field = new RcpTwilioNotifier_RegionRegistrationField();
 		$region_registration_field->init();
+
+		$region_edit_member_field = new RcpTwilioNotifier_RegionEditMemberField();
+		$region_edit_member_field->init();
 	}
 
 }
