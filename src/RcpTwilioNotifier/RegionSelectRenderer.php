@@ -83,7 +83,7 @@ class RcpTwilioNotifier_RegionSelectRenderer {
 
 		?>
 		<option value="none">
-			<?php echo esc_html( apply_filters( 'rcptn_region_select_default_option', __( 'Select your region...', 'rcptn' ) ) ); ?>
+			<?php echo esc_html( apply_filters( 'rcptn_region_select_default_option', __( 'Select a region...', 'rcptn' ) ) ); ?>
 		</option>
 		<?php
 
