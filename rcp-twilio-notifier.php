@@ -26,3 +26,4 @@ require_once dirname( __FILE__ ) . '/src/RcpTwilioNotifier/Autoloader.php';
 RcpTwilioNotifier_Autoloader::register();
 
 $rcptwilionotifier = new RcpTwilioNotifier_Plugin();
+add_action( 'plugins_loaded', array( $rcptwilionotifier, 'load' ) );

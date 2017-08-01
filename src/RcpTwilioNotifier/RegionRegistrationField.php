@@ -56,6 +56,9 @@ class RcpTwilioNotifier_RegionRegistrationField {
 	 */
 	public function init() {
 
+		add_action( 'rcp_after_password_registration_field', array( $this, 'render_select' ) );
+		add_action( 'rcp_profile_editor_after', array( $this, 'render_select' ) );
+
 	}
 
 	/**
