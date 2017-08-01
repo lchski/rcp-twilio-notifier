@@ -27,7 +27,7 @@ class RcpTwilioNotifier_RegionEditMemberField {
 	 */
 	public function render_select( $user_id = 0 ) {
 
-		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer();
+		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer( $user_id );
 
 		?>
 			<tr valign="top">

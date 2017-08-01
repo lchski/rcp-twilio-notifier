@@ -12,6 +12,15 @@
 class RcpTwilioNotifier_RegionSelectRenderer {
 
 	/**
+	 * The user ID to render the select for.
+	 *
+	 * This affects the currently selected item, if there is one.
+	 *
+	 * @var int
+	 */
+	private $user_id;
+
+	/**
 	 * Regions to choose from in select.
 	 *
 	 * @var array
@@ -20,8 +29,12 @@ class RcpTwilioNotifier_RegionSelectRenderer {
 
 	/**
 	 * Set internal state.
+	 *
+	 * @param int $user_id  The user ID to render the select for.
 	 */
-	public function __construct() {
+	public function __construct( $user_id ) {
+
+		$this->user_id = $user_id;
 
 		// Set up the regions with our defaults, filtered for customization.
 		$this->regions = apply_filters(
@@ -81,7 +94,7 @@ class RcpTwilioNotifier_RegionSelectRenderer {
 	 */
 	private function render_region_options() {
 
-		$current_region = get_user_meta( get_current_user_id(), 'rcptn_region', true );
+		$current_region = get_user_meta( $this->user_id, 'rcptn_region', true );
 
 		foreach ( $this->regions as $region ) {
 			?>
