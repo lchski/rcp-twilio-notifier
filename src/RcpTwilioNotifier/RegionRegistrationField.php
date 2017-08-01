@@ -69,8 +69,9 @@ class RcpTwilioNotifier_RegionRegistrationField {
 		?>
 			<p>
 				<label for="rcptn_region"><?php esc_html_e( 'Your Home Region', 'rcptn' ); ?></label>
-				<select id="rcptn_region" name="rcptn_region">
-					<?php $this->render_options(); ?>
+				<select id="rcptn_region" name="rcptn_region" class="rcptn-registration-select">
+					<?php $this->render_default_option(); ?>
+					<?php $this->render_region_options(); ?>
 				</select>
 			</p>
 		<?php
@@ -78,9 +79,22 @@ class RcpTwilioNotifier_RegionRegistrationField {
 	}
 
 	/**
+	 * Render the default dropdown option.
+	 */
+	private function render_default_option() {
+
+		?>
+			<option value="none">
+                <?php echo esc_html( apply_filters( 'rcptn_region_select_default_option', __( 'Select your region...', 'rcptn' ) ) ); ?>
+            </option>
+		<?php
+
+	}
+
+	/**
 	 * Render the various region options.
 	 */
-	private function render_options() {
+	private function render_region_options() {
 
 		$current_region = get_user_meta( get_current_user_id(), 'rcptn_region', true );
 
