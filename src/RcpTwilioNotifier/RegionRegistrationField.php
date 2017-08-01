@@ -87,10 +87,10 @@ class RcpTwilioNotifier_RegionRegistrationField {
 		foreach ( $this->regions as $region ) {
 			?>
 				<option
-					value=<?php esc_attr( $region->key ); ?>
-					<?php selected( $current_region, $region->key ); ?>
+					value=<?php echo esc_attr( $region['key'] ); ?>
+					<?php selected( $current_region, $region['key'] ); ?>
 				>
-					<?php esc_html( $region->label ); ?>
+					<?php echo esc_html( $region['label'] ); ?>
 				</option>
 			<?php
 		}
