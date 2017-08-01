@@ -9,7 +9,7 @@
 /**
  * Adds a region field to the RCP member editing screen.
  */
-class RcpTwilioNotifier_RegionEditMemberField {
+class RcpTwilioNotifier_RegionEditMemberField extends RcpTwilioNotifier_AbstractRegionFieldUi {
 
 	/**
 	 * Hooks class functions into WordPress.
@@ -27,7 +27,7 @@ class RcpTwilioNotifier_RegionEditMemberField {
 	 */
 	public function render_select( $user_id = 0 ) {
 
-		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer( $user_id );
+		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer( $this->regions, $user_id );
 
 		?>
 			<tr valign="top">

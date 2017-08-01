@@ -18,10 +18,36 @@ class RcpTwilioNotifier_Plugin {
 	 * Let's go!
 	 */
 	public function load() {
-		$region_registration_field = new RcpTwilioNotifier_RegionRegistrationField();
+		// Set up the regions with our defaults, filtered for customization.
+		$regions = apply_filters(
+			'rcptn_regions', array(
+				array(
+					'key' => 'south-east',
+					'label' => __( 'South East', 'rcptn' ),
+				),
+				array(
+					'key' => 'north-east',
+					'label' => __( 'North East', 'rcptn' ),
+				),
+				array(
+					'key' => 'new-england',
+					'label' => __( 'New England', 'rcptn' ),
+				),
+				array(
+					'key' => 'mid-west',
+					'label' => __( 'Mid West', 'rcptn' ),
+				),
+				array(
+					'key' => 'west-coast',
+					'label' => __( 'West Coast', 'rcptn' ),
+				),
+			)
+		);
+
+		$region_registration_field = new RcpTwilioNotifier_RegionRegistrationField( $regions );
 		$region_registration_field->init();
 
-		$region_edit_member_field = new RcpTwilioNotifier_RegionEditMemberField();
+		$region_edit_member_field = new RcpTwilioNotifier_RegionEditMemberField( $regions );
 		$region_edit_member_field->init();
 	}
 
