@@ -25,5 +25,8 @@
         "post-update-cmd": [
             "wp-enforcer"
         ]
+    },
+    "autoload": {
+        "psr-4": {"RcpTwilioNotifier\\": "src/RcpTwilioNotifier/"}
     }
 }

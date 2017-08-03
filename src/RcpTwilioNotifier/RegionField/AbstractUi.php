@@ -1,15 +1,17 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier_AbstractRegionFieldUi class
+ * RCP: RcpTwilioNotifier\RegionField\AbstractUiclass
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier
  */
 
+namespace RcpTwilioNotifier\RegionField;
+
 /**
  * Make the regions available to the child region UI class.
  */
-abstract class RcpTwilioNotifier_AbstractRegionFieldUi {
+abstract class AbstractUi {
 
 	/**
 	 * List of regions available for selection.

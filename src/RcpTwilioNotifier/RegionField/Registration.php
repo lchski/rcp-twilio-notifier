@@ -1,15 +1,17 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier_RegionRegistrationField class
+ * RCP: RcpTwilioNotifier\RegionField\Registration class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier
  */
 
+namespace RcpTwilioNotifier\RegionField;
+
 /**
  * Adds a region field to the RCP registration process.
  */
-class RcpTwilioNotifier_RegionRegistrationField extends RcpTwilioNotifier_AbstractRegionFieldUi {
+class Registration extends AbstractUi {
 
 	/**
 	 * Hooks class functions into WordPress.
@@ -30,7 +32,7 @@ class RcpTwilioNotifier_RegionRegistrationField extends RcpTwilioNotifier_Abstra
 	 */
 	public function render_select() {
 
-		$select_renderer = new RcpTwilioNotifier_RegionSelectRenderer( $this->regions, get_current_user_id() );
+		$select_renderer = new SelectRenderer( $this->regions, get_current_user_id() );
 
 		?>
 			<p>

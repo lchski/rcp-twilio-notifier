@@ -22,8 +22,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Setup class autoloader.
-require_once dirname( __FILE__ ) . '/src/RcpTwilioNotifier/Autoloader.php';
-RcpTwilioNotifier_Autoloader::register();
+require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
-$rcptwilionotifier = new RcpTwilioNotifier_Plugin();
+$rcptwilionotifier = new RcpTwilioNotifier\Plugin();
 add_action( 'plugins_loaded', array( $rcptwilionotifier, 'load' ) );

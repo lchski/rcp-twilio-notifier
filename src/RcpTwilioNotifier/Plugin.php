@@ -1,18 +1,20 @@
 <?php
 /**
- * RcpTwilioNotifier: RcpTwilioNotifier_Plugin class
+ * RcpTwilioNotifier: RcpTwilioNotifier\Plugin class
  *
- * The RcpTwilioNotifier_Plugin class runs top-level functionality for the RcpTwilioNotifier plugin. It brings together
+ * The RcpTwilioNotifier\Plugin class runs top-level functionality for the RcpTwilioNotifier plugin. It brings together
  * a variety of classes to run RcpTwilioNotifier.
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier
  */
 
+namespace RcpTwilioNotifier;
+
 /**
- * Class RcpTwilioNotifier_Plugin
+ * Class RcpTwilioNotifier\Plugin
  */
-class RcpTwilioNotifier_Plugin {
+class Plugin {
 
 	/**
 	 * Let's go!
@@ -44,10 +46,10 @@ class RcpTwilioNotifier_Plugin {
 			)
 		);
 
-		$region_registration_field = new RcpTwilioNotifier_RegionRegistrationField( $regions );
+		$region_registration_field = new RegionField\Registration( $regions );
 		$region_registration_field->init();
 
-		$region_edit_member_field = new RcpTwilioNotifier_RegionEditMemberField( $regions );
+		$region_edit_member_field = new RegionField\EditMember( $regions );
 		$region_edit_member_field->init();
 	}
 
