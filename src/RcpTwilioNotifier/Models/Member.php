@@ -1,17 +1,15 @@
 <?php
 /**
- * RcpTwilioNotifier: RcpTwilioNotifier\Member class
- *
- * Used to access plugin-specific metadata.
+ * RcpTwilioNotifier: RcpTwilioNotifier\Models\Member class
  *
  * @package WordPress
- * @subpackage RcpTwilioNotifier
+ * @subpackage RcpTwilioNotifier\Models
  */
 
-namespace RcpTwilioNotifier;
+namespace RcpTwilioNotifier\Models;
 
 /**
- * RcpTwilioNotifier\Member class
+ * Used to access plugin-specific metadata.
  */
 class Member extends \RCP_Member {
 
