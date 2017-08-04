@@ -56,7 +56,7 @@ class EditMember extends AbstractUi {
 	public function save_on_update( $user_id ) {
 
 		// Note the "WPCS: CSRF ok." comments below. This is because this function only fires after RCP has verified its nonces.
-		if ( isset( $_POST['rcptn_region'] ) && in_array( $_POST['rcptn_region'], $this->region_keys, true ) ) { // WPCS: CSRF ok.
+		if ( isset( $_POST['rcptn_region'] ) && in_array( $_POST['rcptn_region'], $this->region_slugs, true ) ) { // WPCS: CSRF ok.
 			update_user_meta( $user_id, 'rcptn_region', sanitize_text_field( $_POST['rcptn_region'] ) ); // WPCS: CSRF ok.
 		}
 

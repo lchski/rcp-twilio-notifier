@@ -55,7 +55,7 @@ class Registration extends AbstractUi {
 		}
 
 		// Add an error message if the submitted option isn't one of our valid choices.
-		if ( ! in_array( $posted['rcptn_region'], $this->region_keys, true ) ) {
+		if ( ! in_array( $posted['rcptn_region'], $this->region_slugs, true ) ) {
 			rcp_errors()->add( 'invalid_region', __( 'Please select a valid home region', 'rcptn' ), 'register' );
 		}
 

@@ -24,23 +24,23 @@ class Plugin {
 		$regions = apply_filters(
 			'rcptn_regions', array(
 				array(
-					'key' => 'south-east',
+					'slug' => 'south-east',
 					'label' => __( 'South East', 'rcptn' ),
 				),
 				array(
-					'key' => 'north-east',
+					'slug' => 'north-east',
 					'label' => __( 'North East', 'rcptn' ),
 				),
 				array(
-					'key' => 'new-england',
+					'slug' => 'new-england',
 					'label' => __( 'New England', 'rcptn' ),
 				),
 				array(
-					'key' => 'mid-west',
+					'slug' => 'mid-west',
 					'label' => __( 'Mid West', 'rcptn' ),
 				),
 				array(
-					'key' => 'west-coast',
+					'slug' => 'west-coast',
 					'label' => __( 'West Coast', 'rcptn' ),
 				),
 			)
