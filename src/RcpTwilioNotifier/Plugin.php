@@ -51,6 +51,9 @@ class Plugin {
 
 		$region_edit_member_field = new RegionField\EditMember( $regions );
 		$region_edit_member_field->init();
+
+		$admin_messaging_page = new Admin\MessagingPage();
+		$admin_messaging_page->init();
 	}
 
 }
