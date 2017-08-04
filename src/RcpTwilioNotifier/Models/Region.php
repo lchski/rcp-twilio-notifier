@@ -41,13 +41,18 @@ class Region {
 	 * @return array
 	 */
 	public function get_members() {
+		// If we already have a list of members, avoid the extra query.
+		if ( 0 !== count( $this->members ) ) {
+			return $this->members;
+		}
+
 		$query_args = array(
 			'meta_key'   => 'rcptn_region',
 			'meta_value' => $this->slug,
 		);
 
-		$member_query = new \WP_User_Query( $query_args );
+		$this->members = get_users( $query_args );
 
-		return $member_query->get_results();
+		return $this->members;
 	}
 }
