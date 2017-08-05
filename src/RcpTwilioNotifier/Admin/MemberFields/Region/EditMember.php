@@ -8,6 +8,8 @@
 
 namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
+use RcpTwilioNotifier\Helpers\SelectRenderer;
+
 /**
  * Adds a region field to the RCP member editing screen.
  */

@@ -7,7 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages;
-use RcpTwilioNotifier\Admin\MemberFields\Region\SelectRenderer;
+use RcpTwilioNotifier\Helpers\SelectRenderer;
 
 /**
  * WordPress admin page for messaging members by their region.
