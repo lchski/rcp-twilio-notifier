@@ -34,17 +34,17 @@ class RegionSelect {
 	 *
 	 * @param array $regions  Regions to choose from in select.
 	 * @param array $args {
-	 *    Required. Provide options to configure the currently selected region.
+	 *    Optional. Provide options to configure the currently selected region.
 	 *
-	 *     @type int    $user_id              The user ID to render the select for.
-	 *     @type string $selected_region_slug The currently selected region's slug.
+	 *    @type int    $user_id              The user ID to render the select for.
+	 *    @type string $selected_region_slug The currently selected region's slug.
 	 * }
 	 */
 	public function __construct( $regions, $args ) {
 		$this->regions = $regions;
 
 		$defaults = array(
-			'user_id'             => false,
+			'user_id'              => false,
 			'selected_region_slug' => false,
 		);
 
