@@ -38,6 +38,13 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	private $regions;
 
 	/**
+	 * List of errors.
+	 *
+	 * @var array
+	 */
+	private $errors = array();
+
+	/**
 	 * Set internal values.
 	 *
 	 * @param array $regions  Region list.
@@ -50,20 +57,32 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * Process!
 	 */
 	public function process() {
-		$this->validate();
+		if ( ! $this->validate() ) {
+			add_action( 'admin_notices', array( $this, 'render_errors' ) );
+
+			return false;
+		}
 	}
 
 	/**
 	 * Validate each of the submitted inputs, setting them as properties if valid.
 	 */
 	private function validate() {
-		if ( $this->validate_region() ) {
-			$this->region = new Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
+		// Validate both inputs.
+		$is_valid_region = $this->validate_region();
+		$is_valid_message = $this->validate_message();
+
+		// If either input is invalid, we exit.
+		if ( ! $is_valid_message || ! $is_valid_region ) {
+			return false;
 		}
 
-		if ( $this->validate_message() ) {
-			$this->message = $_POST['rcptn_message']; // WPCS: CSRF ok.
-		}
+		// Both inputs are valid, so we set them as properties.
+		$this->region = new Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
+		$this->message = $_POST['rcptn_message']; // WPCS: CSRF ok.
+
+		// A happy ending!
+		return true;
 	}
 
 	/**
@@ -73,13 +92,13 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 */
 	private function validate_region() {
 		if ( ! isset( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
-			$this->error_out( 'No region set.' );
+			$this->add_error( __( 'No region set.', 'rcptn' ) );
 		}
 
 		$region_validator = new \RcpTwilioNotifier\Helpers\Validators\Region( $this->regions );
 
 		if ( ! $region_validator->is_valid_region( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
-			$this->error_out( 'Invalid region set.' );
+			$this->add_error( __( 'Invalid region set.', 'rcptn' ) );
 		}
 
 		return true;
@@ -92,23 +111,36 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 */
 	private function validate_message() {
 		if ( ! isset( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
-			$this->error_out( 'No message set.' );
+			$this->add_error( __( 'No message set.', 'rcptn' ) );
 		}
 
 		if ( ! MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
-			$this->error_out( 'Invalid message body.' );
+			$this->add_error( __( 'Invalid message body.', 'rcptn' ) );
 		}
 
 		return true;
 	}
 
 	/**
-	 * Shuts down the process with an error message.
+	 * Add an error message to the validation process.
 	 *
 	 * @param string $error_message  The error message to display.
 	 */
-	private function error_out( $error_message ) {
-		// @TODO: Write error out code.
+	private function add_error( $error_message ) {
+		$this->errors = array_push( $this->errors, $error_message );
+	}
+
+	/**
+	 * Render the errors to the admin.
+	 */
+	public function render_errors() {
+		foreach ( $this->errors as $error ) {
+			?>
+				<div class="error">
+					<p><?php echo esc_html( $error ); ?> </p>
+				</div>
+			<?php
+		}
 	}
 
 	/**
