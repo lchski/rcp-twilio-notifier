@@ -7,7 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages;
-use RcpTwilioNotifier\Helpers\SelectRenderer;
+use RcpTwilioNotifier\Helpers\RegionSelectRenderer;
 
 /**
  * WordPress admin page for messaging members by their region.
@@ -64,7 +64,7 @@ class MessagingPage extends AbstractPage implements PageInterface {
 	 * @return void
 	 */
 	public function render() {
-		$select_renderer = new SelectRenderer( $this->regions, -1 );
+		$select_renderer = new RegionSelectRenderer( $this->regions, -1 );
 
 		?>
 			<div class="wrap" id="<?php esc_attr( $this->menu_slug ); ?>">
