@@ -1,12 +1,12 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\RegionField\SelectRenderer class
+ * RCP: RcpTwilioNotifier\Admin\MemberFields\Region\SelectRenderer class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier
  */
 
-namespace RcpTwilioNotifier\RegionField;
+namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
 /**
  * Outputs an HTML <select> with the regions as options.

@@ -1,12 +1,12 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\RegionField\EditMember class
+ * RCP: RcpTwilioNotifier\Admin\MemberFields\Region\EditMember class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier
  */
 
-namespace RcpTwilioNotifier\RegionField;
+namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
 /**
  * Adds a region field to the RCP member editing screen.

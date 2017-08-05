@@ -51,10 +51,10 @@ class Plugin {
 	 * Let's go!
 	 */
 	public function load() {
-		$region_registration_field = new RegionField\Registration( $this->regions );
+		$region_registration_field = new Admin\MemberFields\Region\Registration( $this->regions );
 		$region_registration_field->init();
 
-		$region_edit_member_field = new RegionField\EditMember( $this->regions );
+		$region_edit_member_field = new Admin\MemberFields\Region\EditMember( $this->regions );
 		$region_edit_member_field->init();
 
 		$admin_messaging_page = new Admin\Pages\MessagingPage( $this->regions );
