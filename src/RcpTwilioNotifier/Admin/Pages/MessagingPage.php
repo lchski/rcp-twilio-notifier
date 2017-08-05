@@ -64,7 +64,14 @@ class MessagingPage extends AbstractPage implements PageInterface {
 	 * @return void
 	 */
 	public function render() {
-		$select_renderer = new RegionSelect( $this->regions, -1 );
+		$select_renderer = new RegionSelect(
+			$this->regions,
+			array(
+				'selected_region_slug' => isset( $_POST['rcptn_region'] ) ? $_POST['rcptn_region'] : false, // WPCS: CSRF ok.
+			)
+		);
+
+		$message = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
 
 		?>
 			<div class="wrap" id="<?php esc_attr( $this->menu_slug ); ?>">
@@ -89,7 +96,7 @@ class MessagingPage extends AbstractPage implements PageInterface {
 									<label for="rcptn_message"><?php esc_html_e( 'Message', 'rcptn' ); ?></label>
 								</th>
 								<td>
-									<textarea name="rcptn_message" id="rcptn_message" cols="30" rows="10" placeholder="Your message..."></textarea>
+									<textarea name="rcptn_message" id="rcptn_message" cols="30" rows="10" placeholder="Your message..."><?php echo esc_html( $message ); ?></textarea>
 									<p class="description">
 										<?php esc_html_e( 'Enter the message to send to the chosen region.', 'rcptn' ); ?>
 									</p>
