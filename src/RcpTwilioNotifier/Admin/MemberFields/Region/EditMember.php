@@ -33,7 +33,12 @@ class EditMember extends AbstractEditMember {
 	 */
 	public function render_field( $user_id = 0 ) {
 
-		$select_renderer = new RegionSelect( $this->regions, $user_id );
+		$select_renderer = new RegionSelect(
+			$this->regions,
+			array(
+				'user_id' => $user_id,
+			)
+		);
 
 		?>
 			<tr valign="top">

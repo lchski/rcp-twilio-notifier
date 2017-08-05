@@ -31,7 +31,12 @@ class Registration extends AbstractRegistration {
 	 */
 	public function render_field() {
 
-		$select_renderer = new RegionSelect( $this->regions, get_current_user_id() );
+		$select_renderer = new RegionSelect(
+			$this->regions,
+			array(
+				'user_id' => get_current_user_id(),
+			)
+		);
 
 		?>
 			<p>
