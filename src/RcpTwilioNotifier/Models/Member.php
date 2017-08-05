@@ -24,4 +24,13 @@ class Member extends \RCP_Member {
 		return apply_filters( 'rcptn_member_get_home_region', $region, $this->ID, $this );
 	}
 
+	/**
+	 * Get the member's phone number.
+	 *
+	 * @return string
+	 */
+	public function get_phone_number() {
+		return '+15005550000';
+	}
+
 }
