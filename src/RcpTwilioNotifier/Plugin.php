@@ -57,6 +57,12 @@ class Plugin {
 		$region_edit_member_field = new Admin\MemberFields\Region\EditMember( $this->regions );
 		$region_edit_member_field->init();
 
+		$phone_number_registration_field = new Admin\MemberFields\PhoneNumber\Registration();
+		$phone_number_registration_field->init();
+
+		$phone_number_edit_member_field = new Admin\MemberFields\PhoneNumber\EditMember();
+		$phone_number_edit_member_field->init();
+
 		$admin_messaging_page = new Admin\Pages\MessagingPage( $this->regions );
 		$admin_messaging_page->init();
 	}
