@@ -8,7 +8,7 @@
 
 namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
-use RcpTwilioNotifier\Helpers\RegionSelectRenderer;
+use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 
 /**
  * Adds a region field to the RCP member editing screen.
@@ -34,7 +34,7 @@ class EditMember extends AbstractUi {
 	 */
 	public function render_select( $user_id = 0 ) {
 
-		$select_renderer = new RegionSelectRenderer( $this->regions, $user_id );
+		$select_renderer = new RegionSelect( $this->regions, $user_id );
 
 		?>
 			<tr valign="top">

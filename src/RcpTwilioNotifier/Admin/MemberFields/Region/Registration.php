@@ -8,7 +8,7 @@
 
 namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
-use RcpTwilioNotifier\Helpers\RegionSelectRenderer;
+use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 
 /**
  * Adds a region field to the RCP registration process.
@@ -34,7 +34,7 @@ class Registration extends AbstractUi {
 	 */
 	public function render_select() {
 
-		$select_renderer = new RegionSelectRenderer( $this->regions, get_current_user_id() );
+		$select_renderer = new RegionSelect( $this->regions, get_current_user_id() );
 
 		?>
 			<p>
