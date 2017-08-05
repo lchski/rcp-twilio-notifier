@@ -135,7 +135,10 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * @param string $error_message  The error message to display.
 	 */
 	private function add_error( $error_message ) {
-		$this->errors = array_push( $this->errors, $error_message );
+		$errors = $this->errors;
+		$errors[] = $error_message;
+
+		$this->errors = $errors;
 	}
 
 	/**
