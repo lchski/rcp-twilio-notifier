@@ -93,12 +93,16 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	private function validate_region() {
 		if ( ! isset( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'No region set.', 'rcptn' ) );
+
+			return false;
 		}
 
 		$region_validator = new \RcpTwilioNotifier\Helpers\Validators\Region( $this->regions );
 
 		if ( ! $region_validator->is_valid_region( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'Invalid region set.', 'rcptn' ) );
+
+			return false;
 		}
 
 		return true;
@@ -112,10 +116,14 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	private function validate_message() {
 		if ( ! isset( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'No message set.', 'rcptn' ) );
+
+			return false;
 		}
 
 		if ( ! MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'Invalid message body.', 'rcptn' ) );
+
+			return false;
 		}
 
 		return true;
