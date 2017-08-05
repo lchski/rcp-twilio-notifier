@@ -17,11 +17,11 @@ namespace RcpTwilioNotifier;
 class Plugin {
 
 	/**
-	 * Let's go!
+	 * Set internal values.
 	 */
-	public function load() {
+	public function __construct() {
 		// Set up the regions with our defaults, filtered for customization.
-		$regions = apply_filters(
+		$this->regions = apply_filters(
 			'rcptn_regions', array(
 				array(
 					'slug' => 'south-east',
@@ -45,14 +45,19 @@ class Plugin {
 				),
 			)
 		);
+	}
 
-		$region_registration_field = new RegionField\Registration( $regions );
+	/**
+	 * Let's go!
+	 */
+	public function load() {
+		$region_registration_field = new RegionField\Registration( $this->regions );
 		$region_registration_field->init();
 
-		$region_edit_member_field = new RegionField\EditMember( $regions );
+		$region_edit_member_field = new RegionField\EditMember( $this->regions );
 		$region_edit_member_field->init();
 
-		$admin_messaging_page = new Admin\Pages\MessagingPage( $regions );
+		$admin_messaging_page = new Admin\Pages\MessagingPage( $this->regions );
 		$admin_messaging_page->init();
 	}
 
