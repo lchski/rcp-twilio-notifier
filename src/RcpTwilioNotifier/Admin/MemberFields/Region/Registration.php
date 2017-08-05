@@ -9,11 +9,21 @@
 namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
 use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
+use RcpTwilioNotifier\Helpers\Validators\Region;
 
 /**
  * Adds a region field to the RCP registration process.
  */
-class Registration extends AbstractUi {
+class Registration {
+
+	/**
+	 * Set internal state.
+	 *
+	 * @param array $regions  List of regions available for selection.
+	 */
+	public function __construct( $regions ) {
+		$this->regions = $regions;
+	}
 
 	/**
 	 * Hooks class functions into WordPress.
@@ -56,8 +66,10 @@ class Registration extends AbstractUi {
 			return;
 		}
 
+		$region_validator = new Region( $this->regions );
+
 		// Add an error message if the submitted option isn't one of our valid choices.
-		if ( ! in_array( $posted['rcptn_region'], $this->region_slugs, true ) ) {
+		if ( ! $region_validator->is_valid_region( $posted['rcptn_region'] ) ) {
 			rcp_errors()->add( 'invalid_region', __( 'Please select a valid home region', 'rcptn' ), 'register' );
 		}
 
