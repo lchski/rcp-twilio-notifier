@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\MemberFields\PhoneNumber;
+use RcpTwilioNotifier\Helpers\Renderers\PhoneNumberInput;
 
 /**
  * Adds a phone number field to the RCP member editing screen.
@@ -31,13 +32,15 @@ class EditMember extends AbstractUi {
 	 * @param int $user_id  ID of the member whose profile is being edited.
 	 */
 	public function render_field( $user_id = 0 ) {
+		$phone_number_input_renderer = new PhoneNumberInput( $user_id );
+
 		?>
 			<tr valign="top">
 				<th scope="row" valign="top">
 					<label for="rcptn_phone_number"><?php esc_html_e( 'Phone Number', 'rcptn' ); ?></label>
 				</th>
 				<td>
-					<?php $this->render_phone_number_field( $user_id ); ?>
+					<?php $phone_number_input_renderer->render(); ?>
 					<p class="description"><?php esc_html_e( 'The member\'s phone number for text alerts', 'rcptn' ); ?></p>
 				</td>
 			</tr>

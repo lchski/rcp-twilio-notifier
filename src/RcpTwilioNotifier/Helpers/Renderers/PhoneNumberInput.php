@@ -1,6 +1,6 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\Helpers\Renderers\RegionSelect class
+ * RCP: RcpTwilioNotifier\Helpers\Renderers\PhoneNumberInput class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier\Helpers\Renderers
@@ -25,7 +25,7 @@ class PhoneNumberInput {
 	/**
 	 * Renders the input.
 	 */
-	public function render_phone_number_field() {
+	public function render() {
 		$current_number = get_user_meta( $this->user_id, 'rcptn_phone_number', true );
 
 		?>

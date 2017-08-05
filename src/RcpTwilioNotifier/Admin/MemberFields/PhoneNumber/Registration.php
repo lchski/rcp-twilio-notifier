@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\MemberFields\PhoneNumber;
+use RcpTwilioNotifier\Helpers\Renderers\PhoneNumberInput;
 
 /**
  * Adds a phone number field to the RCP registration process.
@@ -31,10 +32,12 @@ class Registration extends AbstractUi {
 	 * Render the phone number field
 	 */
 	public function render_field() {
+		$phone_number_input_renderer = new PhoneNumberInput( get_current_user_id() );
+
 		?>
 			<p>
 				<label for="rcptn_phone_number"><?php esc_html_e( 'Your Phone Number', 'rcptn' ); ?></label>
-				<?php $this->render_phone_number_field( get_current_user_id() ); ?>
+				<?php $phone_number_input_renderer->render(); ?>
 			</p>
 		<?php
 	}

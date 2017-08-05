@@ -24,17 +24,4 @@ abstract class AbstractUi {
 		return true; // @TODO: Implement validator
 	}
 
-	/**
-	 * Render a phone number field for a given user.
-	 *
-	 * @param int $user_id  The ID for the user for whom we’re rendering the field.
-	 */
-	protected function render_phone_number_field( $user_id ) {
-		$current_number = get_user_meta( $user_id, 'rcptn_phone_number', true );
-
-		?>
-			<input id="rcptn_phone_number" name="rcptn_phone_number" type="tel" value="<?php echo esc_attr( $current_number ); ?>">
-		<?php
-	}
-
 }
