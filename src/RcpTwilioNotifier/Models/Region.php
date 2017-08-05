@@ -51,8 +51,23 @@ class Region {
 			'meta_value' => $this->slug,
 		);
 
-		$this->members = get_users( $query_args );
+		$this->members = $this->convert_users_to_members( get_users( $query_args ) );
 
 		return $this->members;
+	}
+
+	/**
+	 * Converts WP_Users to our custom Member object.
+	 *
+	 * @param array $users  Array of WP_User objects to convert.
+	 *
+	 * @return array  The WP_Users objects, now converted to \RcpTwilioNotifier\Models\Member objects.
+	 */
+	private function convert_users_to_members( $users ) {
+		$converter = function( $user ) {
+			return new Member( $user->ID );
+		};
+
+		return array_map( $converter, $users );
 	}
 }
