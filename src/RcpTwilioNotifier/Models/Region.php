@@ -41,19 +41,17 @@ class Region {
 	 * @return array
 	 */
 	public function get_members() {
-		// If we already have a list of members, avoid the extra query.
-		if ( 0 !== count( $this->members ) ) {
-			return $this->members;
+		// If we don’t already have a list of members, query. Otherwise, we skip ahead to avoid the query.
+		if ( 0 === count( $this->members ) ) {
+			$query_args = array(
+				'meta_key'   => 'rcptn_region',
+				'meta_value' => $this->slug,
+			);
+
+			$this->members = $this->convert_users_to_members( get_users( $query_args ) );
 		}
 
-		$query_args = array(
-			'meta_key'   => 'rcptn_region',
-			'meta_value' => $this->slug,
-		);
-
-		$this->members = $this->convert_users_to_members( get_users( $query_args ) );
-
-		return $this->members;
+		return apply_filters( 'rcptn_region_get_members', $this->members, $this->slug, $this );
 	}
 
 	/**
