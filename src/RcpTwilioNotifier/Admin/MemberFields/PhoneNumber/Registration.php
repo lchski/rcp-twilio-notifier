@@ -7,27 +7,14 @@
  */
 
 namespace RcpTwilioNotifier\Admin\MemberFields\PhoneNumber;
+use RcpTwilioNotifier\Admin\MemberFields\AbstractRegistration;
 use RcpTwilioNotifier\Helpers\Renderers\PhoneNumberInput;
 use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 
 /**
  * Adds a phone number field to the RCP registration process.
  */
-class Registration extends AbstractUi {
-
-	/**
-	 * Hooks class functions into WordPress.
-	 */
-	public function init() {
-
-		add_action( 'rcp_after_password_registration_field', array( $this, 'render_field' ) );
-		add_action( 'rcp_profile_editor_after', array( $this, 'render_field' ) );
-
-		add_action( 'rcp_form_errors', array( $this, 'validate_on_register' ) , 10 );
-
-		add_action( 'rcp_form_processing', array( $this, 'save_on_register' ), 10, 2 );
-
-	}
+class Registration extends AbstractRegistration {
 
 	/**
 	 * Render the phone number field

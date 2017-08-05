@@ -8,13 +8,14 @@
 
 namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
+use RcpTwilioNotifier\Admin\MemberFields\AbstractRegistration;
 use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 use RcpTwilioNotifier\Helpers\Validators\Region;
 
 /**
  * Adds a region field to the RCP registration process.
  */
-class Registration {
+class Registration extends AbstractRegistration {
 
 	/**
 	 * Set internal state.
@@ -26,23 +27,9 @@ class Registration {
 	}
 
 	/**
-	 * Hooks class functions into WordPress.
-	 */
-	public function init() {
-
-		add_action( 'rcp_after_password_registration_field', array( $this, 'render_select' ) );
-		add_action( 'rcp_profile_editor_after', array( $this, 'render_select' ) );
-
-		add_action( 'rcp_form_errors', array( $this, 'validate_on_register' ) , 10 );
-
-		add_action( 'rcp_form_processing', array( $this, 'save_on_register' ), 10, 2 );
-
-	}
-
-	/**
 	 * Render the dropdown with the regions.
 	 */
-	public function render_select() {
+	public function render_field() {
 
 		$select_renderer = new RegionSelect( $this->regions, get_current_user_id() );
 

@@ -9,7 +9,7 @@
 namespace RcpTwilioNotifier\Admin\MemberFields;
 
 /**
- * Generic init for RCP edit member fields.
+ * Generic init for RCP edit member field classes.
  */
 abstract class AbstractEditMember {
 
