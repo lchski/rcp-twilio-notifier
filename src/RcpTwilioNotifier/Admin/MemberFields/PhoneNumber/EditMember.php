@@ -7,25 +7,14 @@
  */
 
 namespace RcpTwilioNotifier\Admin\MemberFields\PhoneNumber;
+use RcpTwilioNotifier\Admin\MemberFields\AbstractEditMember;
 use RcpTwilioNotifier\Helpers\Renderers\PhoneNumberInput;
 use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 
 /**
  * Adds a phone number field to the RCP member editing screen.
  */
-class EditMember extends AbstractUi {
-
-	/**
-	 * Hooks class functions into WordPress.
-	 */
-	public function init() {
-
-		add_action( 'rcp_edit_member_after', array( $this, 'render_field' ) );
-
-		add_action( 'rcp_user_profile_updated', array( $this, 'save_on_update' ), 10 );
-		add_action( 'rcp_edit_member', array( $this, 'save_on_update' ), 10 );
-
-	}
+class EditMember extends AbstractEditMember {
 
 	/**
 	 * Render the dropdown with the regions.

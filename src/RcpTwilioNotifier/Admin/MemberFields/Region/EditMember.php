@@ -8,13 +8,14 @@
 
 namespace RcpTwilioNotifier\Admin\MemberFields\Region;
 
+use RcpTwilioNotifier\Admin\MemberFields\AbstractEditMember;
 use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 use RcpTwilioNotifier\Helpers\Validators\Region;
 
 /**
  * Adds a region field to the RCP member editing screen.
  */
-class EditMember {
+class EditMember extends AbstractEditMember {
 
 	/**
 	 * Set internal state.
@@ -26,23 +27,11 @@ class EditMember {
 	}
 
 	/**
-	 * Hooks class functions into WordPress.
-	 */
-	public function init() {
-
-		add_action( 'rcp_edit_member_after', array( $this, 'render_select' ) );
-
-		add_action( 'rcp_user_profile_updated', array( $this, 'save_on_update' ), 10 );
-		add_action( 'rcp_edit_member', array( $this, 'save_on_update' ), 10 );
-
-	}
-
-	/**
 	 * Render the dropdown with the regions.
 	 *
 	 * @param int $user_id  ID of the member whose profile is being edited.
 	 */
-	public function render_select( $user_id = 0 ) {
+	public function render_field( $user_id = 0 ) {
 
 		$select_renderer = new RegionSelect( $this->regions, $user_id );
 
