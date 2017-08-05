@@ -33,13 +33,22 @@ class RegionSelect {
 	 * Set internal state.
 	 *
 	 * @param array $regions  Regions to choose from in select.
-	 * @param int   $user_id  The user ID to render the select for.
+	 * @param array $args {
+	 *    Required. Provide options to configure the currently selected region.
+	 *
+	 *     @type int    $user_id              The user ID to render the select for.
+	 *     @type string $selected_region_slug The currently selected region's slug.
+	 * }
 	 */
-	public function __construct( $regions, $user_id ) {
-
+	public function __construct( $regions, $args ) {
 		$this->regions = $regions;
-		$this->user_id = $user_id;
 
+		$defaults = array(
+			'user_id'             => false,
+			'selected_region_slug' => false,
+		);
+
+		$this->args = wp_parse_args( $args, $defaults );
 	}
 
 	/**
@@ -72,7 +81,7 @@ class RegionSelect {
 	 */
 	private function render_region_options() {
 
-		$current_region = get_user_meta( $this->user_id, 'rcptn_region', true );
+		$current_region = $this->get_current_region();
 
 		foreach ( $this->regions as $region ) {
 			?>
@@ -85,6 +94,23 @@ class RegionSelect {
 			<?php
 		}
 
+	}
+
+	/**
+	 * Get the currently selected region.
+	 *
+	 * @return string|bool
+	 */
+	private function get_current_region() {
+		if ( $this->args['selected_region_slug'] ) {
+			return $this->args['selected_region_slug'];
+		}
+
+		if ( $this->args['user_id'] ) {
+			return get_user_meta( $this->args['user_id'], 'rcptn_region', true );
+		}
+
+		return false;
 	}
 
 }
