@@ -3,10 +3,10 @@
  * Interface PageInterface
  *
  * @package WordPress
- * @subpackage RcpTwilioNotifier\Admin
+ * @subpackage RcpTwilioNotifier\Admin\Pages
  */
 
-namespace RcpTwilioNotifier\Admin;
+namespace RcpTwilioNotifier\Admin\Pages;
 
 /**
  * Ensures child classes to RcpTwilioNotifier\Admin\AbstractPage have the right functions.

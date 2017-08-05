@@ -1,12 +1,12 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\RegionField\MessagingPage class
+ * RCP: RcpTwilioNotifier\Admin\Pages\MessagingPage class
  *
  * @package WordPress
- * @subpackage RcpTwilioNotifier\Admin
+ * @subpackage RcpTwilioNotifier\Admin\Pages
  */
 
-namespace RcpTwilioNotifier\Admin;
+namespace RcpTwilioNotifier\Admin\Pages;
 use RcpTwilioNotifier\RegionField\SelectRenderer;
 
 /**

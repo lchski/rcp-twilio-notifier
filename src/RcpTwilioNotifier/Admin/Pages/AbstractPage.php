@@ -1,12 +1,12 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\RegionField\AbstractPage class
+ * RCP: RcpTwilioNotifier\Admin\Pages\AbstractPage class
  *
  * @package WordPress
- * @subpackage RcpTwilioNotifier
+ * @subpackage RcpTwilioNotifier\Admin|Pages
  */
 
-namespace RcpTwilioNotifier\Admin;
+namespace RcpTwilioNotifier\Admin\Pages;
 
 /**
  * Handles routine submenu registration function, based on values set in the child class.
