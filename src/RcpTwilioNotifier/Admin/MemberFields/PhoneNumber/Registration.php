@@ -8,6 +8,7 @@
 
 namespace RcpTwilioNotifier\Admin\MemberFields\PhoneNumber;
 use RcpTwilioNotifier\Helpers\Renderers\PhoneNumberInput;
+use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 
 /**
  * Adds a phone number field to the RCP registration process.
@@ -54,7 +55,7 @@ class Registration extends AbstractUi {
 		}
 
 		// Add an error message if the submitted option isn't one of our valid choices.
-		if ( ! $this->validate_phone_number( $posted['rcptn_phone_number'] ) ) {
+		if ( ! PhoneNumber::is_valid_phone_number( $posted['rcptn_phone_number'] ) ) {
 			rcp_errors()->add( 'invalid_phone_number', __( 'Please enter a valid phone number', 'rcptn' ), 'register' );
 		}
 

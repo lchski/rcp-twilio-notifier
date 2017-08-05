@@ -8,6 +8,7 @@
 
 namespace RcpTwilioNotifier\Admin\MemberFields\PhoneNumber;
 use RcpTwilioNotifier\Helpers\Renderers\PhoneNumberInput;
+use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 
 /**
  * Adds a phone number field to the RCP member editing screen.
@@ -55,7 +56,7 @@ class EditMember extends AbstractUi {
 	public function save_on_update( $user_id ) {
 
 		// Note the "WPCS: CSRF ok." comments below. This is because this function only fires after RCP has verified its nonces.
-		if ( isset( $_POST['rcptn_phone_number'] ) && $this->validate_phone_number( $_POST['rcptn_phone_number'] ) ) { // WPCS: CSRF ok.
+		if ( isset( $_POST['rcptn_phone_number'] ) && PhoneNumber::is_valid_phone_number( $_POST['rcptn_phone_number'] ) ) { // WPCS: CSRF ok.
 			update_user_meta( $user_id, 'rcptn_phone_number', sanitize_text_field( $_POST['rcptn_phone_number'] ) ); // WPCS: CSRF ok.
 		}
 
