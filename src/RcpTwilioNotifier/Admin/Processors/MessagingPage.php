@@ -120,6 +120,12 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			return false;
 		}
 
+		if ( 0 === strlen( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
+			$this->add_error( __( 'Message must not be empty.', 'rcptn' ) );
+
+			return false;
+		}
+
 		if ( ! MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'Invalid message body.', 'rcptn' ) );
 
