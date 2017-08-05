@@ -24,7 +24,7 @@ class Region {
 	 *
 	 * @var array
 	 */
-	public $members;
+	private $members;
 
 	/**
 	 * Set initial state.
