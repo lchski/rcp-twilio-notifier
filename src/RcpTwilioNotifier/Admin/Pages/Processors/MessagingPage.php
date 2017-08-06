@@ -7,7 +7,6 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages\Processors;
-use RcpTwilioNotifier\Helpers\Validators\MessageBody;
 use RcpTwilioNotifier\Models\Member;
 use RcpTwilioNotifier\Models\Region;
 
@@ -49,6 +48,10 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 		if ( ! $validator->is_valid() ) {
 			return false;
 		}
+
+		// Both inputs are valid, so we set them as properties.
+		$this->region = new Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
+		$this->message = $_POST['rcptn_message']; // WPCS: CSRF ok.
 	}
 
 	/**

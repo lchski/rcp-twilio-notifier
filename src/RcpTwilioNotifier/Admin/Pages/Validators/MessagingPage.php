@@ -7,6 +7,8 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages\Validators;
+use RcpTwilioNotifier\Helpers\Validators\MessageBody;
+use RcpTwilioNotifier\Helpers\Validators\Region;
 
 /**
  * Validates form submissions from our MessagingPage in the WordPress admin.
@@ -38,7 +40,7 @@ class MessagingPage extends AbstractValidator implements ValidatorInterface {
 	}
 
 	/**
-	 * Validate each of the submitted inputs, setting them as properties if valid.
+	 * Validate each of the submitted inputs.
 	 */
 	public function validate() {
 		// Validate both inputs.
@@ -51,10 +53,6 @@ class MessagingPage extends AbstractValidator implements ValidatorInterface {
 
 			return false;
 		}
-
-		// Both inputs are valid, so we set them as properties.
-		$this->region = new \RcpTwilioNotifier\Models\Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
-		$this->message = $_POST['rcptn_message']; // WPCS: CSRF ok.
 
 		// A happy ending!
 		$this->is_valid = true;
@@ -83,7 +81,7 @@ class MessagingPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
-		$region_validator = new \RcpTwilioNotifier\Helpers\Validators\Region( $this->regions );
+		$region_validator = new Region( $this->regions );
 
 		if ( ! $region_validator->is_valid_region( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'Invalid region set.', 'rcptn' ) );
@@ -112,7 +110,7 @@ class MessagingPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
-		if ( ! \RcpTwilioNotifier\Helpers\Validators\MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
+		if ( ! MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'Invalid message body.', 'rcptn' ) );
 
 			return false;
