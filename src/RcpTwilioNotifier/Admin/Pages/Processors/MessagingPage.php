@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages\Processors;
+use RcpTwilioNotifier\Helpers\MemberRetriever;
 use RcpTwilioNotifier\Models\Member;
 use RcpTwilioNotifier\Models\Region;
 
@@ -49,24 +50,20 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			return false;
 		}
 
-		// Both inputs are valid, so we set them as properties.
-		$this->region = new Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
-		$this->message = $_POST['rcptn_message']; // WPCS: CSRF ok.
-
-		$this->message_all_in_region( $this->region );
+		$this->message_all_in_region( new Region( $_POST['rcptn_region'] ), $_POST['rcptn_message'] ); // WPCS: CSRF ok.
 	}
 
 	/**
 	 * Message all the members within a region.
 	 *
-	 * @param Region $region  The region whose members we'll message.
+	 * @param Region $region   The region whose members we'll message.
+	 * @param string $message  The message to send.
 	 */
-	public function message_all_in_region( Region $region ) {
-		// @TODO: pull in members from other regions, who subscrbie to all regions
-		$members = $region->get_members();
+	private function message_all_in_region( Region $region, $message ) {
+		$members = MemberRetriever::get_region_members_and_all_region_subscribers( $region );
 
 		foreach ( $members as $member ) {
-			$member->send_message( $this->message );
+			$member->send_message( $message );
 		}
 	}
 }
