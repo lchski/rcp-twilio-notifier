@@ -66,7 +66,7 @@ class Plugin {
 		$admin_messaging_page = new Admin\Pages\MessagingPage( $this->regions );
 		$admin_messaging_page->init();
 
-		$admin_messaging_page_processor = new Admin\Processors\MessagingPage( $this->regions );
+		$admin_messaging_page_processor = new Admin\Pages\Processors\MessagingPage( $this->regions );
 		$admin_messaging_page_processor->init();
 	}
 

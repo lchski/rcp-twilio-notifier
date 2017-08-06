@@ -1,12 +1,12 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\Admin\Processors\AbstractProcessor class
+ * RCP: RcpTwilioNotifier\Admin\Pages\Processors\AbstractProcessor class
  *
  * @package WordPress
- * @subpackage RcpTwilioNotifier\Admin|Processors
+ * @subpackage RcpTwilioNotifier\Admin|Pages\Processors
  */
 
-namespace RcpTwilioNotifier\Admin\Processors;
+namespace RcpTwilioNotifier\Admin\Pages\Processors;
 
 /**
  * Handles tasks global to all admin processors.
