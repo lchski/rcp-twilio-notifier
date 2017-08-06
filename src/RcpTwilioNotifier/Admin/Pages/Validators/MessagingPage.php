@@ -53,7 +53,7 @@ class MessagingPage extends AbstractValidator implements ValidatorInterface {
 		}
 
 		// Both inputs are valid, so we set them as properties.
-		$this->region = new Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
+		$this->region = new \RcpTwilioNotifier\Models\Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
 		$this->message = $_POST['rcptn_message']; // WPCS: CSRF ok.
 
 		// A happy ending!
@@ -112,7 +112,7 @@ class MessagingPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
-		if ( ! MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
+		if ( ! \RcpTwilioNotifier\Helpers\Validators\MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'Invalid message body.', 'rcptn' ) );
 
 			return false;
