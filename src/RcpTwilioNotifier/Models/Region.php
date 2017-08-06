@@ -8,6 +8,8 @@
 
 namespace RcpTwilioNotifier\Models;
 
+use RcpTwilioNotifier\Helpers\MemberRetriever;
+
 /**
  * Access information about a region and its members.
  */
@@ -48,24 +50,9 @@ class Region {
 				'meta_value' => $this->slug,
 			);
 
-			$this->members = $this->convert_users_to_members( get_users( $query_args ) );
+			$this->members = MemberRetriever::convert_users_to_members( get_users( $query_args ) );
 		}
 
 		return apply_filters( 'rcptn_region_get_members', $this->members, $this->slug, $this );
-	}
-
-	/**
-	 * Converts WP_Users to our custom Member object.
-	 *
-	 * @param array $users  Array of WP_User objects to convert.
-	 *
-	 * @return array  The WP_Users objects, now converted to \RcpTwilioNotifier\Models\Member objects.
-	 */
-	private function convert_users_to_members( $users ) {
-		$converter = function( $user ) {
-			return new Member( $user->ID );
-		};
-
-		return array_map( $converter, $users );
 	}
 }
