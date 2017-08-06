@@ -40,6 +40,11 @@ class Member extends \RCP_Member {
 	 * @param string $message  Message to send to the member.
 	 */
 	public function send_message( $message ) {
+		// Verify that the member is active according to RCP.
+		if ( ! $this->is_active() ) {
+			return;
+		}
+
 		$twilio_client = new Client( getenv( 'TWILIO_SID' ), getenv( 'TWILIO_TOKEN' ) );
 
 		$sms = $twilio_client->messages->create(

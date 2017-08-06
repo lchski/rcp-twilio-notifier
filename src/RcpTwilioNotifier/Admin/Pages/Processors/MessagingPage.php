@@ -52,6 +52,8 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 		// Both inputs are valid, so we set them as properties.
 		$this->region = new Region( $_POST['rcptn_region'] ); // WPCS: CSRF ok.
 		$this->message = $_POST['rcptn_message']; // WPCS: CSRF ok.
+
+		$this->message_all_in_region( $this->region );
 	}
 
 	/**
@@ -64,23 +66,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 		$members = $region->get_members();
 
 		foreach ( $members as $member ) {
-			$this->message_member( $member );
+			$member->send_message( $this->message );
 		}
 	}
-
-	/**
-	 * Message a given member, checking first that they’re eligible to receive messages.
-	 *
-	 * @param Member $member  The member to message.
-	 *
-	 * @return \Twilio\Rest\Api\V2010\Account\MessageInstance|void
-	 */
-	public function message_member( Member $member ) {
-		if ( ! $member->is_active() ) {
-			return;
-		}
-
-		return $member->send_message( $this->message );
-	}
-
 }
