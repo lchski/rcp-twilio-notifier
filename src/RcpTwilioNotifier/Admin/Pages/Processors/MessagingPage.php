@@ -51,7 +51,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 		}
 
 		// @TODO: Sanitize these values.
-		$this->message_all_in_region( new Region( $_POST['rcptn_region'] ), $_POST['rcptn_message'] ); // WPCS: CSRF ok.
+		$this->message_all_in_region( new Region( $this->posted['rcptn_region'] ), $this->posted['rcptn_message'] );
 	}
 
 	/**
