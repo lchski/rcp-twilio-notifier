@@ -68,6 +68,9 @@ class Plugin {
 
 		$admin_messaging_page_processor = new Admin\Pages\Processors\MessagingPage( $this->regions );
 		$admin_messaging_page_processor->init();
+
+		$admin_settings_page = new Admin\Pages\SettingsPage();
+		$admin_settings_page->init();
 	}
 
 }
