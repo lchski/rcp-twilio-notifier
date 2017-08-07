@@ -18,10 +18,6 @@ abstract class AbstractPage {
 	 */
 	public function init() {
 		add_action( 'admin_menu', array( $this, 'register_page' ) );
-
-		if ( method_exists( $this, 'register_hooks' ) ) {
-			$this->register_hooks();
-		}
 	}
 
 	/**
