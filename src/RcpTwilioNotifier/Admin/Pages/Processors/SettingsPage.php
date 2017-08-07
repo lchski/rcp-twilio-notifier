@@ -43,7 +43,23 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 			return false;
 		}
 
-		// @TODO: Process...
+		$this->save_settings();
+	}
+
+	/**
+	 * Save each of the settings to the database.
+	 */
+	private function save_settings() {
+		$settings_field_keys = array(
+			'rcptn_twilio_sid',
+			'rcptn_twilio_token',
+			'rcptn_twilio_from_number',
+			'rcptn_rcp_all_regions_subscription_id',
+		);
+
+		foreach ( $settings_field_keys as $field_key ) {
+			update_option( $field_key, $this->posted[ $field_key ] );
+		}
 	}
 
 }
