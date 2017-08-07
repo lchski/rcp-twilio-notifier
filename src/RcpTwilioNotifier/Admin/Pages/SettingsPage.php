@@ -78,7 +78,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 								AdminFormField::render(
 									'rcptn_twilio_from_number',
 									__( 'Twilio From Number', 'rcptn' ),
-									__( 'The phone number you purchased from Twilio. Format: +10123456789', 'rcptn' ),
+									__( 'The phone number you purchased from Twilio. Format: +10123456789. (When testing, use “+15005550006”; Twilio will always accept it.)', 'rcptn' ),
 									array( $this, 'render_twilio_from_number' )
 								);
 
