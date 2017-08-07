@@ -108,7 +108,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 */
 	public function render_twilio_sid( $field_id ) {
 		?>
-			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
+			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
 	}
 
@@ -119,7 +119,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 */
 	public function render_twilio_token( $field_id ) {
 		?>
-			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
+			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
 	}
 
@@ -130,7 +130,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 */
 	public function render_twilio_from_number( $field_id ) {
 		?>
-			<input type="tel" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
+			<input type="tel" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
 	}
 
@@ -141,8 +141,35 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 */
 	public function render_rcp_all_regions_subscription_id( $field_id ) {
 		?>
-			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
+			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
+	}
+
+	/**
+	 * Get the value for a given field.
+	 *
+	 * The value is determined as follows:
+	 *
+	 *     1. If there’s posted data, we pull the value from there.
+	 *     2. If it doesn’t exist in the database as an option, we return an empty string.
+	 *     3. If it does exist in the database, we return the option value.
+	 *
+	 * @param string $field_id  The ID of the field for which to retrieve the value.
+	 *
+	 * @return mixed|string|void
+	 */
+	private function get_field_value( $field_id ) {
+		if ( isset( $_POST[ $field_id ] ) ) { // WPCS: CSRF ok.
+			return $_POST[ $field_id ]; // WPCS: CSRF ok.
+		}
+
+		$field_option_value = get_option( $field_id );
+
+		if ( false === $field_option_value ) {
+			return '';
+		}
+
+		return $field_option_value;
 	}
 
 }
