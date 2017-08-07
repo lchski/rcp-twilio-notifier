@@ -64,15 +64,29 @@ class SettingsPage extends AbstractPage implements PageInterface {
 								AdminFormField::render(
 									'rcptn_twilio_sid',
 									__( 'Twilio SID', 'rcptn' ),
-									__( 'The Account SID from twilio.com/console. (When testing, be sure to use the testing credential.)', 'rcptn' ),
+									__( 'The account SID from twilio.com/console. (When testing, be sure to use the testing credential.)', 'rcptn' ),
 									array( $this, 'render_twilio_sid' )
 								);
 
 								AdminFormField::render(
 									'rcptn_twilio_token',
 									__( 'Twilio Token', 'rcptn' ),
-									__( 'The Account Token from twilio.com/console. (When testing, be sure to use the testing credential.)', 'rcptn' ),
+									__( 'The account token from twilio.com/console. (When testing, be sure to use the testing credential.)', 'rcptn' ),
 									array( $this, 'render_twilio_token' )
+								);
+
+								AdminFormField::render(
+									'rcptn_twilio_from_number',
+									__( 'Twilio From Number', 'rcptn' ),
+									__( 'The phone number you purchased from Twilio. Format: +10123456789', 'rcptn' ),
+									array( $this, 'render_twilio_from_number' )
+								);
+
+								AdminFormField::render(
+									'rcptn_rcp_all_regions_subscription_id',
+									__( 'RCP All Regions Subscription ID', 'rcptn' ),
+									__( 'The ID of the RCP subscription for all regions. Active subscribers to this subscription will receive all text alerts, regardless of their region.', 'rcptn' ),
+									array( $this, 'render_rcp_all_regions_subscription_id' )
 								);
 							?>
 						</tbody>
@@ -90,22 +104,44 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	/**
 	 * Render the Twilio SID field.
 	 *
-	 * @param string $id  The field's ID.
+	 * @param string $field_id  The field's ID.
 	 */
-	public function render_twilio_sid( $id ) {
+	public function render_twilio_sid( $field_id ) {
 		?>
-			<input type="text" name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
+			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
+		<?php
+	}
+
+	/**
+	 * Render the Twilio token field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_twilio_token( $field_id ) {
+		?>
+			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
+		<?php
+	}
+
+	/**
+	 * Render the Twilio from number field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_twilio_from_number( $field_id ) {
+		?>
+			<input type="tel" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
 		<?php
 	}
 
 	/**
 	 * Render the Twilio Token field.
 	 *
-	 * @param string $id  The field's ID.
+	 * @param string $field_id  The field's ID.
 	 */
-	public function render_twilio_token( $id ) {
+	public function render_rcp_all_regions_subscription_id( $field_id ) {
 		?>
-		<input type="text" name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
+			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>">
 		<?php
 	}
 
