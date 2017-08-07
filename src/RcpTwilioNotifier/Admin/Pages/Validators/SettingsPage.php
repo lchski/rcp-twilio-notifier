@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages\Validators;
+use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 
 /**
  * Validates form submissions from our SettingsPage in the WordPress admin.
@@ -101,6 +102,12 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
+		if ( ! PhoneNumber::is_valid_phone_number( $_POST['rcptn_twilio_from_number'] ) ) { // WPCS: CSRF ok.
+			$this->add_error( __( 'Invalid format for the Twilio from number. Please put it in the format “+10123456789”.', 'rcptn' ) );
+
+			return false;
+		}
+
 		return true;
 	}
 
@@ -112,6 +119,12 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	private function validate_rcp_all_regions_subscription_id() {
 		if ( ! isset( $_POST['rcptn_rcp_all_regions_subscription_id'] ) || 0 === strlen( $_POST['rcptn_rcp_all_regions_subscription_id'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'No RCP all regions subscription ID set.', 'rcptn' ) );
+
+			return false;
+		}
+
+		if ( false === rcp_get_subscription_details( $_POST['rcptn_rcp_all_regions_subscription_id'] ) ) { // WPCS: CSRF ok.
+			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID does not exist as a subscription level.', 'rcptn' ) );
 
 			return false;
 		}
