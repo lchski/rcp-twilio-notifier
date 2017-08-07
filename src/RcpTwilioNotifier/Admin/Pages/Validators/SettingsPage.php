@@ -31,12 +31,14 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * Validate each of the submitted inputs.
 	 */
 	public function validate() {
-		// Validate both inputs.
-		$is_valid_region = $this->validate_region();
-		$is_valid_message = $this->validate_message();
+		// Validate all inputs.
+		$is_valid_twilio_sid = $this->validate_twilio_sid();
+		$is_valid_twilio_token = $this->validate_twilio_token();
+		$is_valid_twilio_from_number = $this->validate_twilio_from_number();
+		$is_valid_rcp_all_regions_subscription_id = $this->validate_rcp_all_regions_subscription_id();
 
-		// If either input is invalid, we exit.
-		if ( ! $is_valid_message || ! $is_valid_region ) {
+		// If any input is invalid, we exit.
+		if ( ! $is_valid_twilio_sid || ! $is_valid_twilio_token || ! $is_valid_twilio_from_number || ! $is_valid_rcp_all_regions_subscription_id ) {
 			$this->is_valid = false;
 
 			return false;
@@ -55,6 +57,42 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 */
 	public function is_valid() {
 		return $this->is_valid;
+	}
+
+	/**
+	 * Validate the Twilio SID input.
+	 *
+	 * @return bool
+	 */
+	private function validate_twilio_sid() {
+		return true;
+	}
+
+	/**
+	 * Validate the Twilio token input.
+	 *
+	 * @return bool
+	 */
+	private function validate_twilio_token() {
+		return true;
+	}
+
+	/**
+	 * Validate the Twilio from number input.
+	 *
+	 * @return bool
+	 */
+	private function validate_twilio_from_number() {
+		return true;
+	}
+
+	/**
+	 * Validate the RCP all regions subscription ID input.
+	 *
+	 * @return bool
+	 */
+	private function validate_rcp_all_regions_subscription_id() {
+		return true;
 	}
 
 	/**
