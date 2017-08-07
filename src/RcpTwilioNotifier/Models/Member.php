@@ -45,12 +45,15 @@ class Member extends \RCP_Member {
 			return;
 		}
 
-		$twilio_client = new Client( getenv( 'TWILIO_SID' ), getenv( 'TWILIO_TOKEN' ) );
+		$twilio_client = new Client(
+			get_option( 'rcptn_twilio_sid', getenv( 'TWILIO_SID' ) ),
+			get_option( 'rcptn_twilio_token', getenv( 'TWILIO_TOKEN' ) )
+		);
 
 		$sms = $twilio_client->messages->create(
 			$this->get_phone_number(),
 			array(
-				'from' => '+15005550006', // dummy SMS, validates via Twilio.
+				'from' => get_option( 'rcptn_twilio_from_number', getenv( 'TWILIO_FROM_NUMBER' ) ),
 				'body' => $message,
 			)
 		);

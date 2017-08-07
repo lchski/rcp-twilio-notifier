@@ -27,7 +27,12 @@ class MemberRetriever {
 	public static function get_region_members_and_all_region_subscribers( Region $region ) {
 		$region_members = $region->get_members();
 
-		$all_region_subscribers = self::convert_users_to_members( rcp_get_members_of_subscription( getenv( 'RCP_ALL_REGIONS_SUBSCRIPTION_ID' ), 'all' ) );
+		$all_region_subscribers = self::convert_users_to_members(
+			rcp_get_members_of_subscription(
+				get_option( 'rcptn_rcp_all_regions_subscription_id', getenv( 'RCP_ALL_REGIONS_SUBSCRIPTION_ID' ) ),
+				'all'
+			)
+		);
 
 		// @TODO: Improve this uniqueness check; it may fail sometimes.
 		return array_unique( array_merge( $region_members, $all_region_subscribers ), SORT_REGULAR );
