@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages;
+use RcpTwilioNotifier\Helpers\Renderers\AdminFormField;
 use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 
 /**
@@ -71,8 +72,6 @@ class MessagingPage extends AbstractPage implements PageInterface {
 			)
 		);
 
-		$message = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
-
 		?>
 			<div class="wrap" id="<?php esc_attr( $this->menu_slug ); ?>">
 				<h1><?php echo esc_html( $this->page_title ); ?></h1>
@@ -80,28 +79,21 @@ class MessagingPage extends AbstractPage implements PageInterface {
 				<form id="rcptn-region-notifier-messenger" action="" method="post">
 					<table class="form-table">
 						<tbody>
-							<tr class="form-field">
-								<th scope="row" valign="top">
-									<label for="rcptn_region"><?php esc_html_e( 'Target region', 'rcptn' ); ?></label>
-								</th>
-								<td>
-									<?php $select_renderer->render(); ?>
-									<p class="description">
-										<?php esc_html_e( 'Choose the region that should receive this notice.', 'rcptn' ); ?>
-									</p>
-								</td>
-							</tr>
-							<tr class="form-field">
-								<th scope="row" valign="top">
-									<label for="rcptn_message"><?php esc_html_e( 'Message', 'rcptn' ); ?></label>
-								</th>
-								<td>
-									<textarea name="rcptn_message" id="rcptn_message" cols="30" rows="10" placeholder="Your message..."><?php echo esc_html( $message ); ?></textarea>
-									<p class="description">
-										<?php esc_html_e( 'Enter the message to send to the chosen region.', 'rcptn' ); ?>
-									</p>
-								</td>
-							</tr>
+							<?php
+								AdminFormField::render(
+									'rcptn_region',
+									__( 'Target region', 'rcptn' ),
+									__( 'Choose the region that should receive this notice.', 'rcptn' ),
+									array( $select_renderer, 'render' )
+								);
+
+								AdminFormField::render(
+									'rcptn_message',
+									__( 'Message', 'rcptn' ),
+									__( 'Enter the message to send to the chosen region.', 'rcptn' ),
+									array( $this, 'render_message_field' )
+								);
+							?>
 						</tbody>
 					</table>
 					<p class="submit">
@@ -111,6 +103,19 @@ class MessagingPage extends AbstractPage implements PageInterface {
 					<?php wp_nonce_field( 'rcptn_send_single_message_nonce', 'rcptn_send_single_message_nonce' ); ?>
 				</form>
 			</div>
+		<?php
+	}
+
+	/**
+	 * * Render the message body field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_message_field( $field_id ) {
+		$message = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
+
+		?>
+			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="10" placeholder="<?php esc_attr_e( 'Your message...', 'rcptn' ); ?>"><?php echo esc_html( $message ); ?></textarea>
 		<?php
 	}
 
