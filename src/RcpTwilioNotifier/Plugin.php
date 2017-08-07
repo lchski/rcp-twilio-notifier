@@ -71,6 +71,9 @@ class Plugin {
 
 		$admin_settings_page = new Admin\Pages\SettingsPage();
 		$admin_settings_page->init();
+
+		$admin_settings_page_processor = new Admin\Pages\Processors\SettingsPage();
+		$admin_settings_page_processor->init();
 	}
 
 }
