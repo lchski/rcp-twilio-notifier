@@ -65,7 +65,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_twilio_sid() {
-		if ( ! isset( $_POST['rcptn_twilio_sid'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $_POST['rcptn_twilio_sid'] ) || 0 === strlen( $_POST['rcptn_twilio_sid'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'No Twilio SID set.', 'rcptn' ) );
 
 			return false;
@@ -80,7 +80,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_twilio_token() {
-		if ( ! isset( $_POST['rcptn_twilio_token'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $_POST['rcptn_twilio_token'] ) || 0 === strlen( $_POST['rcptn_twilio_token'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'No Twilio token set.', 'rcptn' ) );
 
 			return false;
@@ -95,7 +95,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_twilio_from_number() {
-		if ( ! isset( $_POST['rcptn_twilio_from_number'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $_POST['rcptn_twilio_from_number'] ) || 0 === strlen( $_POST['rcptn_twilio_from_number'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'No Twilio from number set.', 'rcptn' ) );
 
 			return false;
@@ -110,7 +110,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_rcp_all_regions_subscription_id() {
-		if ( ! isset( $_POST['rcptn_rcp_all_regions_subscription_id'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $_POST['rcptn_rcp_all_regions_subscription_id'] ) || 0 === strlen( $_POST['rcptn_rcp_all_regions_subscription_id'] ) ) { // WPCS: CSRF ok.
 			$this->add_error( __( 'No RCP all regions subscription ID set.', 'rcptn' ) );
 
 			return false;
