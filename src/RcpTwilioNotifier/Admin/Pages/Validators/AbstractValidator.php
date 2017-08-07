@@ -14,6 +14,20 @@ namespace RcpTwilioNotifier\Admin\Pages\Validators;
 abstract class AbstractValidator {
 
 	/**
+	 * Whether or not the submitted data is valid.
+	 *
+	 * @var bool
+	 */
+	protected $is_valid;
+
+	/**
+	 * The $_POST array.
+	 *
+	 * @var array
+	 */
+	protected $posted;
+
+	/**
 	 * List of errors.
 	 *
 	 * @var array
@@ -26,6 +40,10 @@ abstract class AbstractValidator {
 	 * @return bool
 	 */
 	public function init() {
+		$this->posted = $_POST; // WPCS: CSRF ok.
+
+		$this->is_valid = false;
+
 		$validation_status = $this->validate();
 
 		if ( ! $validation_status ) {

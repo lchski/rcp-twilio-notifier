@@ -15,20 +15,6 @@ use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 class SettingsPage extends AbstractValidator implements ValidatorInterface {
 
 	/**
-	 * Whether or not the submitted data is valid.
-	 *
-	 * @var bool
-	 */
-	private $is_valid;
-
-	/**
-	 * Set internal values.
-	 */
-	public function __construct() {
-		$this->is_valid = false;
-	}
-
-	/**
 	 * Validate each of the submitted inputs.
 	 */
 	public function validate() {
@@ -66,7 +52,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_twilio_sid() {
-		if ( ! isset( $_POST['rcptn_twilio_sid'] ) || 0 === strlen( $_POST['rcptn_twilio_sid'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $this->posted['rcptn_twilio_sid'] ) || 0 === strlen( $this->posted['rcptn_twilio_sid'] ) ) {
 			$this->add_error( __( 'No Twilio SID set.', 'rcptn' ) );
 
 			return false;
@@ -81,7 +67,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_twilio_token() {
-		if ( ! isset( $_POST['rcptn_twilio_token'] ) || 0 === strlen( $_POST['rcptn_twilio_token'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $this->posted['rcptn_twilio_token'] ) || 0 === strlen( $this->posted['rcptn_twilio_token'] ) ) {
 			$this->add_error( __( 'No Twilio token set.', 'rcptn' ) );
 
 			return false;
@@ -96,13 +82,13 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_twilio_from_number() {
-		if ( ! isset( $_POST['rcptn_twilio_from_number'] ) || 0 === strlen( $_POST['rcptn_twilio_from_number'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $this->posted['rcptn_twilio_from_number'] ) || 0 === strlen( $this->posted['rcptn_twilio_from_number'] ) ) {
 			$this->add_error( __( 'No Twilio from number set.', 'rcptn' ) );
 
 			return false;
 		}
 
-		if ( ! PhoneNumber::is_valid_phone_number( $_POST['rcptn_twilio_from_number'] ) ) { // WPCS: CSRF ok.
+		if ( ! PhoneNumber::is_valid_phone_number( $this->posted['rcptn_twilio_from_number'] ) ) {
 			$this->add_error( __( 'Invalid format for the Twilio from number. Please put it in the format “+10123456789”.', 'rcptn' ) );
 
 			return false;
@@ -117,13 +103,13 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_rcp_all_regions_subscription_id() {
-		if ( ! isset( $_POST['rcptn_rcp_all_regions_subscription_id'] ) || 0 === strlen( $_POST['rcptn_rcp_all_regions_subscription_id'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) || 0 === strlen( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
 			$this->add_error( __( 'No RCP all regions subscription ID set.', 'rcptn' ) );
 
 			return false;
 		}
 
-		if ( false === rcp_get_subscription_details( $_POST['rcptn_rcp_all_regions_subscription_id'] ) ) { // WPCS: CSRF ok.
+		if ( false === rcp_get_subscription_details( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
 			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID does not exist as a subscription level.', 'rcptn' ) );
 
 			return false;
@@ -138,7 +124,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_region() {
-		if ( ! isset( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $this->posted['rcptn_region'] ) ) {
 			$this->add_error( __( 'No region set.', 'rcptn' ) );
 
 			return false;
@@ -146,7 +132,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 
 		$region_validator = new Region( $this->regions );
 
-		if ( ! $region_validator->is_valid_region( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
+		if ( ! $region_validator->is_valid_region( $this->posted['rcptn_region'] ) ) {
 			$this->add_error( __( 'Invalid region set.', 'rcptn' ) );
 
 			return false;
@@ -161,19 +147,19 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_message() {
-		if ( ! isset( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
+		if ( ! isset( $this->posted['rcptn_message'] ) ) {
 			$this->add_error( __( 'No message set.', 'rcptn' ) );
 
 			return false;
 		}
 
-		if ( 0 === strlen( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
+		if ( 0 === strlen( $this->posted['rcptn_message'] ) ) {
 			$this->add_error( __( 'Message must not be empty.', 'rcptn' ) );
 
 			return false;
 		}
 
-		if ( ! MessageBody::is_valid_message_body( $_POST['rcptn_message'] ) ) { // WPCS: CSRF ok.
+		if ( ! MessageBody::is_valid_message_body( $this->posted['rcptn_message'] ) ) {
 			$this->add_error( __( 'Invalid message body.', 'rcptn' ) );
 
 			return false;
