@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages;
+use RcpTwilioNotifier\Helpers\Renderers\AdminFormField;
 
 /**
  * WordPress admin page for configuring plugin settings.
@@ -59,28 +60,14 @@ class SettingsPage extends AbstractPage implements PageInterface {
 				<form id="rcptn-region-notifier-settings" method="post" action="">
 					<table class="form-table">
 						<tbody>
-						<tr class="form-field">
-							<th scope="row" valign="top">
-								<label for="rcptn_region"><?php esc_html_e( 'Target region', 'rcptn' ); ?></label>
-							</th>
-							<td>
-								<?php $select_renderer->render(); ?>
-								<p class="description">
-									<?php esc_html_e( 'Choose the region that should receive this notice.', 'rcptn' ); ?>
-								</p>
-							</td>
-						</tr>
-						<tr class="form-field">
-							<th scope="row" valign="top">
-								<label for="rcptn_message"><?php esc_html_e( 'Message', 'rcptn' ); ?></label>
-							</th>
-							<td>
-								<textarea name="rcptn_message" id="rcptn_message" cols="30" rows="10" placeholder="Your message..."><?php echo esc_html( $message ); ?></textarea>
-								<p class="description">
-									<?php esc_html_e( 'Enter the message to send to the chosen region.', 'rcptn' ); ?>
-								</p>
-							</td>
-						</tr>
+							<?php
+								AdminFormField::render(
+									'rcptn_twilio_sid',
+									__( 'Twilio SID', 'rcptn' ),
+									__( 'The Account SID from twilio.com/console. (When testing, be sure to use the testing credential.)', 'rcptn' ),
+									array( $this, 'render_twilio_sid' )
+								);
+							?>
 						</tbody>
 					</table>
 
@@ -90,6 +77,17 @@ class SettingsPage extends AbstractPage implements PageInterface {
 					<?php submit_button(); ?>
 				</form>
 			</div>
+		<?php
+	}
+
+	/**
+	 * Render the Twilio SID field.
+	 *
+	 * @param string $id  The field's ID.
+	 */
+	public function render_twilio_sid( $id ) {
+		?>
+			<input type="text" name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
 		<?php
 	}
 
