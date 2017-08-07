@@ -67,6 +67,13 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									__( 'The Account SID from twilio.com/console. (When testing, be sure to use the testing credential.)', 'rcptn' ),
 									array( $this, 'render_twilio_sid' )
 								);
+
+								AdminFormField::render(
+									'rcptn_twilio_token',
+									__( 'Twilio Token', 'rcptn' ),
+									__( 'The Account Token from twilio.com/console. (When testing, be sure to use the testing credential.)', 'rcptn' ),
+									array( $this, 'render_twilio_token' )
+								);
 							?>
 						</tbody>
 					</table>
@@ -88,6 +95,17 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	public function render_twilio_sid( $id ) {
 		?>
 			<input type="text" name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
+		<?php
+	}
+
+	/**
+	 * Render the Twilio Token field.
+	 *
+	 * @param string $id  The field's ID.
+	 */
+	public function render_twilio_token( $id ) {
+		?>
+		<input type="text" name="<?php echo esc_attr( $id ); ?>" id="<?php echo esc_attr( $id ); ?>">
 		<?php
 	}
 
