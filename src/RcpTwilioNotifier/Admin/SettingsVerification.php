@@ -75,7 +75,22 @@ class SettingsVerification {
 	public function render_settings_nag() {
 		?>
 			<div class="error">
-				<p><?php echo esc_html_e( 'There are settings missing for the Twilio Region Notifier. Make sure to fill out all the fields on the settings page. The plugin won’t work properly until you do. (If you’ve just filled out the fields, you can ignore this message.)', 'rcptn' ); ?> </p>
+				<p>
+					<?php
+						printf(
+							wp_kses(
+								// Translators: %s: the href to the settings page; keep it as-is.
+								__( 'There are settings missing for the Twilio Region Notifier. Make sure to fill out all the fields on the <a href="%s">settings page</a>. The plugin won’t work properly until you do. (If you’ve just filled out the fields, you can ignore this message.)', 'rcptn' ),
+								array(
+									'a' => array(
+										'href' => array(),
+									),
+								)
+							),
+							esc_attr( menu_page_url( 'rcptn-region-notifier-settings', false ) )
+						);
+					?>
+				</p>
 			</div>
 		<?php
 	}
