@@ -51,6 +51,16 @@ class Plugin {
 	 * Let's go!
 	 */
 	public function load() {
+		$settings_verifier = new Admin\SettingsVerification();
+		$settings_verifier->init();
+		$settings_verifier->remind_if_settings_not_present();
+
+		$admin_settings_page = new Admin\Pages\SettingsPage();
+		$admin_settings_page->init();
+
+		$admin_settings_page_processor = new Admin\Pages\Processors\SettingsPage();
+		$admin_settings_page_processor->init();
+
 		$region_registration_field = new Admin\MemberFields\Region\Registration( $this->regions );
 		$region_registration_field->init();
 
@@ -68,12 +78,6 @@ class Plugin {
 
 		$admin_messaging_page_processor = new Admin\Pages\Processors\MessagingPage( $this->regions );
 		$admin_messaging_page_processor->init();
-
-		$admin_settings_page = new Admin\Pages\SettingsPage();
-		$admin_settings_page->init();
-
-		$admin_settings_page_processor = new Admin\Pages\Processors\SettingsPage();
-		$admin_settings_page_processor->init();
 	}
 
 }
