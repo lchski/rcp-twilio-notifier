@@ -31,7 +31,9 @@ class Member extends \RCP_Member {
 	 * @return string
 	 */
 	public function get_phone_number() {
-		return '+15005550000';
+		$phone_number = get_user_meta( $this->ID, 'rcptn_phone_number', true );
+
+		return apply_filters( 'rcptn_member_get_phone_number', $phone_number, $this->ID, $this );
 	}
 
 	/**
