@@ -24,7 +24,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Setup class autoloader.
 require_once dirname( __FILE__ ) . '/vendor/autoload.php';
 
-(new \Dotenv\Dotenv( __DIR__ ))->load();
+// Conditionally load environment variables.
+if ( file_exists( __DIR__ . '/.env' ) ) {
+	(new \Dotenv\Dotenv( __DIR__ ))->load();
+}
 
 $rcptwilionotifier = new RcpTwilioNotifier\Plugin();
 add_action( 'plugins_loaded', array( $rcptwilionotifier, 'load' ) );
