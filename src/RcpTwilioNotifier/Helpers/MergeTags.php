@@ -25,10 +25,18 @@ class MergeTags {
 	/**
 	 * Set internal values.
 	 *
-	 * @param int $member_id  The ID of the member for whom we’re substituting values..
+	 * @param RcpTwilioNotifier\Models\Member|int $member_identifier  The ID of the member for whom we’re substituting values, or the Member itself.
 	 */
-	public function __construct( $member_id ) {
-		$this->member = new Member( $member_id );
+	public function __construct( $member_identifier ) {
+		if ( is_numeric( $member_identifier ) ) {
+			// It’s an ID, create a new Member object from it.
+			$member = new Member( $member_identifier );
+		} elseif ( $member_identifier instanceof Member ) {
+			// It’s already a member object.
+			$member = $member_identifier;
+		}
+
+		$this->member = $member;
 	}
 
 	/**
