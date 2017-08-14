@@ -7,6 +7,8 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages\Validators;
+use RcpTwilioNotifier\Helpers\Notifier;
+use RcpTwilioNotifier\Models\Notice;
 
 /**
  * Triggers page validation and handles errors.
@@ -28,13 +30,6 @@ abstract class AbstractValidator {
 	protected $posted;
 
 	/**
-	 * List of errors.
-	 *
-	 * @var array
-	 */
-	protected $errors = array();
-
-	/**
 	 * Trigger validation and return the result.
 	 *
 	 * @return bool
@@ -44,15 +39,7 @@ abstract class AbstractValidator {
 
 		$this->is_valid = false;
 
-		$validation_status = $this->validate();
-
-		if ( ! $validation_status ) {
-			add_action( 'admin_notices', array( $this, 'render_errors' ) );
-
-			return false;
-		}
-
-		return true;
+		return $this->validate();
 	}
 
 	/**
@@ -61,22 +48,9 @@ abstract class AbstractValidator {
 	 * @param string $error_message  The error message to display.
 	 */
 	protected function add_error( $error_message ) {
-		$errors = $this->errors;
-		$errors[] = $error_message;
+		$notifier = Notifier::get_instance();
 
-		$this->errors = $errors;
+		$notifier->add_notice( new Notice( 'error', $error_message ) );
 	}
 
-	/**
-	 * Render the errors to the admin.
-	 */
-	public function render_errors() {
-		foreach ( $this->errors as $error ) {
-			?>
-			<div class="error">
-				<p><?php echo esc_html( $error ); ?> </p>
-			</div>
-			<?php
-		}
-	}
 }
