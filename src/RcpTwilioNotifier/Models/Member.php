@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Models;
+use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
 
 /**
@@ -52,13 +53,17 @@ class Member extends \RCP_Member {
 			get_option( 'rcptn_twilio_token', getenv( 'RCPTN_TWILIO_TOKEN' ) )
 		);
 
-		$sms = $twilio_client->messages->create(
-			$this->get_phone_number(),
-			array(
-				'from' => get_option( 'rcptn_twilio_from_number', getenv( 'RCPTN_TWILIO_FROM_NUMBER' ) ),
-				'body' => $message,
-			)
-		);
+		try {
+			$sms = $twilio_client->messages->create(
+				$this->get_phone_number(),
+				array(
+					'from' => get_option( 'rcptn_twilio_from_number', getenv( 'RCPTN_TWILIO_FROM_NUMBER' ) ),
+					'body' => $message,
+				)
+			);
+		} catch ( TwilioException $e ) {
+			$sms = new \WP_Error( 'rcptn_failed_sms', __( 'Twilio failed to send the SMS.', 'rcptn' ), $e );
+		}
 
 		return $sms;
 	}

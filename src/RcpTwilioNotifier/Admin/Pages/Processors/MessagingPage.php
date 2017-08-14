@@ -11,6 +11,7 @@ use RcpTwilioNotifier\Helpers\MemberRetriever;
 use RcpTwilioNotifier\Helpers\MergeTags;
 use RcpTwilioNotifier\Models\Member;
 use RcpTwilioNotifier\Models\Region;
+use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 /**
  * Processes form submissions from our MessagingPage in the WordPress admin.
@@ -68,7 +69,14 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			$merge_tag_processor = new MergeTags( $member );
 			$merged_message = $merge_tag_processor->replace_tags( $message );
 
-			$member->send_message( $merged_message );
+			$sms_request = $member->send_message( $merged_message );
+
+			// @TODO: Replace these echos with notices.
+			if ( $sms_request instanceof \WP_Error ) {
+				echo 'error';
+			} elseif ( $sms_request instanceof MessageInstance ) {
+				echo 'success';
+			}
 		}
 	}
 }
