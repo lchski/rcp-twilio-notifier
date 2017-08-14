@@ -22,7 +22,7 @@ class MemberRetriever {
 	 *
 	 * @param Region $region  The region whose members to retrieve.
 	 *
-	 * @return array
+	 * @return Member[]
 	 */
 	public static function get_region_members_and_all_region_subscribers( Region $region ) {
 		$region_members = $region->get_members();
@@ -41,9 +41,9 @@ class MemberRetriever {
 	/**
 	 * Converts WP_Users to our custom Member object.
 	 *
-	 * @param array $users  Array of WP_User objects to convert.
+	 * @param WP_User[] $users  Array of WP_User objects to convert.
 	 *
-	 * @return array  The WP_Users objects, now converted to \RcpTwilioNotifier\Models\Member objects.
+	 * @return Member[]  The WP_Users objects, now converted to \RcpTwilioNotifier\Models\Member objects.
 	 */
 	public static function convert_users_to_members( $users ) {
 		$converter = function( $user ) {
