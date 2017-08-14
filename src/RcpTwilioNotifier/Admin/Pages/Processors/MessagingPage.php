@@ -9,7 +9,9 @@
 namespace RcpTwilioNotifier\Admin\Pages\Processors;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
 use RcpTwilioNotifier\Helpers\MergeTags;
+use RcpTwilioNotifier\Helpers\Notifier;
 use RcpTwilioNotifier\Models\Member;
+use RcpTwilioNotifier\Models\Notice;
 use RcpTwilioNotifier\Models\Region;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
@@ -71,11 +73,16 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 
 			$sms_request = $member->send_message( $merged_message );
 
-			// @TODO: Replace these echos with notices.
+			$notifier = Notifier::get_instance();
+
 			if ( $sms_request instanceof \WP_Error ) {
-				echo 'error';
+				$notifier->add_notice( new Notice( 'error', $sms_request->get_error_message() ) );
 			} elseif ( $sms_request instanceof MessageInstance ) {
-				echo 'success';
+				$notifier->add_notice( new Notice(
+					'success',
+					// translators: %1$s is the member’s name, %2$d is their phone number.
+					sprintf( __( 'Message successfully sent to %1$s (%2$d).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
+				) );
 			}
 		}
 	}
