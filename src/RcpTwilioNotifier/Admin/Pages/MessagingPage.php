@@ -90,7 +90,7 @@ class MessagingPage extends AbstractPage implements PageInterface {
 								AdminFormField::render(
 									'rcptn_message',
 									__( 'Message', 'rcptn' ),
-									__( 'Enter the message to send to the chosen region.', 'rcptn' ),
+									__( 'Enter the message to send to the chosen region. You can use |*FIRST_NAME*| and |*LAST_NAME*| to insert the member’s name—they’ll be automatically replaced with the real values when sent to each member.', 'rcptn' ),
 									array( $this, 'render_message_field' )
 								);
 							?>
