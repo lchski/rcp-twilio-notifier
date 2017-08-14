@@ -7,6 +7,8 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages\Processors;
+use RcpTwilioNotifier\Helpers\Notifier;
+use RcpTwilioNotifier\Models\Notice;
 
 /**
  * Processes form submissions from our SettingsPage in the WordPress admin.
@@ -44,6 +46,9 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 		}
 
 		$this->save_settings();
+
+		$notifier = Notifier::get_instance();
+		$notifier->add_notice( new Notice( 'success', 'Settings saved successfully.' ) );
 	}
 
 	/**
