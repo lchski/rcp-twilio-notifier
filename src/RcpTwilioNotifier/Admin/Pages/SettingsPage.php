@@ -213,8 +213,14 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 * @param string $field_id  The field's ID.
 	 */
 	public function render_enable_automated_messaging( $field_id ) {
+		$checked = get_option( $field_id );
+
+		if ( isset( $_POST[ $field_id ] ) ) { // WPCS: CSRF ok.
+			$checked = true;
+		}
+
 		?>
-			<input type="checkbox" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
+			<input type="checkbox" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" <?php echo ( $checked ) ? 'checked' : ''; ?>>
 		<?php
 	}
 

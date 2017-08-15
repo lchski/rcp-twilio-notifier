@@ -27,7 +27,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 		$validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
 		$validations['alert_post_type'] = $this->validate_alert_post_type();
 		$validations['automated_message_template'] = $this->validate_automated_message_template();
-		$validations['rcptn_enable_automated_messaging'] = $this->validate_rcptn_enable_automated_messaging();
+		$validations['rcptn_enable_automated_messaging'] = $this->validate_enable_automated_messaging();
 
 		// If any input is invalid, we exit.
 		if ( in_array( false, $validations, true ) ) {
@@ -160,17 +160,11 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	}
 
 	/**
-	 * Validate the RCP all regions subscription ID input.
+	 * Validate the one-click messaging enabler.
 	 *
 	 * @return bool
 	 */
-	private function validate_rcptn_enable_automated_messaging() {
-		if ( false === is_bool( $this->posted['rcptn_enable_automated_messaging'] ) ) {
-			$this->add_error( __( 'The one-click messaging input was not submitted as a boolean. (This is a technical error—contact the developer for support.)', 'rcptn' ) );
-
-			return false;
-		}
-
+	private function validate_enable_automated_messaging() {
 		return true;
 	}
 

@@ -63,12 +63,13 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 			'rcptn_rcp_all_regions_subscription_id',
 			'rcptn_alert_post_type',
 			'rcptn_automated_message_template',
-			'rcptn_enable_automated_messaging',
 		);
 
 		foreach ( $settings_field_keys as $field_key ) {
 			update_option( $field_key, $this->posted[ $field_key ] );
 		}
+
+		update_option( 'rcptn_enable_automated_messaging', isset( $this->posted['rcptn_enable_automated_messaging'] ) );
 	}
 
 }
