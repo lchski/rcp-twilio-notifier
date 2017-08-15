@@ -26,6 +26,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 		$validations['twilio_from_number'] = $this->validate_twilio_from_number();
 		$validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
 		$validations['alert_post_type'] = $this->validate_alert_post_type();
+		$validations['automated_message_template'] = $this->validate_automated_message_template();
 
 		// If any input is invalid, we exit.
 		if ( in_array( false, $validations, true ) ) {
@@ -145,6 +146,15 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
+		return true;
+	}
+
+	/**
+	 * Validate the automated message template input.
+	 *
+	 * @return bool
+	 */
+	private function validate_automated_message_template() {
 		return true;
 	}
 
