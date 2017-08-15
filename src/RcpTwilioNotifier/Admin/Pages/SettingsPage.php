@@ -65,8 +65,8 @@ class SettingsPage extends AbstractPage implements PageInterface {
 								AdminFormField::render(
 									'rcptn_automated_message_template',
 									__( 'Automated Message Template', 'rcptn' ),
-									__( 'The template used for automated messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging..', 'rcptn' ),
-									array( $this, 'render_alert_post_type' )
+									__( 'The template used for automated messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging.', 'rcptn' ),
+									array( $this, 'render_automated_message_template' )
 								);
 							?>
 						</tbody>
@@ -189,6 +189,17 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	public function render_alert_post_type( $field_id ) {
 		?>
 			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
+		<?php
+	}
+
+	/**
+	 * Render the Twilio Token field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_automated_message_template( $field_id ) {
+		?>
+			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
 		<?php
 	}
 
