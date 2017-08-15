@@ -15,22 +15,30 @@ use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 class SettingsPage extends AbstractValidator implements ValidatorInterface {
 
 	/**
+	 * The results of each validator.
+	 *
+	 * @var bool[]
+	 */
+	protected $validations;
+
+	/**
 	 * Validate each of the submitted inputs.
 	 */
 	public function validate() {
 		// Validate all inputs.
-		$validations = array();
+		$this->validations['twilio_sid'] = $this->validate_twilio_sid();
+		$this->validations['twilio_token'] = $this->validate_twilio_token();
+		$this->validations['twilio_from_number'] = $this->validate_twilio_from_number();
+		$this->validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
 
-		$validations['twilio_sid'] = $this->validate_twilio_sid();
-		$validations['twilio_token'] = $this->validate_twilio_token();
-		$validations['twilio_from_number'] = $this->validate_twilio_from_number();
-		$validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
-		$validations['alert_post_type'] = $this->validate_alert_post_type();
-		$validations['automated_message_template'] = $this->validate_automated_message_template();
-		$validations['rcptn_enable_automated_messaging'] = $this->validate_enable_automated_messaging();
+		// If the one-click messaging feature switch is enabled, validate the one-click messaging fields.
+		if ( isset( $this->posted['rcptn_enable_automated_messaging'] ) ) {
+			$this->validations['automated_message_template'] = $this->validate_automated_message_template();
+			$this->validations['alert_post_type'] = $this->validate_alert_post_type();
+		}
 
 		// If any input is invalid, we exit.
-		if ( in_array( false, $validations, true ) ) {
+		if ( in_array( false, $this->validations, true ) ) {
 			$this->is_valid = false;
 
 			return false;
@@ -130,6 +138,15 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	}
 
 	/**
+	 * Validate the automated message template input.
+	 *
+	 * @return bool
+	 */
+	private function validate_automated_message_template() {
+		return true;
+	}
+
+	/**
 	 * Validate the alert post type input.
 	 *
 	 * @return bool
@@ -147,24 +164,6 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
-		return true;
-	}
-
-	/**
-	 * Validate the automated message template input.
-	 *
-	 * @return bool
-	 */
-	private function validate_automated_message_template() {
-		return true;
-	}
-
-	/**
-	 * Validate the one-click messaging enabler.
-	 *
-	 * @return bool
-	 */
-	private function validate_enable_automated_messaging() {
 		return true;
 	}
 
