@@ -139,7 +139,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
-		if ( false === post_type_exists( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
+		if ( false === post_type_exists( $this->posted['rcptn_alert_post_type'] ) ) {
 			$this->add_error( __( 'There’s no post type of the name provided for the alert post type. Double check the spelling to make sure you have the right one.', 'rcptn' ) );
 
 			return false;
