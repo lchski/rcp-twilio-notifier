@@ -25,6 +25,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 		$validations['twilio_token'] = $this->validate_twilio_token();
 		$validations['twilio_from_number'] = $this->validate_twilio_from_number();
 		$validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
+		$validations['alert_post_type'] = $this->validate_alert_post_type();
 
 		// If any input is invalid, we exit.
 		if ( in_array( false, $validations, true ) ) {
@@ -119,6 +120,27 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 
 		if ( false === rcp_get_subscription_details( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
 			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID does not exist as a subscription level.', 'rcptn' ) );
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validate the alert post type input.
+	 *
+	 * @return bool
+	 */
+	private function validate_alert_post_type() {
+		if ( ! isset( $this->posted['rcptn_alert_post_type'] ) || 0 === strlen( $this->posted['rcptn_alert_post_type'] ) ) {
+			$this->add_error( __( 'No alert post type set.', 'rcptn' ) );
+
+			return false;
+		}
+
+		if ( false === post_type_exists( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
+			$this->add_error( __( 'There’s no post type of the name provided for the alert post type. Double check the spelling to make sure you have the right one.', 'rcptn' ) );
 
 			return false;
 		}

@@ -105,10 +105,10 @@ class SettingsPage extends AbstractPage implements PageInterface {
 						<tbody>
 							<?php
 								AdminFormField::render(
-									'rcptn_alert_cpt',
+									'rcptn_alert_post_type',
 									__( 'Alert Post Type Name', 'rcptn' ),
 									__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published.', 'rcptn' ),
-									array( $this, 'render_alert_cpt' )
+									array( $this, 'render_alert_post_type' )
 								);
 							?>
 						</tbody>
@@ -172,7 +172,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 *
 	 * @param string $field_id  The field's ID.
 	 */
-	public function render_alert_cpt( $field_id ) {
+	public function render_alert_post_type( $field_id ) {
 		?>
 			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
