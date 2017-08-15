@@ -65,26 +65,19 @@ class SettingsPage extends AbstractPage implements PageInterface {
 								AdminFormField::render(
 									'rcptn_automated_message_template',
 									__( 'Automated Message Template', 'rcptn' ),
-									__( 'The template used for automated messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging.', 'rcptn' ),
+									__( 'The template used for automated messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging. Required for automated features.', 'rcptn' ),
 									array( $this, 'render_automated_message_template' ),
 									false
 								);
-							?>
-						</tbody>
-					</table>
 
-					<h2 class="title"><?php esc_html_e( 'WordPress related settings', 'rcptn' ); ?></h2>
-					<table class="form-table">
-						<tbody>
-						<?php
-						AdminFormField::render(
-							'rcptn_alert_post_type',
-							__( 'Alert Post Type Name', 'rcptn' ),
-							__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published.', 'rcptn' ),
-							array( $this, 'render_alert_post_type' ),
-							false
-						);
-						?>
+								AdminFormField::render(
+									'rcptn_alert_post_type',
+									__( 'Alert Post Type Name', 'rcptn' ),
+									__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published. Required for automated features.', 'rcptn' ),
+									array( $this, 'render_alert_post_type' ),
+									false
+								);
+							?>
 						</tbody>
 					</table>
 
