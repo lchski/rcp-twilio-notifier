@@ -63,6 +63,7 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 			'rcptn_rcp_all_regions_subscription_id',
 			'rcptn_alert_post_type',
 			'rcptn_automated_message_template',
+			'rcptn_enable_automated_messaging',
 		);
 
 		foreach ( $settings_field_keys as $field_key ) {
