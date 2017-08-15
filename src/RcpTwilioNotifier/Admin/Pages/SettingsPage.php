@@ -66,7 +66,8 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									'rcptn_automated_message_template',
 									__( 'Automated Message Template', 'rcptn' ),
 									__( 'The template used for automated messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging.', 'rcptn' ),
-									array( $this, 'render_automated_message_template' )
+									array( $this, 'render_automated_message_template' ),
+									false
 								);
 							?>
 						</tbody>
@@ -80,7 +81,8 @@ class SettingsPage extends AbstractPage implements PageInterface {
 							'rcptn_alert_post_type',
 							__( 'Alert Post Type Name', 'rcptn' ),
 							__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published.', 'rcptn' ),
-							array( $this, 'render_alert_post_type' )
+							array( $this, 'render_alert_post_type' ),
+							false
 						);
 						?>
 						</tbody>
