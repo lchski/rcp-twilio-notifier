@@ -31,24 +31,18 @@ class SettingsVerification {
 	 * Check the settings.
 	 */
 	public function init() {
-		$settings_field_keys = array(
-			'rcptn_twilio_sid',
-			'rcptn_twilio_token',
-			'rcptn_twilio_from_number',
-			'rcptn_rcp_all_regions_subscription_id',
+		$settings_fields = array_map(
+			'get_option',
+			array(
+				'rcptn_twilio_sid',
+				'rcptn_twilio_token',
+				'rcptn_twilio_from_number',
+				'rcptn_rcp_all_regions_subscription_id',
+			)
 		);
 
-		$are_settings_present = true;
+		$this->are_settings_present = ! in_array( false, $settings_fields, true );
 
-		foreach ( $settings_field_keys as $field_key ) {
-			$option_status = get_option( $field_key );
-
-			if ( false === $option_status ) {
-				$are_settings_present = false;
-			}
-		}
-
-		$this->are_settings_present = $are_settings_present;
 	}
 
 	/**
