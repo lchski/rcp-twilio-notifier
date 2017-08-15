@@ -19,13 +19,15 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 */
 	public function validate() {
 		// Validate all inputs.
-		$is_valid_twilio_sid = $this->validate_twilio_sid();
-		$is_valid_twilio_token = $this->validate_twilio_token();
-		$is_valid_twilio_from_number = $this->validate_twilio_from_number();
-		$is_valid_rcp_all_regions_subscription_id = $this->validate_rcp_all_regions_subscription_id();
+		$validations = array();
+
+		$validations['twilio_sid'] = $this->validate_twilio_sid();
+		$validations['twilio_token'] = $this->validate_twilio_token();
+		$validations['twilio_from_number'] = $this->validate_twilio_from_number();
+		$validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
 
 		// If any input is invalid, we exit.
-		if ( ! $is_valid_twilio_sid || ! $is_valid_twilio_token || ! $is_valid_twilio_from_number || ! $is_valid_rcp_all_regions_subscription_id ) {
+		if ( in_array( false, $validations, true ) ) {
 			$this->is_valid = false;
 
 			return false;
