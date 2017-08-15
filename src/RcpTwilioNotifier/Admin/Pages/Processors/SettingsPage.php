@@ -55,6 +55,7 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 	 * Save each of the settings to the database.
 	 */
 	private function save_settings() {
+		// @TODO: Sanitize these!
 		$settings_field_keys = array(
 			'rcptn_twilio_sid',
 			'rcptn_twilio_token',
