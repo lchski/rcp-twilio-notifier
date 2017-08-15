@@ -111,6 +111,12 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
+		if ( false === is_numeric( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
+			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID is not a number.', 'rcptn' ) );
+
+			return false;
+		}
+
 		if ( false === rcp_get_subscription_details( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
 			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID does not exist as a subscription level.', 'rcptn' ) );
 
