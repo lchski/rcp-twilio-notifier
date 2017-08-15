@@ -115,7 +115,7 @@ class MessagingPage extends AbstractPage implements PageInterface {
 		$message = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
 
 		?>
-			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="10" placeholder="<?php esc_attr_e( 'Your message...', 'rcptn' ); ?>"><?php echo esc_html( $message ); ?></textarea>
+			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4" placeholder="<?php esc_attr_e( 'Your message...', 'rcptn' ); ?>"><?php echo esc_html( $message ); ?></textarea>
 		<?php
 	}
 
