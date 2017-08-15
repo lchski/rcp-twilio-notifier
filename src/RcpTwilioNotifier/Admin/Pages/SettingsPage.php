@@ -58,14 +58,23 @@ class SettingsPage extends AbstractPage implements PageInterface {
 				<h1><?php echo esc_html( $this->page_title ); ?></h1>
 
 				<form id="rcptn-region-notifier-settings" method="post" action="">
-					<h2 class="title"><?php esc_html_e( 'Automation settings', 'rcptn' ); ?></h2>
+					<h2 class="title"><?php esc_html_e( 'One-click Messaging settings', 'rcptn' ); ?></h2>
+
 					<table class="form-table">
 						<tbody>
 							<?php
 								AdminFormField::render(
+									'rcptn_enable_automated_messaging',
+									__( 'Enable One-click Messaging', 'rcptn' ),
+									__( 'The plugin can automatically prompt you to message members whenever you create a new alert. Required for one-click features.', 'rcptn' ),
+									array( $this, 'render_enable_automated_messaging' ),
+									false
+								);
+
+								AdminFormField::render(
 									'rcptn_automated_message_template',
-									__( 'Automated Message Template', 'rcptn' ),
-									__( 'The template used for automated messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging. Required for automated features.', 'rcptn' ),
+									__( 'Message Template', 'rcptn' ),
+									__( 'The template used for one-click messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging. You’ll still be able to change the message before it sends. Required for one-click features.', 'rcptn' ),
 									array( $this, 'render_automated_message_template' ),
 									false
 								);
@@ -73,7 +82,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 								AdminFormField::render(
 									'rcptn_alert_post_type',
 									__( 'Alert Post Type Name', 'rcptn' ),
-									__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published. Required for automated features.', 'rcptn' ),
+									__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published. Required for one-click features.', 'rcptn' ),
 									array( $this, 'render_alert_post_type' ),
 									false
 								);
@@ -195,6 +204,17 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	public function render_automated_message_template( $field_id ) {
 		?>
 			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
+		<?php
+	}
+
+	/**
+	 * Render the Twilio Token field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_enable_automated_messaging( $field_id ) {
+		?>
+			<input type="checkbox" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
 	}
 
