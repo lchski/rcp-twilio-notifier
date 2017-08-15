@@ -58,6 +58,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 				<h1><?php echo esc_html( $this->page_title ); ?></h1>
 
 				<form id="rcptn-region-notifier-settings" method="post" action="">
+					<h2 class="title"><?php esc_html_e( 'Twilio related settings', 'rcptn' ); ?></h2>
 					<table class="form-table">
 						<tbody>
 							<?php
@@ -81,12 +82,33 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									__( 'The phone number you purchased from Twilio. Format: +10123456789. (When testing, use “+15005550006”; Twilio will always accept it.)', 'rcptn' ),
 									array( $this, 'render_twilio_from_number' )
 								);
+							?>
+						</tbody>
+					</table>
 
+					<h2 class="title"><?php esc_html_e( 'Restrict Content Pro related settings', 'rcptn' ); ?></h2>
+					<table class="form-table">
+						<tbody>
+							<?php
 								AdminFormField::render(
 									'rcptn_rcp_all_regions_subscription_id',
 									__( 'RCP All Regions Subscription ID', 'rcptn' ),
 									__( 'The ID of the RCP subscription for all regions. Active subscribers to this subscription will receive all text alerts, regardless of their region.', 'rcptn' ),
 									array( $this, 'render_rcp_all_regions_subscription_id' )
+								);
+							?>
+						</tbody>
+					</table>
+
+					<h2 class="title"><?php esc_html_e( 'WordPress related settings', 'rcptn' ); ?></h2>
+					<table class="form-table">
+						<tbody>
+							<?php
+								AdminFormField::render(
+									'rcptn_alert_cpt',
+									__( 'Alert Post Type Name', 'rcptn' ),
+									__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published.', 'rcptn' ),
+									array( $this, 'render_alert_cpt' )
 								);
 							?>
 						</tbody>
@@ -142,6 +164,17 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	public function render_rcp_all_regions_subscription_id( $field_id ) {
 		?>
 			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
+		<?php
+	}
+
+	/**
+	 * Render the Twilio Token field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_alert_cpt( $field_id ) {
+		?>
+			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
 	}
 

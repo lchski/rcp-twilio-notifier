@@ -78,11 +78,13 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			if ( $sms_request instanceof \WP_Error ) {
 				$notifier->add_notice( new Notice( 'error', $sms_request->get_error_message() ) );
 			} elseif ( $sms_request instanceof MessageInstance ) {
-				$notifier->add_notice( new Notice(
-					'success',
-					// translators: %1$s is the member’s name, %2$d is their phone number.
-					sprintf( __( 'Message successfully sent to %1$s (%2$d).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
-				) );
+				$notifier->add_notice(
+					new Notice(
+						'success',
+						// translators: %1$s is the member’s name, %2$d is their phone number.
+						 sprintf( __( 'Message successfully sent to %1$s (%2$d).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
+					)
+				);
 			}
 		}
 	}
