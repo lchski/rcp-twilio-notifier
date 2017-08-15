@@ -60,6 +60,7 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 			'rcptn_twilio_token',
 			'rcptn_twilio_from_number',
 			'rcptn_rcp_all_regions_subscription_id',
+			'rcptn_alert_post_type',
 		);
 
 		foreach ( $settings_field_keys as $field_key ) {
