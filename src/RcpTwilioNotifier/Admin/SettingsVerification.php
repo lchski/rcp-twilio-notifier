@@ -31,7 +31,10 @@ class SettingsVerification {
 	 * Check the settings.
 	 */
 	public function init() {
-		$this->are_settings_present = $this->are_base_settings_present();
+		$base_settings_check = $this->are_base_settings_present();
+		$automated_settings_check = $this->are_automated_settings_present();
+
+		$this->are_settings_present = $base_settings_check && $automated_settings_check;
 	}
 
 	/**
@@ -84,8 +87,7 @@ class SettingsVerification {
 	 * @return bool
 	 */
 	private function are_base_settings_present() {
-		$settings_fields = array_map(
-			'get_option',
+		return $this->check_settings(
 			array(
 				'rcptn_twilio_sid',
 				'rcptn_twilio_token',
@@ -93,7 +95,42 @@ class SettingsVerification {
 				'rcptn_rcp_all_regions_subscription_id',
 			)
 		);
+	}
 
-		return ! in_array( false, $settings_fields, true );
+	/**
+	 * Check whether the settings required for one-click messaging are present.
+	 *
+	 * @return bool
+	 */
+	private function are_automated_settings_present() {
+		if ( false === get_option( 'rcptn_enable_automated_messaging' ) ) {
+			return true;
+		}
+
+		return $this->check_settings(
+			array(
+				'rcptn_automated_message_template',
+				'rcptn_alert_post_type',
+			)
+		);
+	}
+
+	/**
+	 * Checks an array of options to see if they’re set. Returns false if any one of the
+	 * option keys returns false on a `get_option` check.
+	 *
+	 * @param string[] $setting_keys  The keys of the options to check.
+	 *
+	 * @return bool
+	 */
+	private function check_settings( $setting_keys ) {
+		// Get the values for each key via `get_option`.
+		$setting_values = array_map(
+			'get_option',
+			$setting_keys
+		);
+
+		// Check to see if there’s a false value within the list of values.
+		return ! in_array( false, $setting_values, true );
 	}
 }
