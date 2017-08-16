@@ -31,18 +31,7 @@ class SettingsVerification {
 	 * Check the settings.
 	 */
 	public function init() {
-		$settings_fields = array_map(
-			'get_option',
-			array(
-				'rcptn_twilio_sid',
-				'rcptn_twilio_token',
-				'rcptn_twilio_from_number',
-				'rcptn_rcp_all_regions_subscription_id',
-			)
-		);
-
-		$this->are_settings_present = ! in_array( false, $settings_fields, true );
-
+		$this->are_settings_present = $this->are_base_settings_present();
 	}
 
 	/**
@@ -87,5 +76,24 @@ class SettingsVerification {
 				</p>
 			</div>
 		<?php
+	}
+
+	/**
+	 * Check whether the basic settings (the ones that are always required) for the plugin are present.
+	 *
+	 * @return bool
+	 */
+	private function are_base_settings_present() {
+		$settings_fields = array_map(
+			'get_option',
+			array(
+				'rcptn_twilio_sid',
+				'rcptn_twilio_token',
+				'rcptn_twilio_from_number',
+				'rcptn_rcp_all_regions_subscription_id',
+			)
+		);
+
+		return ! in_array( false, $settings_fields, true );
 	}
 }
