@@ -87,6 +87,14 @@ class Plugin {
 
 		$phone_number_edit_member_field = new Admin\MemberFields\PhoneNumber\EditMember();
 		$phone_number_edit_member_field->init();
+
+		/**
+		 * One-click messaging features
+		 */
+		if ( false !== get_option( 'rcptn_enable_automated_messaging' ) ) {
+			$alert_watcher = new Admin\AlertWatcher();
+			$alert_watcher->init();
+		}
 	}
 
 }

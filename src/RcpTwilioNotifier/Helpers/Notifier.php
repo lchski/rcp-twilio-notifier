@@ -55,10 +55,7 @@ class Notifier {
 	 * @param Notice $notice  The notice to display.
 	 */
 	public function add_notice( Notice $notice ) {
-		$notices = $this->notices;
-		$notices[] = $notice;
-
-		$this->notices = $notices;
+		$this->notices[] = $notice;
 	}
 
 	/**
