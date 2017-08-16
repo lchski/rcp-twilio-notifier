@@ -52,8 +52,12 @@ class Plugin {
 	 */
 	public function load() {
 		/**
-		 * Settings verification
+		 * Basic setup
 		 */
+		// Initialize the notifier, to make sure it runs on every request.
+		$notifier = Helpers\Notifier::get_instance();
+
+		// Verify required settings are set.
 		$settings_verifier = new Admin\SettingsVerification();
 		$settings_verifier->init();
 		$settings_verifier->remind_if_settings_not_present();

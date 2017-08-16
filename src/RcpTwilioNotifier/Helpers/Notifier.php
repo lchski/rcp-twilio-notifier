@@ -12,8 +12,16 @@ use RcpTwilioNotifier\Models\Notice;
 
 /**
  * Handles all admin notices.
+ *
+ * Thanks to https://github.com/JolekPress/Easy-WordPress-Admin-Notifications for the options trick to
+ * enable persistence across `save_post`.
  */
 class Notifier {
+
+	/**
+	 * The option under which our notices are stored.
+	 */
+	const NOTICES_OPTION_KEY = 'rcptn_admin_notices';
 
 	/**
 	 * Unique plugin instance.
@@ -55,24 +63,49 @@ class Notifier {
 	 * @param Notice $notice  The notice to display.
 	 */
 	public function add_notice( Notice $notice ) {
-		$this->notices[] = $notice;
+		$notices = $this->get_notices();
+		$notices[] = $notice;
+
+		$this->update_notices( $notices );
 	}
 
 	/**
 	 * Render the notices to the admin.
 	 */
 	public function render_notices() {
-		if ( 0 === count( $this->notices ) ) {
+		$notices = $this->get_notices();
+
+		if ( empty( $notices ) ) {
 			return;
 		}
 
-		foreach ( $this->notices as $notice ) {
+		foreach ( $notices as $notice ) {
 			?>
 				<div class="notice notice-<?php echo esc_attr( $notice->get_type() ); ?>">
 					<p><?php echo esc_html( $notice->get_message() ); ?></p>
 				</div>
 			<?php
 		}
+
+		$this->update_notices( array() );
+	}
+
+	/**
+	 * Retrieve the notices stored in the database.
+	 *
+	 * @return Notice[]
+	 */
+	private function get_notices() {
+		return get_option( self::NOTICES_OPTION_KEY, array() );
+	}
+
+	/**
+	 * Update the notices stored in the database.
+	 *
+	 * @param Notice[] $notices  The notices to store.
+	 */
+	private function update_notices( $notices ) {
+		update_option( self::NOTICES_OPTION_KEY, $notices );
 	}
 
 }

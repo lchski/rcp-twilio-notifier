@@ -47,10 +47,12 @@ class AlertWatcher {
 	 */
 	public function add_messaging_notification() {
 		$notifier = Notifier::get_instance();
-		$notifier->add_notice( new Notice(
-			'info',
-			__( 'Do you want to message your customers?', 'rcptn' )
-		) );
+		$notifier->add_notice(
+			new Notice(
+				'info',
+				__( 'Do you want to message your customers?', 'rcptn' )
+			)
+		);
 
 		echo 'HEYO';
 	}
