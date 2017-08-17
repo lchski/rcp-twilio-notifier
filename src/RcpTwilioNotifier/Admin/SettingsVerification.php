@@ -51,14 +51,14 @@ class SettingsVerification {
 	 */
 	public function remind_if_settings_not_present() {
 		if ( ! $this->are_settings_present() ) {
-			add_action( 'admin_notices', array( $this, 'render_settings_nag' ) );
+			add_action( 'admin_notices', array( $this, 'render_settings_reminder' ) );
 		}
 	}
 
 	/**
 	 * Render the admin notice for missing settings.
 	 */
-	public function render_settings_nag() {
+	public function render_settings_reminder() {
 		?>
 			<div class="error">
 				<p>
