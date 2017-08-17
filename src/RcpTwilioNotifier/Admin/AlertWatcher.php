@@ -75,7 +75,7 @@ class AlertWatcher {
 
 		echo '<p>' . esc_html__( 'Would you like to message a region about this alert?', 'rcptn' ) . '</p>';
 
-		MessagingUi::render( $select_renderer, $message_value );
+		MessagingUi::render( $select_renderer, $message_value, array( '|*FIRST_NAME*|', '|*LAST_NAME*|', '|*ALERT_LINK*|' ) );
 	}
 
 }
