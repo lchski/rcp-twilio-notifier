@@ -7,6 +7,8 @@
  */
 
 namespace RcpTwilioNotifier\Admin;
+use RcpTwilioNotifier\Helpers\Notifier;
+use RcpTwilioNotifier\Models\Notice;
 
 /**
  * Checks whether or not required settings are present.
@@ -51,7 +53,13 @@ class SettingsVerification {
 	 */
 	public function remind_if_settings_not_present() {
 		if ( ! $this->are_settings_present() ) {
-			add_action( 'admin_notices', array( $this, 'render_settings_reminder' ) );
+			$notifier = Notifier::get_instance();
+			$notifier->add_notice(
+				new Notice(
+					'error',
+					array( $this, 'render_settings_reminder' )
+				)
+			);
 		}
 	}
 
@@ -60,24 +68,22 @@ class SettingsVerification {
 	 */
 	public function render_settings_reminder() {
 		?>
-			<div class="error">
-				<p>
-					<?php
-						printf(
-							wp_kses(
-								// Translators: %s: the href to the settings page; keep it as-is.
-								__( 'There are settings missing for the Twilio Region Notifier. Make sure to fill out all the fields on the <a href="%s">settings page</a>. The plugin won’t work properly until you do. (If you’ve just filled out the missing fields, you can ignore this message.)', 'rcptn' ),
-								array(
-									'a' => array(
-										'href' => array(),
-									),
-								)
-							),
-							esc_attr( menu_page_url( 'rcptn-region-notifier-settings', false ) )
-						);
-					?>
-				</p>
-			</div>
+			<p>
+				<?php
+					printf(
+						wp_kses(
+							// Translators: %s: the href to the settings page; keep it as-is.
+							__( 'There are settings missing for the Twilio Region Notifier. Make sure to fill out all the fields on the <a href="%s">settings page</a>. The plugin won’t work properly until you do. (If you’ve just filled out the missing fields, you can ignore this message.)', 'rcptn' ),
+							array(
+								'a' => array(
+									'href' => array(),
+								),
+							)
+						),
+						esc_attr( menu_page_url( 'rcptn-region-notifier-settings', false ) )
+					);
+				?>
+			</p>
 		<?php
 	}
 
