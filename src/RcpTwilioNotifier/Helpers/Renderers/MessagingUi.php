@@ -21,7 +21,7 @@ class MessagingUi {
 	 */
 	public static function render( RegionSelect $region_renderer, $message_value = '' ) {
 		?>
-			<form id="rcptn-region-notifier-messenger" action="" method="post">
+			<form id="rcptn-region-notifier-messenger" action="<?php echo esc_attr( menu_page_url( 'rcptn-region-notifier', false ) ); ?>" method="post">
 				<?php
 					self::render_form( $region_renderer, $message_value );
 				?>
