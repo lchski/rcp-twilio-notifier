@@ -53,8 +53,6 @@ class AlertWatcher {
 				array( $this, 'render_interface' )
 			)
 		);
-
-		echo 'HEYO';
 	}
 
 	/**
