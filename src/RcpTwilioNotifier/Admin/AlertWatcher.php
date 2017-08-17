@@ -50,11 +50,18 @@ class AlertWatcher {
 		$notifier->add_notice(
 			new Notice(
 				'info',
-				__( 'Do you want to message your customers?', 'rcptn' )
+				array( $this, 'render_interface' )
 			)
 		);
 
 		echo 'HEYO';
+	}
+
+	/**
+	 * Render the one-click messaging interface.
+	 */
+	public function render_interface() {
+		echo '<p>' . esc_html__( 'Do you want to message your customers?', 'rcptn' ) . '</p>';
 	}
 
 }

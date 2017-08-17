@@ -82,12 +82,31 @@ class Notifier {
 		foreach ( $notices as $notice ) {
 			?>
 				<div class="notice notice-<?php echo esc_attr( $notice->get_type() ); ?>">
-					<p><?php echo esc_html( $notice->get_message() ); ?></p>
+					<?php $this->render_notice_content( $notice ); ?>
 				</div>
 			<?php
 		}
 
 		$this->update_notices( array() );
+	}
+
+	/**
+	 * Handle different modes of providing Notice messages: strings and functions.
+	 *
+	 * @param Notice $notice  The notice to render.
+	 */
+	private function render_notice_content( Notice $notice ) {
+		if ( is_string( $notice->get_message() ) ) {
+			?>
+				<p><?php echo esc_html( $notice->get_message() ); ?></p>
+			<?php
+			return;
+		}
+
+		if ( is_callable( $notice->get_message() ) ) {
+			call_user_func( $notice->get_message() );
+			return;
+		}
 	}
 
 	/**

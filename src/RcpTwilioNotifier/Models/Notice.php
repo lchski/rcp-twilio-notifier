@@ -23,7 +23,7 @@ class Notice {
 	/**
 	 * The notice message.
 	 *
-	 * @var string
+	 * @var mixed
 	 */
 	private $message;
 
@@ -31,7 +31,7 @@ class Notice {
 	 * Set internal values.
 	 *
 	 * @param string $type  The notice's type (one of 'error'|'warning'|'success'|'info').
-	 * @param string $message  The message to render.
+	 * @param mixed  $message  The message to render.
 	 */
 	public function __construct( $type, $message ) {
 		$this->type    = $type;
@@ -50,7 +50,7 @@ class Notice {
 	/**
 	 * Get the notice message.
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	public function get_message() {
 		return $this->message;
