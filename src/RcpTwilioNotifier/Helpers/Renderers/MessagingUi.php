@@ -14,12 +14,34 @@ namespace RcpTwilioNotifier\Helpers\Renderers;
 class MessagingUi {
 
 	/**
-	 * Render the fields.
+	 * Render the entire form.
 	 *
 	 * @param RegionSelect $region_renderer  A region renderer.
 	 * @param string       $message_value    A value for the messaging textarea.
 	 */
 	public static function render( RegionSelect $region_renderer, $message_value = '' ) {
+		?>
+			<form id="rcptn-region-notifier-messenger" action="" method="post">
+				<?php
+					self::render_form( $region_renderer, $message_value );
+				?>
+				<p class="submit">
+					<input type="hidden" name="rcptn-action" value="send-single-message"/>
+					<input type="submit" value="<?php esc_attr_e( 'Send Message', 'rcptn' ); ?>" class="button-primary"/>
+				</p>
+				<?php wp_nonce_field( 'rcptn_send_single_message_nonce', 'rcptn_send_single_message_nonce' ); ?>
+			</form>
+
+		<?php
+	}
+
+	/**
+	 * Render just the fields.
+	 *
+	 * @param RegionSelect $region_renderer  A region renderer.
+	 * @param string       $message_value    A value for the messaging textarea.
+	 */
+	public static function render_form( RegionSelect $region_renderer, $message_value = '' ) {
 		?>
 			<table class="form-table">
 				<tbody>

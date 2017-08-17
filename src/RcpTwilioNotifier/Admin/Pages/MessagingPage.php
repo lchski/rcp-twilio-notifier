@@ -73,21 +73,13 @@ class MessagingPage extends AbstractPage implements PageInterface {
 			)
 		);
 
+		$message_value = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
+
 		?>
 			<div class="wrap" id="<?php esc_attr( $this->menu_slug ); ?>">
 				<h1><?php echo esc_html( $this->page_title ); ?></h1>
 
-				<form id="rcptn-region-notifier-messenger" action="" method="post">
-					<?php
-						$message_value = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
-						MessagingUi::render( $select_renderer, $message_value );
-					?>
-					<p class="submit">
-						<input type="hidden" name="rcptn-action" value="send-single-message"/>
-						<input type="submit" value="<?php esc_attr_e( 'Send Message', 'rcptn' ); ?>" class="button-primary"/>
-					</p>
-					<?php wp_nonce_field( 'rcptn_send_single_message_nonce', 'rcptn_send_single_message_nonce' ); ?>
-				</form>
+				<?php MessagingUi::render( $select_renderer, $message_value ); ?>
 			</div>
 		<?php
 	}
