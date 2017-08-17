@@ -73,6 +73,8 @@ class AlertWatcher {
 
 		$message_value = get_option( 'rcptn_automated_message_template', '' );
 
+		echo '<p>' . esc_html__( 'Would you like to message a region about this alert?', 'rcptn' ) . '</p>';
+
 		MessagingUi::render( $select_renderer, $message_value );
 	}
 
