@@ -104,7 +104,7 @@ class MessagingUi {
 			return in_array( $merge_tag, $enabled_merge_tags, true );
 		};
 
-		return array_filter( $descriptions );
+		return array_filter( $descriptions, $verifier, ARRAY_FILTER_USE_KEY );
 	}
 
 }
