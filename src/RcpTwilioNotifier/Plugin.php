@@ -96,7 +96,7 @@ class Plugin {
 		 * One-click messaging features
 		 */
 		if ( false !== get_option( 'rcptn_enable_automated_messaging' ) ) {
-			$alert_watcher = new Admin\AlertWatcher();
+			$alert_watcher = new Admin\AlertWatcher( $this->regions );
 			$alert_watcher->init();
 		}
 	}

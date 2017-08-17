@@ -8,6 +8,8 @@
 
 namespace RcpTwilioNotifier\Admin;
 use RcpTwilioNotifier\Helpers\Notifier;
+use RcpTwilioNotifier\Helpers\Renderers\MessagingUi;
+use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 use RcpTwilioNotifier\Models\Notice;
 
 /**
@@ -25,8 +27,11 @@ class AlertWatcher {
 
 	/**
 	 * Set internal values.
+	 *
+	 * @param array $regions  Regions available for messaging.
 	 */
-	public function __construct() {
+	public function __construct( $regions ) {
+		$this->regions         = $regions;
 		$this->alert_post_type = get_option( 'rcptn_alert_post_type' );
 	}
 
@@ -59,7 +64,16 @@ class AlertWatcher {
 	 * Render the one-click messaging interface.
 	 */
 	public function render_interface() {
-		echo '<p>' . esc_html__( 'Do you want to message your customers?', 'rcptn' ) . '</p>';
+		$select_renderer = new RegionSelect(
+			$this->regions,
+			array(
+				'selected_region_slug' => isset( $_POST['rcptn_region'] ) ? $_POST['rcptn_region'] : false, // WPCS: CSRF ok.
+			)
+		);
+
+		$message_value = get_option( 'rcptn_automated_message_template', '' );
+
+		MessagingUi::render( $select_renderer, $message_value );
 	}
 
 }
