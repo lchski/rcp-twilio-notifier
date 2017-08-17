@@ -16,12 +16,12 @@ class AdminFormField {
 	/**
 	 * Render a form field conforming to WordPress markup patterns.
 	 *
-	 * @param string $id              The field's ID. Used for the field name, too.
-	 * @param string $label           Short label for the field.
-	 * @param string $description     Longer description of the field.
-	 * @param func   $field_callback  A callback to render the field. Receives the field’s ID as a parameter.
-	 * @param array  $args {
-	 *    Optional. Finer control over various settings.
+	 * @param string       $id              The field's ID. Used for the field name, too.
+	 * @param string       $label           Short label for the field.
+	 * @param string|array $description     Longer description of the field. If an array, renders a paragraph for each item.
+	 * @param func         $field_callback  A callback to render the field. Receives the field’s ID as a parameter.
+	 * @param array        $args {
+	 *          Optional. Finer control over various settings.
 	 *
 	 *    @type bool  $required     Whether the field is required.
 	 *    @type mixed $field_value  A value to pass to the field callback, representing the field’s value.
@@ -48,7 +48,7 @@ class AdminFormField {
 						$field_callback( $id );
 					}
 					?>
-					<p class="description"><?php echo esc_html( $description ); ?></p>
+					<?php self::render_description( $description ); ?>
 				</td>
 			</tr>
 		<?php
@@ -62,6 +62,27 @@ class AdminFormField {
 	private static function render_required( $is_required ) {
 		if ( $is_required ) {
 			echo ' ' . esc_html( '(required)', 'rcptn' );
+		}
+	}
+
+	/**
+	 * Renders a single description paragraph or a series thereof, depending on the input.
+	 *
+	 * @param array|string $description  Longer description for the field.
+	 */
+	private static function render_description( $description ) {
+		$renderer = function( $text ) {
+			echo '<p class="description">' . esc_html( $text ) . '</p>';
+		};
+
+		if ( is_string( $description ) ) {
+			$renderer( $description );
+			return;
+		}
+
+		if ( is_array( $description ) ) {
+			array_map( $renderer, $description );
+			return;
 		}
 	}
 
