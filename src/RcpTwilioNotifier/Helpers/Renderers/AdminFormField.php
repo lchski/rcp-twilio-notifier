@@ -20,16 +20,34 @@ class AdminFormField {
 	 * @param string $label           Short label for the field.
 	 * @param string $description     Longer description of the field.
 	 * @param func   $field_callback  A callback to render the field. Receives the field’s ID as a parameter.
-	 * @param bool   $required        Whether the field is required.
+	 * @param array  $args {
+	 *    Optional. Finer control over various settings.
+	 *
+	 *    @type bool  $required     Whether the field is required.
+	 *    @type mixed $field_value  A value to pass to the field callback, representing the field’s value.
+	 * }
 	 */
-	public static function render( $id, $label, $description, $field_callback, $required = true ) {
+	public static function render( $id, $label, $description, $field_callback, $args = array() ) {
+		$defaults = array(
+			'required'    => true,
+			'field_value' => null,
+		);
+
+		$merged_args = wp_parse_args( $args, $defaults );
+
 		?>
 			<tr class="form-field">
 				<th scope="row" valign="top">
-					<label for="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $label ); ?><?php self::render_required( $required ); ?></label>
+					<label for="<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $label ); ?><?php self::render_required( $merged_args['required'] ); ?></label>
 				</th>
 				<td>
-					<?php $field_callback( $id ); ?>
+					<?php
+					if ( null !== $merged_args['field_value'] ) {
+						$field_callback( $id, $merged_args['field_value'] );
+					} else {
+						$field_callback( $id );
+					}
+					?>
 					<p class="description"><?php echo esc_html( $description ); ?></p>
 				</td>
 			</tr>

@@ -68,7 +68,9 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									__( 'Enable One-click Messaging', 'rcptn' ),
 									__( 'The plugin can automatically prompt you to message members whenever you create a new alert. Required for one-click features.', 'rcptn' ),
 									array( $this, 'render_enable_automated_messaging' ),
-									false
+									array(
+										'required' => false,
+									)
 								);
 
 								AdminFormField::render(
@@ -76,7 +78,9 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									__( 'Message Template', 'rcptn' ),
 									__( 'The template used for one-click messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging. You’ll still be able to change the message before it sends. Required for one-click features.', 'rcptn' ),
 									array( $this, 'render_automated_message_template' ),
-									false
+									array(
+										'required' => false,
+									)
 								);
 
 								AdminFormField::render(
@@ -84,7 +88,9 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									__( 'Alert Post Type Name', 'rcptn' ),
 									__( 'The name of the post type being used for alerts. Can be set to “post” if the default posts are being used. This is used to trigger automatic SMS notices when alerts are published. Required for one-click features.', 'rcptn' ),
 									array( $this, 'render_alert_post_type' ),
-									false
+									array(
+										'required' => false,
+									)
 								);
 							?>
 						</tbody>
