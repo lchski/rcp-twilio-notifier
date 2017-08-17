@@ -8,6 +8,7 @@
 
 namespace RcpTwilioNotifier\Admin\Pages;
 use RcpTwilioNotifier\Helpers\Renderers\AdminFormField;
+use RcpTwilioNotifier\Helpers\Renderers\MessagingUi;
 use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 
 /**
@@ -77,25 +78,10 @@ class MessagingPage extends AbstractPage implements PageInterface {
 				<h1><?php echo esc_html( $this->page_title ); ?></h1>
 
 				<form id="rcptn-region-notifier-messenger" action="" method="post">
-					<table class="form-table">
-						<tbody>
-							<?php
-								AdminFormField::render(
-									'rcptn_region',
-									__( 'Target region', 'rcptn' ),
-									__( 'Choose the region that should receive this notice.', 'rcptn' ),
-									array( $select_renderer, 'render' )
-								);
-
-								AdminFormField::render(
-									'rcptn_message',
-									__( 'Message', 'rcptn' ),
-									__( 'Enter the message to send to the chosen region. You can use |*FIRST_NAME*| and |*LAST_NAME*| to insert the member’s name—they’ll be automatically replaced with the real values when sent to each member.', 'rcptn' ),
-									array( $this, 'render_message_field' )
-								);
-							?>
-						</tbody>
-					</table>
+					<?php
+						$message_value = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
+						MessagingUi::render( $select_renderer, $message_value );
+					?>
 					<p class="submit">
 						<input type="hidden" name="rcptn-action" value="send-single-message"/>
 						<input type="submit" value="<?php esc_attr_e( 'Send Message', 'rcptn' ); ?>" class="button-primary"/>
@@ -103,19 +89,6 @@ class MessagingPage extends AbstractPage implements PageInterface {
 					<?php wp_nonce_field( 'rcptn_send_single_message_nonce', 'rcptn_send_single_message_nonce' ); ?>
 				</form>
 			</div>
-		<?php
-	}
-
-	/**
-	 * * Render the message body field.
-	 *
-	 * @param string $field_id  The field's ID.
-	 */
-	public function render_message_field( $field_id ) {
-		$message = isset( $_POST['rcptn_message'] ) ? $_POST['rcptn_message'] : ''; // WPCS: CSRF ok.
-
-		?>
-			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4" placeholder="<?php esc_attr_e( 'Your message...', 'rcptn' ); ?>"><?php echo esc_html( $message ); ?></textarea>
 		<?php
 	}
 
