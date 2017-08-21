@@ -54,7 +54,7 @@ class MessagingUi {
 				'|*FIRST_NAME*|',
 				'|*LAST_NAME*|',
 			),
-			'extra_data' => $_POST['rcptn_extra_data'], // WPCS: CSRF ok.
+			'extra_data' => ( isset( $_POST['rcptn_extra_data'] ) ) ? $_POST['rcptn_extra_data'] : array(), // WPCS: CSRF ok.
 		);
 
 		$merged_form_args = wp_parse_args( $form_args, $default_form_args );
