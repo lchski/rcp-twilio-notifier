@@ -43,6 +43,7 @@ class MessagingUi {
 	 *     @type RegionSelect $region_renderer     A region renderer. Required.
 	 *     @type string       $message_value       A value for the messaging textarea. Optional.
 	 *     @type array        $enabled_merge_tags  The merge tags enabled for this form. Optional.
+	 *     @type array        $extra_data          Extra data to pass to the form.
 	 * }
 	 */
 	public static function render_form( $form_args ) {
@@ -52,6 +53,7 @@ class MessagingUi {
 				'|*FIRST_NAME*|',
 				'|*LAST_NAME*|',
 			),
+			'extra_data' => $_POST['rcptn_extra_data'], // WPCS: CSRF ok.
 		);
 
 		$merged_form_args = wp_parse_args( $form_args, $default_form_args );
@@ -80,6 +82,8 @@ class MessagingUi {
 								'field_value' => $merged_form_args['message_value'],
 							)
 						);
+
+						self::render_extra_form_data( $merged_form_args['extra_data'] );
 					?>
 				</tbody>
 			</table>
@@ -96,6 +100,19 @@ class MessagingUi {
 		?>
 			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4" placeholder="<?php esc_attr_e( 'Your message...', 'rcptn' ); ?>"><?php echo esc_html( $field_value ); ?></textarea>
 		<?php
+	}
+
+	/**
+	 * Render extra data as hidden fields.
+	 *
+	 * @param array $fields  Data to render as hidden fields.
+	 */
+	private function render_extra_form_data( $fields ) {
+		foreach ( $fields as $key => $value ) {
+			?>
+				<input type="hidden" name="<?php echo esc_attr( 'rcptn_extra_data[' . $key . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
+			<?php
+		}
 	}
 
 	/**
