@@ -79,7 +79,14 @@ class MessagingPage extends AbstractPage implements PageInterface {
 			<div class="wrap" id="<?php esc_attr( $this->menu_slug ); ?>">
 				<h1><?php echo esc_html( $this->page_title ); ?></h1>
 
-				<?php MessagingUi::render( $select_renderer, $message_value ); ?>
+				<?php
+					MessagingUi::render(
+						array(
+							'region_renderer' => $select_renderer,
+							'message_value' => $message_value,
+						)
+					);
+				?>
 			</div>
 		<?php
 	}

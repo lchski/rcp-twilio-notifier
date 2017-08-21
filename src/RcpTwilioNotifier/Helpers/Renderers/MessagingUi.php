@@ -16,15 +16,13 @@ class MessagingUi {
 	/**
 	 * Render the entire form.
 	 *
-	 * @param RegionSelect $region_renderer  A region renderer.
-	 * @param string       $message_value    A value for the messaging textarea.
-	 * @param array        $enabled_merge_tags      The merge tags enabled for this form.
+	 * @param array $form_args  @see MessagingUi::render_form.
 	 */
-	public static function render( RegionSelect $region_renderer, $message_value = '', $enabled_merge_tags = array( '|*FIRST_NAME*|', '|*LAST_NAME*|' ) ) {
+	public static function render( $form_args ) {
 		?>
 			<form id="rcptn-region-notifier-messenger" action="<?php echo esc_attr( menu_page_url( 'rcptn-region-notifier', false ) ); ?>" method="post">
 				<?php
-					self::render_form( $region_renderer, $message_value, $enabled_merge_tags );
+					self::render_form( $form_args );
 				?>
 				<p class="submit">
 					<input type="hidden" name="rcptn-action" value="send-single-message"/>
@@ -39,11 +37,25 @@ class MessagingUi {
 	/**
 	 * Render just the fields.
 	 *
-	 * @param RegionSelect $region_renderer  A region renderer.
-	 * @param string       $message_value    A value for the messaging textarea.
-	 * @param array        $enabled_merge_tags      The merge tags enabled for this form.
+	 * @param array $form_args {
+	 *     Required. List of arguments for the form renderer.
+	 *
+	 *     @type RegionSelect $region_renderer     A region renderer. Required.
+	 *     @type string       $message_value       A value for the messaging textarea. Optional.
+	 *     @type array        $enabled_merge_tags  The merge tags enabled for this form. Optional.
+	 * }
 	 */
-	public static function render_form( RegionSelect $region_renderer, $message_value = '', $enabled_merge_tags ) {
+	public static function render_form( $form_args ) {
+		$default_form_args = array(
+			'message_value' => '',
+			'enabled_merge_tags' => array(
+				'|*FIRST_NAME*|',
+				'|*LAST_NAME*|',
+			),
+		);
+
+		$merged_form_args = wp_parse_args( $form_args, $default_form_args );
+
 		?>
 			<table class="form-table">
 				<tbody>
@@ -52,7 +64,7 @@ class MessagingUi {
 							'rcptn_region',
 							__( 'Target region', 'rcptn' ),
 							__( 'Choose the region that should receive this notice.', 'rcptn' ),
-							array( $region_renderer, 'render' )
+							array( $merged_form_args['region_renderer'], 'render' )
 						);
 
 						AdminFormField::render(
@@ -60,12 +72,12 @@ class MessagingUi {
 							__( 'Message', 'rcptn' ),
 							array_merge(
 								array( __( 'Enter the message to send to the chosen region.', 'rcptn' ) ),
-								( ! empty( $enabled_merge_tags ) ) ? array( __( 'Several merge tags are available. These will be automatically replaced with their real values when the message is sent:', 'rcptn' ) ) : array(),
-								self::get_merge_tag_descriptions( $enabled_merge_tags )
+								( ! empty( $merged_form_args['enabled_merge_tags'] ) ) ? array( __( 'Several merge tags are available. These will be automatically replaced with their real values when the message is sent:', 'rcptn' ) ) : array(),
+								self::get_merge_tag_descriptions( $merged_form_args['enabled_merge_tags'] )
 							),
 							array( __CLASS__, 'render_message_field' ),
 							array(
-								'field_value' => $message_value,
+								'field_value' => $merged_form_args['message_value'],
 							)
 						);
 					?>
