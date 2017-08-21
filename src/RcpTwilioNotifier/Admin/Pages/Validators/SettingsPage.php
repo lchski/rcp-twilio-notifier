@@ -144,6 +144,12 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 * @return bool
 	 */
 	private function validate_welcome_message() {
+		if ( ! isset( $this->posted['rcptn_welcome_message'] ) || 0 === strlen( $this->posted['rcptn_welcome_message'] ) ) {
+			$this->add_error( __( 'No welcome message set.', 'rcptn' ) );
+
+			return false;
+		}
+
 		return true;
 	}
 
