@@ -79,6 +79,9 @@ class AlertWatcher {
 			array(
 				'region_renderer'    => $select_renderer,
 				'message_value'      => $message_value,
+				'extra_data'         => array(
+					'post_ID' => get_the_ID(),
+				),
 				'enabled_merge_tags' => array(
 					'|*FIRST_NAME*|',
 					'|*LAST_NAME*|',
