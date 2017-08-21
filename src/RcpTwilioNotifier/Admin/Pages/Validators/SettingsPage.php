@@ -30,6 +30,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 		$this->validations['twilio_token'] = $this->validate_twilio_token();
 		$this->validations['twilio_from_number'] = $this->validate_twilio_from_number();
 		$this->validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
+		$this->validations['welcome_message'] = $this->validate_welcome_message();
 
 		// If the one-click messaging feature switch is enabled, validate the one-click messaging fields.
 		if ( isset( $this->posted['rcptn_enable_automated_messaging'] ) ) {
@@ -134,6 +135,15 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
+		return true;
+	}
+
+	/**
+	 * Validate the welcome message input.
+	 *
+	 * @return bool
+	 */
+	private function validate_welcome_message() {
 		return true;
 	}
 

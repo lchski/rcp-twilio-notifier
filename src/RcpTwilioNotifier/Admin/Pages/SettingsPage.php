@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages;
+use RcpTwilioNotifier\Helpers\MergeTags;
 use RcpTwilioNotifier\Helpers\Renderers\AdminFormField;
 
 /**
@@ -90,6 +91,26 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									array(
 										'required' => false,
 									)
+								);
+							?>
+						</tbody>
+					</table>
+
+					<h2 class="title"><?php esc_html_e( 'Customer settings', 'rcptn' ); ?></h2>
+					<table class="form-table">
+						<tbody>
+							<?php
+								AdminFormField::render(
+									'rcptn_welcome_message',
+									__( 'Welcome Message', 'rcptn' ),
+									array_merge(
+										array(
+											__( 'The message sent via SMS to a new customer’s phone number when they sign up. Several merge tags are available:', 'rcptn' ),
+											__( 'Several merge tags are available. These will be automatically replaced with their real values when the message is sent:', 'rcptn' ),
+										),
+										MergeTags::get_merge_tag_descriptions( array( '|*FIRST_NAME*|', '|*LAST_NAME*|' ) )
+									),
+									array( $this, 'render_welcome_message' )
 								);
 							?>
 						</tbody>
@@ -207,6 +228,16 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 * @param string $field_id  The field's ID.
 	 */
 	public function render_automated_message_template( $field_id ) {
+		?>
+			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
+		<?php
+	}
+	/**
+	 * Render the welcome message field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_welcome_message( $field_id ) {
 		?>
 			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
 		<?php
