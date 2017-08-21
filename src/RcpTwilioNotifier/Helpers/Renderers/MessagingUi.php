@@ -108,7 +108,7 @@ class MessagingUi {
 	private static function get_merge_tag_descriptions( $enabled_merge_tags ) {
 		$descriptions = array(
 			'|*FIRST_NAME*|' => __( '|*FIRST_NAME*| for the member’s first name.', 'rcptn' ),
-			'|*LAST_NAME*|' => __( '|*LAST_NAME*| for the member’s last name.', 'rcptn' ),
+			'|*LAST_NAME*|'  => __( '|*LAST_NAME*| for the member’s last name.', 'rcptn' ),
 			'|*ALERT_LINK*|' => __( '|*ALERT_LINK*| to link to this alert.', 'rcptn' ),
 		);
 
