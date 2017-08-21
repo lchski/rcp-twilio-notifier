@@ -75,6 +75,8 @@ class MergeTags {
 				return $this->member->first_name;
 			case '|*LAST_NAME*|':
 				return $this->member->get( 'last_name' );
+			case '|*ALERT_LINK*|':
+				return get_permalink( $_POST['rcptn_extra_data']['post_ID'] ); // WPCS: CSRF ok.
 			default:
 				return $tag;
 		}
