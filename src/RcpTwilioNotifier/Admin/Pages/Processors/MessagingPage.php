@@ -73,19 +73,29 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 
 			$sms_request = $member->send_message( $merged_message );
 
-			$notifier = Notifier::get_instance();
+			self::create_notification_on_send( $sms_request, $member );
+		}
+	}
 
-			if ( $sms_request instanceof \WP_Error ) {
-				$notifier->add_notice( new Notice( 'error', $sms_request->get_error_message() ) );
-			} elseif ( $sms_request instanceof MessageInstance ) {
-				$notifier->add_notice(
-					new Notice(
-						'success',
-						// translators: %1$s is the member’s name, %2$d is their phone number.
-						 sprintf( __( 'Message successfully sent to %1$s (%2$d).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
-					)
-				);
-			}
+	/**
+	 * Create a notification based on the SMS request.
+	 *
+	 * @param MessageInstance $sms_response  The SMS API response.
+	 * @param Member          $member        The member who was messaged.
+	 */
+	private static function notify_on_send( $sms_response, $member ) {
+		$notifier = Notifier::get_instance();
+
+		if ( $sms_response instanceof \WP_Error ) {
+			$notifier->add_notice( new Notice( 'error', $sms_response->get_error_message() ) );
+		} elseif ( $sms_response instanceof MessageInstance ) {
+			$notifier->add_notice(
+				new Notice(
+					'success',
+					// translators: %1$s is the member’s name, %2$d is their phone number.
+					sprintf( __( 'Message successfully sent to %1$s (%2$d).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
+				)
+			);
 		}
 	}
 }
