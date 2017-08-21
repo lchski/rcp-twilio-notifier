@@ -98,4 +98,25 @@ class MergeTags {
 		return array_unique( $matches[0] );
 	}
 
+	/**
+	 * Get the descriptions for the given merge tags.
+	 *
+	 * @param array $enabled_merge_tags  The merge tags.
+	 *
+	 * @return array  The descriptions of the merge tags.
+	 */
+	public static function get_merge_tag_descriptions( $enabled_merge_tags ) {
+		$descriptions = array(
+			'|*FIRST_NAME*|' => __( '|*FIRST_NAME*| for the member’s first name.', 'rcptn' ),
+			'|*LAST_NAME*|'  => __( '|*LAST_NAME*| for the member’s last name.', 'rcptn' ),
+			'|*ALERT_LINK*|' => __( '|*ALERT_LINK*| to link to this alert.', 'rcptn' ),
+		);
+
+		$verifier = function( $merge_tag ) use ( $enabled_merge_tags ) {
+			return in_array( $merge_tag, $enabled_merge_tags, true );
+		};
+
+		return array_filter( $descriptions, $verifier, ARRAY_FILTER_USE_KEY );
+	}
+
 }

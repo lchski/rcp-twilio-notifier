@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Helpers\Renderers;
+use RcpTwilioNotifier\Helpers\MergeTags;
 
 /**
  * Render a UI with messaging fields.
@@ -75,7 +76,7 @@ class MessagingUi {
 							array_merge(
 								array( __( 'Enter the message to send to the chosen region.', 'rcptn' ) ),
 								( ! empty( $merged_form_args['enabled_merge_tags'] ) ) ? array( __( 'Several merge tags are available. These will be automatically replaced with their real values when the message is sent:', 'rcptn' ) ) : array(),
-								self::get_merge_tag_descriptions( $merged_form_args['enabled_merge_tags'] )
+								MergeTags::get_merge_tag_descriptions( $merged_form_args['enabled_merge_tags'] )
 							),
 							array( __CLASS__, 'render_message_field' ),
 							array(
@@ -113,27 +114,6 @@ class MessagingUi {
 				<input type="hidden" name="<?php echo esc_attr( 'rcptn_extra_data[' . $key . ']' ); ?>" value="<?php echo esc_attr( $value ); ?>"/>
 			<?php
 		}
-	}
-
-	/**
-	 * Get the descriptions for the merge tags enabled for this form.
-	 *
-	 * @param array $enabled_merge_tags  The merge tags enabled for this form.
-	 *
-	 * @return array  The descriptions of the merge tags enabled for this form.
-	 */
-	private static function get_merge_tag_descriptions( $enabled_merge_tags ) {
-		$descriptions = array(
-			'|*FIRST_NAME*|' => __( '|*FIRST_NAME*| for the member’s first name.', 'rcptn' ),
-			'|*LAST_NAME*|'  => __( '|*LAST_NAME*| for the member’s last name.', 'rcptn' ),
-			'|*ALERT_LINK*|' => __( '|*ALERT_LINK*| to link to this alert.', 'rcptn' ),
-		);
-
-		$verifier = function( $merge_tag ) use ( $enabled_merge_tags ) {
-			return in_array( $merge_tag, $enabled_merge_tags, true );
-		};
-
-		return array_filter( $descriptions, $verifier, ARRAY_FILTER_USE_KEY );
 	}
 
 }
