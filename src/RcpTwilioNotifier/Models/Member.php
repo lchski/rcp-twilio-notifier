@@ -38,6 +38,17 @@ class Member extends \RCP_Member {
 	}
 
 	/**
+	 * Get whether or not the member has been welcomed.
+	 *
+	 * @return bool
+	 */
+	public function has_member_been_welcomed() {
+		$welcomed_status = get_user_meta( $this->ID, 'rcptn_welcomed_status', true );
+
+		return apply_filters( 'rcptn_member_has_member_been_welcomed', $welcomed_status, $this->ID, $this );
+	}
+
+	/**
 	 * Message the member's phone number.
 	 *
 	 * @param string $message  Message to send to the member.

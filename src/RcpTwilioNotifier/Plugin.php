@@ -93,6 +93,14 @@ class Plugin {
 		$phone_number_edit_member_field->init();
 
 		/**
+		 * Welcome message
+		 */
+		if ( false !== get_option( 'rcptn_welcome_message' ) ) {
+			$registration_watcher = new Admin\RegistrationWatcher();
+			$registration_watcher->init();
+		}
+
+		/**
 		 * One-click messaging features
 		 */
 		if ( false !== get_option( 'rcptn_enable_automated_messaging' ) ) {
