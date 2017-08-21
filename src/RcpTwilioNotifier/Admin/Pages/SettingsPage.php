@@ -59,7 +59,6 @@ class SettingsPage extends AbstractPage implements PageInterface {
 
 				<form id="rcptn-region-notifier-settings" method="post" action="">
 					<h2 class="title"><?php esc_html_e( 'One-click Messaging settings', 'rcptn' ); ?></h2>
-
 					<table class="form-table">
 						<tbody>
 							<?php
