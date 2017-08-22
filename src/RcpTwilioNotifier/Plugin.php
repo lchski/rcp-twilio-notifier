@@ -92,6 +92,9 @@ class Plugin {
 		$phone_number_edit_member_field = new Admin\MemberFields\PhoneNumber\EditMember();
 		$phone_number_edit_member_field->init();
 
+		$subscription_addon_field = new Admin\SubscriptionField();
+		$subscription_addon_field->init();
+
 		/**
 		 * Welcome message
 		 */
