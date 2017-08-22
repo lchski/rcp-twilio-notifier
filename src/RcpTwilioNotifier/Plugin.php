@@ -10,6 +10,7 @@
  */
 
 namespace RcpTwilioNotifier;
+use RcpTwilioNotifier\Admin\RegistrationJavascriptSupporter;
 
 /**
  * Class RcpTwilioNotifier\Plugin
@@ -92,8 +93,14 @@ class Plugin {
 		$phone_number_edit_member_field = new Admin\MemberFields\PhoneNumber\EditMember();
 		$phone_number_edit_member_field->init();
 
+		/**
+		 * Handlers to enable all regions add-on functionality.
+		 */
 		$subscription_addon_field = new Admin\SubscriptionField();
 		$subscription_addon_field->init();
+
+		$registration_javascript_supporter = new RegistrationJavascriptSupporter();
+		$registration_javascript_supporter->init();
 
 		/**
 		 * Welcome message
