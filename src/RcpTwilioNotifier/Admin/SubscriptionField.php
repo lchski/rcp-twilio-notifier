@@ -20,7 +20,6 @@ class SubscriptionField {
 	 * Hook into WordPress.
 	 */
 	public function init() {
-		add_action( 'rcp_add_subscription_form', array( $this, 'render_field' ) );
 		add_action( 'rcp_edit_subscription_form', array( $this, 'render_field' ) );
 	}
 
