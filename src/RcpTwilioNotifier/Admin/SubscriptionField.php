@@ -21,12 +21,17 @@ class SubscriptionField {
 	 */
 	public function init() {
 		add_action( 'rcp_edit_subscription_form', array( $this, 'render_field' ) );
+		add_action( 'admin_init', array( $this, 'process' ) );
 	}
 
 	/**
 	 * Render the field.
+	 *
+	 * @param object $level  The RCP_Levels level being edited.
 	 */
-	public function render_field() {
+	public function render_field( $level ) {
+		$this->level = $level;
+
 		AdminFormField::render(
 			'rcptn_linked_addon_id',
 			__( 'All Regions Add-on Subscription ID', 'rcptn' ),
@@ -44,19 +49,28 @@ class SubscriptionField {
 	 * @param string $field_id  The field’s ID.
 	 */
 	public function render_input( $field_id ) {
+		$rcp_levels = new \RCP_Levels();
+
 		if ( isset( $_POST[ $field_id ] ) ) { // WPCS: CSRF ok.
-			$field_option_value = $_POST[ $field_id ]; // WPCS: CSRF ok.
+			$field_value = $_POST[ $field_id ]; // WPCS: CSRF ok.
 		}
 
-		$field_option_value = get_option( $field_id ); // @TODO: Change this.
+		$field_value = $rcp_levels->get_meta( $this->level->id, 'rcptn_add_on_level_id', true );
 
-		if ( false === $field_option_value ) {
-			$field_option_value = '';
+		if ( false === $field_value ) {
+			$field_value = '';
 		}
 
 		?>
-			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $field_option_value ); ?>">
+			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $field_value ); ?>">
 		<?php
+	}
+
+	/**
+	 * Handle form processing, following the RCP processing.
+	 */
+	public function process() {
+
 	}
 
 	/**
