@@ -93,6 +93,12 @@ class SubscriptionField {
 			return;
 		}
 
+		if ( 0 === strlen( $this->posted['rcptn_linked_addon_id'] ) ) {
+			$this->delete();
+
+			return;
+		}
+
 		if ( ! $this->validate() ) {
 			return;
 		}
@@ -146,11 +152,6 @@ class SubscriptionField {
 	 * Verify the data is in the correct format.
 	 */
 	private function validate() {
-		// If it's been cleared, the input will be blank.
-		if ( 0 === strlen( $this->posted['rcptn_linked_addon_id'] ) ) {
-			return true;
-		}
-
 		// The ID must be a number.
 		if ( false === is_numeric( $this->posted['rcptn_linked_addon_id'] ) ) {
 			$this->notifier->add_notice( new Notice( 'error', __( 'The ID provided for the RCP all regions subscription ID is not a number.', 'rcptn' ) ) );
@@ -166,6 +167,21 @@ class SubscriptionField {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Delete the stored data.
+	 *
+	 * @return bool
+	 */
+	private function delete() {
+		// Retrieve the level we're modifying.
+		$current_level_id = absint( $this->posted['subscription_id'] );
+
+		// Get the levels modifier object.
+		$rcp_levels = new \RCP_Levels();
+
+		return $rcp_levels->delete_meta( $current_level_id, 'rcptn_add_on_level_id' );
 	}
 
 	/**
