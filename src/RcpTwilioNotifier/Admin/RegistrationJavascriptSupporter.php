@@ -37,9 +37,11 @@ class RegistrationJavascriptSupporter {
 	private function get_js_data() {
 		$rcp_levels = new \RCP_Levels();
 
-		$levels = $rcp_levels->get_levels( array(
-			'status' => 'active',
-		) );
+		$levels = $rcp_levels->get_levels(
+			array(
+				'status' => 'active',
+			)
+		);
 
 		$addon_id_finder = function( $level ) use ( $rcp_levels ) {
 			$add_on_level_id = $rcp_levels->get_meta( $level->id, 'rcptn_add_on_level_id', true );
@@ -54,7 +56,9 @@ class RegistrationJavascriptSupporter {
 			);
 		};
 
-		return array_values( array_filter( array_map( $addon_id_finder, $levels ) ) );
+		return array(
+			'associated_subscription_ids' => array_values( array_filter( array_map( $addon_id_finder, $levels ) ) ),
+		);
 	}
 
 }
