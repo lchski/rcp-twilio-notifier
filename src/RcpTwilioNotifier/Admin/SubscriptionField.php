@@ -146,6 +146,11 @@ class SubscriptionField {
 	 * Verify the data is in the correct format.
 	 */
 	private function validate() {
+		// If it's been cleared, the input will be blank.
+		if ( 0 === strlen( $this->posted['rcptn_linked_addon_id'] ) ) {
+			return true;
+		}
+
 		// The ID must be a number.
 		if ( false === is_numeric( $this->posted['rcptn_linked_addon_id'] ) ) {
 			$this->notifier->add_notice( new Notice( 'error', __( 'The ID provided for the RCP all regions subscription ID is not a number.', 'rcptn' ) ) );
@@ -174,7 +179,7 @@ class SubscriptionField {
 		$rcp_levels = new \RCP_Levels();
 
 		// Modify the level.
-		return $rcp_levels->update_meta( $current_level_id, 'rcptn_add_on_level_id', absint( $this->posted['rcptn_linked_addon_id'] ) ); // @TODO: Sanitize this.
+		return $rcp_levels->update_meta( $current_level_id, 'rcptn_add_on_level_id', $this->posted['rcptn_linked_addon_id'] ); // @TODO: Sanitize this.
 	}
 
 }
