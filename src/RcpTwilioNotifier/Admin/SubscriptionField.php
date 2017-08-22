@@ -36,7 +36,7 @@ class SubscriptionField {
 	 * Hook into WordPress.
 	 */
 	public function init() {
-		$this->posted   = $this->posted; // WPCS: CSRF ok.
+		$this->posted   = $_POST; // WPCS: CSRF ok.
 		$this->notifier = Notifier::get_instance();
 
 		add_action( 'rcp_edit_subscription_form', array( $this, 'render_field' ) );
