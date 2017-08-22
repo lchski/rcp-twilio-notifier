@@ -74,7 +74,7 @@ class MessagingUi {
 							'rcptn_message',
 							__( 'Message', 'rcptn' ),
 							array_merge(
-								array( __( 'Enter the message to send to the chosen region.', 'rcptn' ) ),
+								array( __( 'Enter the message to send to the chosen region. Maximum length 1600 characters.', 'rcptn' ) ),
 								( ! empty( $merged_form_args['enabled_merge_tags'] ) ) ? array( __( 'Several merge tags are available. These will be automatically replaced with their real values when the message is sent:', 'rcptn' ) ) : array(),
 								MergeTags::get_merge_tag_descriptions( $merged_form_args['enabled_merge_tags'] )
 							),

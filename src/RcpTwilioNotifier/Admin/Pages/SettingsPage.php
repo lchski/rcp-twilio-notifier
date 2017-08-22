@@ -78,7 +78,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									__( 'Message Template', 'rcptn' ),
 									array_merge(
 										array(
-											__( 'The template used for one-click messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging. You’ll still be able to change the message before it sends. Required for one-click features.', 'rcptn' ),
+											__( 'The template used for one-click messages. Whenever you publish an alert, you’ll be prompted to alert your members; this template will be pre-filled to enable one-click messaging. You’ll still be able to change the message before it sends. Maximum length 1600 characters. Required for one-click features.', 'rcptn' ),
 											__( 'Several merge tags are available. These will be automatically replaced with their real values when the message is sent:', 'rcptn' ),
 										),
 										MergeTags::get_merge_tag_descriptions( array( '|*FIRST_NAME*|', '|*LAST_NAME*|', '|*ALERT_LINK*|' ) )
@@ -111,7 +111,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 									__( 'Welcome Message', 'rcptn' ),
 									array_merge(
 										array(
-											__( 'The message sent via SMS to a new customer’s phone number when they sign up. Several merge tags are available:', 'rcptn' ),
+											__( 'The message sent via SMS to a new customer’s phone number when they sign up. Maximum length 1600 characters.', 'rcptn' ),
 											__( 'Several merge tags are available. These will be automatically replaced with their real values when the message is sent:', 'rcptn' ),
 										),
 										MergeTags::get_merge_tag_descriptions( array( '|*FIRST_NAME*|', '|*LAST_NAME*|' ) )
