@@ -235,7 +235,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 */
 	public function render_automated_message_template( $field_id ) {
 		?>
-			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
+			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" maxlength="1600" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
 		<?php
 	}
 	/**
@@ -245,7 +245,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 */
 	public function render_welcome_message( $field_id ) {
 		?>
-			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
+			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" maxlength="1600" rows="4"><?php echo esc_html( $this->get_field_value( $field_id ) ); ?></textarea>
 		<?php
 	}
 

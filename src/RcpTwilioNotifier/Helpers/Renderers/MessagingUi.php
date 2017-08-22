@@ -99,7 +99,7 @@ class MessagingUi {
 	 */
 	public static function render_message_field( $field_id, $field_value ) {
 		?>
-			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" cols="30" rows="4" placeholder="<?php esc_attr_e( 'Your message...', 'rcptn' ); ?>"><?php echo esc_html( $field_value ); ?></textarea>
+			<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" maxlength="1600" rows="4" placeholder="<?php esc_attr_e( 'Your message...', 'rcptn' ); ?>"><?php echo esc_html( $field_value ); ?></textarea>
 		<?php
 	}
 
