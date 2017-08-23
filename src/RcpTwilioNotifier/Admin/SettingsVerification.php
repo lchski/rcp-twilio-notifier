@@ -99,6 +99,7 @@ class SettingsVerification {
 				'rcptn_twilio_token',
 				'rcptn_twilio_from_number',
 				'rcptn_rcp_all_regions_subscription_id',
+				'rcptn_rcp_addon_input_label',
 				'rcptn_welcome_message',
 			)
 		);
