@@ -30,6 +30,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 		$this->validations['twilio_token'] = $this->validate_twilio_token();
 		$this->validations['twilio_from_number'] = $this->validate_twilio_from_number();
 		$this->validations['rcp_all_regions_subscription_id'] = $this->validate_rcp_all_regions_subscription_id();
+		$this->validations['rcp_addon_input_label'] = $this->validate_rcp_addon_input_label();
 		$this->validations['welcome_message'] = $this->validate_welcome_message();
 
 		// If the one-click messaging feature switch is enabled, validate the one-click messaging fields.
@@ -131,6 +132,21 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 
 		if ( false === rcp_get_subscription_details( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
 			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID does not exist as a subscription level.', 'rcptn' ) );
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validate the RCP addon input label input.
+	 *
+	 * @return bool
+	 */
+	private function validate_rcp_addon_input_label() {
+		if ( ! isset( $this->posted['rcptn_rcp_addon_input_label'] ) || 0 === strlen( $this->posted['rcptn_rcp_addon_input_label'] ) ) {
+			$this->add_error( __( 'No RCP registration add-on input label set.', 'rcptn' ) );
 
 			return false;
 		}
