@@ -43,6 +43,9 @@ var RCPTN_Registration_Controller = {
 		this.setListeners();
 	},
 
+	/**
+	 * Find the groups of elements containing the basic and addon levels.
+	 */
 	setSubscriptionLevelVariables: function() {
 		var basic_level_selectors = rcptn_registration_handler_data.associated_subscription_ids.map(
 			function( subscription_pair ) {
@@ -60,10 +63,18 @@ var RCPTN_Registration_Controller = {
 		this.$subscription_levels_items.addon = this.$rcp_subscription_levels_list.find( addon_level_selectors );
 	},
 
+	/**
+	 * Insert the input representing the addon.
+	 */
 	insertAddonInput: function() {
 		jQuery( '#rcp_subscription_levels' ).after( this.addonInputTemplate );
 	},
 
+	/**
+	 * Toggle which set of inputs is visible.
+	 *
+	 * @param string enabled_level  The level to enable ('basic' or 'addon').
+	 */
 	toggleSubscriptionInputs: function( enabled_level ) {
 		if ( 'basic' === enabled_level ) {
 			this.$subscription_levels_items.basic.show();
@@ -76,6 +87,11 @@ var RCPTN_Registration_Controller = {
 		this.switchSelectedInputLevel( enabled_level );
 	},
 
+	/**
+	 * Switch the currently selected input according to the new level.
+	 *
+	 * @param string enabled_level  The level to enable ('basic' or 'addon').
+	 */
 	switchSelectedInputLevel: function( enabled_level ) {
 		// Find the current input and the level.
 		var currentlySelectedInput   = this.$rcp_subscription_levels_list.find( 'input[type=radio][name=rcp_level]:checked' ),
@@ -101,13 +117,13 @@ var RCPTN_Registration_Controller = {
 	},
 
 	/**
-	 * Listeners to respond to various actions
+	 * Set listeners to respond to various actions.
 	 */
 	setListeners: function() {
 		var that = this;
 
 		jQuery( '#rcptn_all_regions_addon' ).on(
-			'click', function(e) {
+			'click', function() {
 				if ( jQuery( this )[0].checked ) {
 					that.toggleSubscriptionInputs( 'addon' );
 				} else {
