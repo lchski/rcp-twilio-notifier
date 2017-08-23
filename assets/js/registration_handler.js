@@ -20,7 +20,7 @@ var RCPTN_Registration_Controller = {
 
 	addonInputTemplate: '<div>' +
 							'<input type="checkbox" id="rcptn_all_regions_addon">' +
-							'<label for="rcptn_all_regions_addon">Enable all regions add-on</label>' +
+							'<label for="rcptn_all_regions_addon">' + rcptn_registration_handler_data.addon_input_label + '</label>' +
 						'</div>',
 
 	/**

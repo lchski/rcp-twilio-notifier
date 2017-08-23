@@ -58,6 +58,7 @@ class RegistrationJavascriptSupporter {
 
 		return array(
 			'associated_subscription_ids' => array_values( array_filter( array_map( $addon_id_finder, $levels ) ) ),
+			'addon_input_label' => __( 'Enable all regions add-on', 'rcptn' ),
 		);
 	}
 
