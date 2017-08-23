@@ -72,6 +72,32 @@ var RCPTN_Registration_Controller = {
 			this.$subscription_levels_items.addon.show();
 			this.$subscription_levels_items.basic.hide();
 		}
+
+		this.switchSelectedInputLevel( enabled_level );
+	},
+
+	switchSelectedInputLevel: function( enabled_level ) {
+		// Find the current input and the level.
+		var currentlySelectedInput   = this.$rcp_subscription_levels_list.find( 'input[type=radio][name=rcp_level]:checked' ),
+			currentlySelectedLevelId = parseInt( currentlySelectedInput.val() );
+
+		// Find the pair of subscriptions that contains the currently selected level.
+		var selectedSubscriptionPair = rcptn_registration_handler_data.associated_subscription_ids.filter(
+			function( subscription_pair ) {
+				return ( subscription_pair.addon_level === currentlySelectedLevelId ) || ( subscription_pair.basic_level === currentlySelectedLevelId );
+			}
+		)[0];
+
+		// Find the input that corresponds to the currently selected one (the input for the other level in the pair).
+		var pairedInput = this.$rcp_subscription_levels_list.find( 'input[type=radio][name=rcp_level]' ).filter(
+			function() {
+					return parseInt( jQuery( this ).val() ) === selectedSubscriptionPair[ enabled_level + '_level' ];
+			}
+		);
+
+		// Select the paired input and fire the change event.
+		pairedInput.prop( 'checked', true );
+		pairedInput.change();
 	},
 
 	/**
