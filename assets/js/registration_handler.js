@@ -13,6 +13,11 @@
 var RCPTN_Registration_Controller = {
 	$rcp_subscription_levels_list: jQuery( '#rcp_subscription_levels' ),
 
+	$subscription_levels_items: {
+		basic: [],
+		addon: []
+	},
+
 	addonInputTemplate: '<div>' +
 							'<input type="checkbox" id="rcptn_all_regions_addon">' +
 							'<label for="rcptn_all_regions_addon">Enable all regions add-on</label>' +
@@ -30,9 +35,29 @@ var RCPTN_Registration_Controller = {
 			return;
 		}
 
+		this.setSubscriptionLevelVariables();
+
 		this.insertAddonInput();
 		this.toggleSubscriptionInputs( 'basic' );
+
 		this.setListeners();
+	},
+
+	setSubscriptionLevelVariables: function() {
+		var basic_level_selectors = rcptn_registration_handler_data.associated_subscription_ids.map(
+			function( subscription_pair ) {
+					return '.rcp_subscription_level_' + subscription_pair.basic_level;
+			}
+		).join( ', ' );
+
+		var addon_level_selectors = rcptn_registration_handler_data.associated_subscription_ids.map(
+			function( subscription_pair ) {
+					return '.rcp_subscription_level_' + subscription_pair.addon_level;
+			}
+		).join( ', ' );
+
+		this.$subscription_levels_items.basic = this.$rcp_subscription_levels_list.find( basic_level_selectors );
+		this.$subscription_levels_items.addon = this.$rcp_subscription_levels_list.find( addon_level_selectors );
 	},
 
 	insertAddonInput: function() {
@@ -40,19 +65,13 @@ var RCPTN_Registration_Controller = {
 	},
 
 	toggleSubscriptionInputs: function( enabled_level ) {
-		var that = this;
-
-		jQuery.each(
-			rcptn_registration_handler_data.associated_subscription_ids, function( index, subscription_pair ) {
-				if ( 'basic' === enabled_level ) {
-					that.$rcp_subscription_levels_list.find( '.rcp_subscription_level_' + subscription_pair.basic_level ).show();
-					that.$rcp_subscription_levels_list.find( '.rcp_subscription_level_' + subscription_pair.addon_level ).hide();
-				} else if ( 'addon' === enabled_level ) {
-					that.$rcp_subscription_levels_list.find( '.rcp_subscription_level_' + subscription_pair.addon_level ).show();
-					that.$rcp_subscription_levels_list.find( '.rcp_subscription_level_' + subscription_pair.basic_level ).hide();
-				}
-			}
-		);
+		if ( 'basic' === enabled_level ) {
+			this.$subscription_levels_items.basic.show();
+			this.$subscription_levels_items.addon.hide();
+		} else if ( 'addon' === enabled_level ) {
+			this.$subscription_levels_items.addon.show();
+			this.$subscription_levels_items.basic.hide();
+		}
 	},
 
 	/**
