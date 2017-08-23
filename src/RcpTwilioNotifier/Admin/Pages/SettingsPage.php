@@ -138,7 +138,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 						AdminFormField::render(
 							'rcptn_rcp_addon_input_label',
 							__( 'Registration Add-on Input Label', 'rcptn' ),
-							__( 'The label for the checkbox that enables the all regions add-on during the RCP registration process. For example, “Enable all regions add-on”. If the difference in subscription price is always the same, you could use “Enable all regions add-on ($5)”, substituting $5 with the actual price.', 'rcptn' ),
+							__( 'The label for the checkbox that enables the all regions add-on during the RCP registration process. For example, “Enable all regions add-on”. If the difference in subscription price is always the same, you could use “Enable all regions add-on ($5)”, substituting $5 with the actual price. (Note: If you enter a price here, that does not affect the actual pricing of the subscriptions. The subscription pricing is controlled through the regular RCP settings.', 'rcptn' ),
 							array( $this, 'render_rcp_addon_input_label' )
 						);
 						?>
