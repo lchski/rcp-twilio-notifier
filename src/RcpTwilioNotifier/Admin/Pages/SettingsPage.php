@@ -133,6 +133,15 @@ class SettingsPage extends AbstractPage implements PageInterface {
 							array( $this, 'render_rcp_all_regions_subscription_id' )
 						);
 						?>
+
+						<?php
+						AdminFormField::render(
+							'rcptn_rcp_addon_input_label',
+							__( 'Registration Add-on Input Label', 'rcptn' ),
+							__( 'The label for the checkbox that enables the all regions add-on during the RCP registration process. For example, “Enable all regions add-on”. If the difference in subscription price is always the same, you could use “Enable all regions add-on ($5)”, substituting $5 with the actual price.', 'rcptn' ),
+							array( $this, 'render_rcp_addon_input_label' )
+						);
+						?>
 						</tbody>
 					</table>
 
@@ -214,6 +223,17 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	public function render_rcp_all_regions_subscription_id( $field_id ) {
 		?>
 			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
+		<?php
+	}
+
+	/**
+	 * Render the RCP alert addon label field.
+	 *
+	 * @param string $field_id  The field's ID.
+	 */
+	public function render_rcp_addon_input_label( $field_id ) {
+		?>
+			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
 	}
 
