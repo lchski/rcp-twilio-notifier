@@ -55,22 +55,31 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 	 * Save each of the settings to the database.
 	 */
 	private function save_settings() {
-		// @TODO: Sanitize these!
-		$settings_field_keys = array(
+		// Text fields.
+		$setting_text_field_keys = array(
 			'rcptn_twilio_sid',
 			'rcptn_twilio_token',
 			'rcptn_twilio_from_number',
 			'rcptn_rcp_all_regions_subscription_id',
 			'rcptn_rcp_addon_input_label',
 			'rcptn_alert_post_type',
+		);
+
+		foreach ( $settings_text_field_keys as $field_key ) {
+			update_option( $field_key, sanitize_text_field( $this->posted[ $field_key ] ) );
+		}
+
+		// Textarea fields.
+		$settings_textarea_field_keys = array(
 			'rcptn_automated_message_template',
 			'rcptn_welcome_message',
 		);
 
-		foreach ( $settings_field_keys as $field_key ) {
-			update_option( $field_key, $this->posted[ $field_key ] );
+		foreach ( $settings_textarea_field_keys as $field_key ) {
+			update_option( $field_key, sanitize_textarea_field( $this->posted[ $field_key ] ) );
 		}
 
+		// Checkmark field.
 		update_option( 'rcptn_enable_automated_messaging', isset( $this->posted['rcptn_enable_automated_messaging'] ) );
 	}
 
