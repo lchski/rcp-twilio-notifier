@@ -56,6 +56,7 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 	 */
 	private function save_settings() {
 		// Text fields.
+		// @TODO: Better sanitizations for the non-text versions (e.g. "from_number", the ID, and the post type).
 		$setting_text_field_keys = array(
 			'rcptn_twilio_sid',
 			'rcptn_twilio_token',

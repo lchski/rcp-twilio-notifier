@@ -195,7 +195,7 @@ class SubscriptionField {
 		$rcp_levels = new \RCP_Levels();
 
 		// Modify the level.
-		return $rcp_levels->update_meta( $current_level_id, 'rcptn_add_on_level_id', $this->posted['rcptn_linked_addon_id'] ); // @TODO: Sanitize this.
+		return $rcp_levels->update_meta( $current_level_id, 'rcptn_add_on_level_id', absint( $this->posted['rcptn_linked_addon_id'] ) );
 	}
 
 }

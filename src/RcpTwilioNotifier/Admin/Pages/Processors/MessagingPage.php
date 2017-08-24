@@ -54,8 +54,10 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			return false;
 		}
 
-		// @TODO: Sanitize these values.
-		$this->message_all_in_region( new Region( $this->posted['rcptn_region'] ), $this->posted['rcptn_message'] );
+		$this->message_all_in_region(
+			new Region( sanitize_key( $this->posted['rcptn_region'] ) ),
+			sanitize_textarea_field( $this->posted['rcptn_message'] )
+		);
 	}
 
 	/**
