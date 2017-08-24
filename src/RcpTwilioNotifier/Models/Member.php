@@ -38,16 +38,38 @@ class Member extends \RCP_Member {
 	}
 
 	/**
+	 * Get the member's phone country code.
+	 *
+	 * @return string
+	 */
+	public function get_phone_country_code() {
+		$phone_country_code = get_user_meta( $this->ID, 'rcptn_phone_country_code', true );
+
+		if ( '' === $phone_country_code ) {
+			$phone_country_code = 'US';
+		}
+
+		return apply_filters( 'rcptn_member_get_phone_country_code', $phone_country_code, $this->ID, $this );
+	}
+
+	/**
 	 * Get the member's phone number, formatted for API calls.
 	 *
 	 * @return string
 	 */
 	public function get_formatted_phone_number() {
-		$phone_number = $this->get_phone_number();
+		$phone_util = \libphonenumber\PhoneNumberUtil::getInstance();
 
-		$formatted_phone_number = '+' . preg_replace( '/[^0-9]/', '', $phone_number );
+		try {
+			$phone_number_proto = $phone_util->parse( $this->get_phone_number(), $this->get_phone_country_code() );
 
-		return apply_filters( 'rcptn_member_get_formatted_phone_number', $formatted_phone_number, $this->ID, $this );
+			$formatted_phone_number = $phone_util->format( $phone_number_proto, \libphonenumber\PhoneNumberFormat::E164 );
+
+			return apply_filters( 'rcptn_member_get_formatted_phone_number', $formatted_phone_number, $this->ID, $this );
+		} catch ( \libphonenumber\NumberParseException $e ) {
+			// @TODO: Log this.
+			return false;
+		}
 	}
 
 	/**
