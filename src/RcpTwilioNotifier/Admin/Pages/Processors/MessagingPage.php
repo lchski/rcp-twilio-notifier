@@ -73,7 +73,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 
 			$sms_request = $member->send_message( $merged_message );
 
-			self::create_notification_on_send( $sms_request, $member );
+			self::notify_on_send( $sms_request, $member );
 		}
 	}
 
