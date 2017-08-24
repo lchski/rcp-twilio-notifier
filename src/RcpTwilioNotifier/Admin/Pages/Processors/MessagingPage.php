@@ -95,7 +95,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 				new Notice(
 					'success',
 					// translators: %1$s is the member’s name, %2$d is their phone number.
-					sprintf( __( 'Message successfully sent to %1$s (%2$d).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
+					sprintf( __( 'Message successfully sent to %1$s (%2$s).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
 				)
 			);
 		}

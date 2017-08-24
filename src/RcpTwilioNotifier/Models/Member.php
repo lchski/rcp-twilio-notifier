@@ -38,6 +38,19 @@ class Member extends \RCP_Member {
 	}
 
 	/**
+	 * Get the member's phone number, formatted for API calls.
+	 *
+	 * @return string
+	 */
+	public function get_formatted_phone_number() {
+		$phone_number = $this->get_phone_number();
+
+		$formatted_phone_number = '+' . preg_replace( '/[^0-9]/', '', $phone_number );
+
+		return apply_filters( 'rcptn_member_get_formatted_phone_number', $formatted_phone_number, $this->ID, $this );
+	}
+
+	/**
 	 * Get whether or not the member has been welcomed.
 	 *
 	 * @return bool
@@ -66,7 +79,7 @@ class Member extends \RCP_Member {
 
 		try {
 			$sms = $twilio_client->messages->create(
-				$this->get_phone_number(),
+				$this->get_formatted_phone_number(),
 				array(
 					'from' => get_option( 'rcptn_twilio_from_number', getenv( 'RCPTN_TWILIO_FROM_NUMBER' ) ),
 					'body' => $message,
