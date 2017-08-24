@@ -9,6 +9,7 @@
 namespace RcpTwilioNotifier\Admin\MemberFields\PhoneCountry;
 
 use RcpTwilioNotifier\Admin\MemberFields\AbstractEditMember;
+use RcpTwilioNotifier\Helpers\CountryLister;
 use RcpTwilioNotifier\Helpers\Renderers\CountrySelect;
 
 /**
@@ -29,16 +30,16 @@ class EditMember extends AbstractEditMember {
 			)
 		);
 
-		?>
-			<tr valign="top">
-				<th scope="row" valign="top">
-					<label for="rcptn_region"><?php esc_html_e( 'Phone Number Country', 'rcptn' ); ?></label>
-				</th>
-				<td>
-					<?php $select_renderer->render(); ?>
-					<p class="description"><?php esc_html_e( 'The country that the member has their phone number in (gets added to the phone number when messages are sent).', 'rcptn' ); ?></p>
-				</td>
-			</tr>
+			?>
+		<tr valign="top">
+			<th scope="row" valign="top">
+				<label for="rcptn_phone_country_code"><?php esc_html_e( 'Phone Number Country', 'rcptn' ); ?></label>
+			</th>
+			<td>
+				<?php $select_renderer->render(); ?>
+				<p class="description"><?php esc_html_e( 'The country that the member has their phone number in (gets added to the phone number when messages are sent).', 'rcptn' ); ?></p>
+			</td>
+		</tr>
 		<?php
 
 	}
@@ -50,13 +51,10 @@ class EditMember extends AbstractEditMember {
 	 */
 	public function save_on_update( $user_id ) {
 
-		$region_validator = new Region( $this->regions );
-
 		// Note the "WPCS: CSRF ok." comments below. This is because this function only fires after RCP has verified its nonces.
-		if ( isset( $_POST['rcptn_region'] ) && $region_validator->is_valid_region( $_POST['rcptn_region'] ) ) { // WPCS: CSRF ok.
-			update_user_meta( $user_id, 'rcptn_region', sanitize_text_field( $_POST['rcptn_region'] ) ); // WPCS: CSRF ok.
+		if ( isset( $_POST['rcptn_phone_country_code'] ) && in_array( $_POST['rcptn_phone_country_code'], array_keys( CountryLister::get_countries() ), true ) ) { // WPCS: CSRF ok.
+			update_user_meta( $user_id, 'rcptn_phone_country_code', sanitize_text_field( $_POST['rcptn_phone_country_code'] ) ); // WPCS: CSRF ok.
 		}
-
 	}
 
 }
