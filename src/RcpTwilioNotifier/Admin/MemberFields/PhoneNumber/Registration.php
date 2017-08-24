@@ -42,7 +42,7 @@ class Registration extends AbstractRegistration {
 		}
 
 		// Add an error message if the submitted option isn't one of our valid choices.
-		if ( ! PhoneNumber::is_valid_phone_number( $posted['rcptn_phone_number'] ) ) {
+		if ( ! PhoneNumber::is_valid_phone_number( $posted['rcptn_phone_country_code'], $posted['rcptn_phone_number'] ) ) {
 			rcp_errors()->add( 'invalid_phone_number', __( 'Please enter a valid phone number', 'rcptn' ), 'register' );
 		}
 

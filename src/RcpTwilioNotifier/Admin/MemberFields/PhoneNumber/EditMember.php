@@ -45,7 +45,7 @@ class EditMember extends AbstractEditMember {
 	public function save_on_update( $user_id ) {
 
 		// Note the "WPCS: CSRF ok." comments below. This is because this function only fires after RCP has verified its nonces.
-		if ( isset( $_POST['rcptn_phone_number'] ) && PhoneNumber::is_valid_phone_number( $_POST['rcptn_phone_number'] ) ) { // WPCS: CSRF ok.
+		if ( isset( $_POST['rcptn_phone_number'] ) && PhoneNumber::is_valid_phone_number( $_POST['rcptn_phone_country_code'], $_POST['rcptn_phone_number'] ) ) { // WPCS: CSRF ok.
 			update_user_meta( $user_id, 'rcptn_phone_number', sanitize_text_field( $_POST['rcptn_phone_number'] ) ); // WPCS: CSRF ok.
 		}
 
