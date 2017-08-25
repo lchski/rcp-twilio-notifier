@@ -63,7 +63,7 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 			'rcptn_rcp_addon_input_label',
 		);
 
-		foreach ( $settings_text_field_keys as $field_key ) {
+		foreach ( $setting_text_field_keys as $field_key ) {
 			update_option( $field_key, sanitize_text_field( $this->posted[ $field_key ] ) );
 		}
 
@@ -72,7 +72,7 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 			'rcptn_alert_post_type',
 		);
 
-		foreach ( $settings_text_field_keys as $field_key ) {
+		foreach ( $setting_text_field_keys as $field_key ) {
 			update_option( $field_key, sanitize_key( $this->posted[ $field_key ] ) );
 		}
 
@@ -86,12 +86,12 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 		}
 
 		// Textarea fields.
-		$settings_textarea_field_keys = array(
+		$setting_textarea_field_keys = array(
 			'rcptn_automated_message_template',
 			'rcptn_welcome_message',
 		);
 
-		foreach ( $settings_textarea_field_keys as $field_key ) {
+		foreach ( $setting_textarea_field_keys as $field_key ) {
 			update_option( $field_key, sanitize_textarea_field( $this->posted[ $field_key ] ) );
 		}
 

@@ -103,7 +103,7 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
-		if ( ! preg_match( '\+[0-9]{1,15}', $this->posted['rcptn_twilio_from_number'] ) ) {
+		if ( ! preg_match( '/\+[0-9]{1,15}/', $this->posted['rcptn_twilio_from_number'] ) ) {
 			$this->add_error( __( 'Invalid format for the Twilio from number. Please put it in the format “+10123456789”. (Start with “+”, follow with the country code, then the phone number, without any spaces.)', 'rcptn' ) );
 
 			return false;
