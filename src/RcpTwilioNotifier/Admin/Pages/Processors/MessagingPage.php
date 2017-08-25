@@ -35,6 +35,13 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	protected $nonce_name = 'rcptn_send_single_message_nonce';
 
 	/**
+	 * List of members that we failed to send to.
+	 *
+	 * @var int[]
+	 */
+	protected $failed_sends = array();
+
+	/**
 	 * Set internal values.
 	 *
 	 * @param array $regions  Region list.
@@ -58,6 +65,12 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			new Region( sanitize_key( $this->posted['rcptn_region'] ) ),
 			sanitize_textarea_field( $this->posted['rcptn_message'] )
 		);
+
+		// Check to see whether we had any errors.
+		if ( empty( $this->failed_sends ) ) {
+			// Everything worked, clear the message page.
+			$_POST = array();
+		}
 	}
 
 	/**
@@ -90,6 +103,8 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 
 		if ( $sms_response instanceof \WP_Error ) {
 			$notifier->add_notice( new Notice( 'error', $sms_response->get_error_message() ) );
+
+			$this->failed_sends[] = $member->ID;
 		} elseif ( $sms_response instanceof MessageInstance ) {
 			$notifier->add_notice(
 				new Notice(
