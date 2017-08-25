@@ -88,7 +88,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 
 			$sms_request = $member->send_message( $merged_message );
 
-			self::notify_on_send( $sms_request, $member );
+			$this->notify_on_send( $sms_request, $member );
 		}
 	}
 
@@ -98,7 +98,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * @param MessageInstance $sms_response  The SMS API response.
 	 * @param Member          $member        The member who was messaged.
 	 */
-	private static function notify_on_send( $sms_response, $member ) {
+	private function notify_on_send( $sms_response, $member ) {
 		$notifier = Notifier::get_instance();
 
 		if ( $sms_response instanceof \WP_Error ) {
