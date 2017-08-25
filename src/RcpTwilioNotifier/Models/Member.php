@@ -95,15 +95,15 @@ class Member extends \RCP_Member {
 		}
 
 		$twilio_client = new Client(
-			get_option( 'rcptn_twilio_sid', getenv( 'RCPTN_TWILIO_SID' ) ),
-			get_option( 'rcptn_twilio_token', getenv( 'RCPTN_TWILIO_TOKEN' ) )
+			get_option( 'rcptn_twilio_sid' ),
+			get_option( 'rcptn_twilio_token' )
 		);
 
 		try {
 			$sms = $twilio_client->messages->create(
 				$this->get_formatted_phone_number(),
 				array(
-					'from' => get_option( 'rcptn_twilio_from_number', getenv( 'RCPTN_TWILIO_FROM_NUMBER' ) ),
+					'from' => get_option( 'rcptn_twilio_from_number' ),
 					'body' => $message,
 				)
 			);

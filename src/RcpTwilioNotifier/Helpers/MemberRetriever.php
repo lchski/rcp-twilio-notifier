@@ -29,7 +29,7 @@ class MemberRetriever {
 
 		$all_region_subscribers = self::convert_users_to_members(
 			rcp_get_members_of_subscription(
-				get_option( 'rcptn_rcp_all_regions_subscription_id', getenv( 'RCPTN_RCP_ALL_REGIONS_SUBSCRIPTION_ID' ) ),
+				get_option( 'rcptn_rcp_all_regions_subscription_id' ),
 				'all'
 			)
 		);
