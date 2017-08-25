@@ -8,7 +8,6 @@
 
 namespace RcpTwilioNotifier\Admin\Pages\Processors;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
-use RcpTwilioNotifier\Helpers\MergeTags;
 use RcpTwilioNotifier\Helpers\Notifier;
 use RcpTwilioNotifier\Models\Member;
 use RcpTwilioNotifier\Models\Notice;
@@ -83,10 +82,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 		$members = MemberRetriever::get_region_members_and_all_region_subscribers( $region );
 
 		foreach ( $members as $member ) {
-			$merge_tag_processor = new MergeTags( $member );
-			$merged_message = $merge_tag_processor->replace_tags( $message );
-
-			$sms_request = $member->send_message( $merged_message );
+			$sms_request = $member->send_message( $message );
 
 			$this->notify_on_send( $sms_request, $member );
 		}

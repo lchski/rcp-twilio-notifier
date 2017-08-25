@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Models;
+use RcpTwilioNotifier\Helpers\MergeTags;
 use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
 
@@ -94,6 +95,9 @@ class Member extends \RCP_Member {
 			return;
 		}
 
+		$merge_tag_processor = new MergeTags( $this );
+		$merged_message = $merge_tag_processor->replace_tags( $message );
+
 		$twilio_client = new Client(
 			get_option( 'rcptn_twilio_sid' ),
 			get_option( 'rcptn_twilio_token' )
@@ -104,7 +108,7 @@ class Member extends \RCP_Member {
 				$this->get_formatted_phone_number(),
 				array(
 					'from' => get_option( 'rcptn_twilio_from_number' ),
-					'body' => $message,
+					'body' => $merged_message,
 				)
 			);
 		} catch ( TwilioException $e ) {
