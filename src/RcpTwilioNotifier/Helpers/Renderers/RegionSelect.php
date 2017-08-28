@@ -36,16 +36,18 @@ class RegionSelect {
 	 * @param array $args {
 	 *    Optional. Provide options to configure the currently selected region.
 	 *
-	 *    @type int    $user_id              The user ID to render the select for.
-	 *    @type string $selected_region_slug The currently selected region's slug.
+	 *    @type int    $user_id                     The user ID to render the select for.
+	 *    @type string $selected_region_slug        The currently selected region's slug.
+	 *    @type bool   $include_all_regions_option  Whether to include an option for all regions.
 	 * }
 	 */
 	public function __construct( $regions, $args ) {
 		$this->regions = $regions;
 
 		$defaults = array(
-			'user_id'              => false,
-			'selected_region_slug' => false,
+			'user_id'                     => false,
+			'selected_region_slug'        => false,
+			'include_all_regions_option'  => false,
 		);
 
 		$this->args = wp_parse_args( $args, $defaults );
@@ -58,6 +60,7 @@ class RegionSelect {
 		?>
 			<select id="rcptn_region" name="rcptn_region" class="rcptn-registration-select">
 				<?php $this->render_default_option(); ?>
+				<?php $this->render_all_regions_option(); ?>
 				<?php $this->render_region_options(); ?>
 			</select>
 		<?php
@@ -74,6 +77,24 @@ class RegionSelect {
 			</option>
 		<?php
 
+	}
+
+	/**
+	 * Render the all regions option.
+	 */
+	private function render_all_regions_option() {
+		$current_region = $this->get_current_region();
+
+		if ( $this->args['include_all_regions_option'] ) {
+			?>
+				<option
+					value="all"
+					<?php selected( $current_region, 'all' ); ?>
+				>
+					<?php esc_html_e( 'All Regions', 'rcptn' ); ?>
+				</option>
+			<?php
+		}
 	}
 
 	/**
