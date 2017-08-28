@@ -77,8 +77,11 @@ class Member extends \RCP_Member {
 
 			return apply_filters( 'rcptn_member_get_formatted_phone_number', $formatted_phone_number, $this->ID, $this );
 		} catch ( \libphonenumber\NumberParseException $e ) {
-			// @TODO: Log this.
-			return false;
+			return new \WP_Error(
+				'rcptn_libphonenumber_format', 'RCPTN Exception: "' . $e->getMessage() . '" (libphonenumber NumberParseException: ' . $e->getCode() . ')', array(
+					'exception' => $e,
+				)
+			);
 		}
 	}
 

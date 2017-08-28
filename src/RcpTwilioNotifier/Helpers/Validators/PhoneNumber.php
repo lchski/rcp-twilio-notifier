@@ -29,8 +29,11 @@ class PhoneNumber {
 
 			return $phone_util->isValidNumber( $phone_number_proto );
 		} catch ( \libphonenumber\NumberParseException $e ) {
-			// @TODO: Log this.
-			return;
+			return new \WP_Error(
+				'rcptn_libphonenumber_parse', 'RCPTN Exception: "' . $e->getMessage() . '" (libphonenumber NumberParseException: ' . $e->getCode() . ')', array(
+					'exception' => $e,
+				)
+			);
 		}
 	}
 
