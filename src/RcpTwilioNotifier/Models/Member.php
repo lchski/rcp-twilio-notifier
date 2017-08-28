@@ -19,10 +19,10 @@ class Member extends \RCP_Member {
 	/**
 	 * Provide a unique representation of the given RCPTN Member.
 	 *
-	 * @return int
+	 * @return string
 	 */
 	public function __toString() {
-		return $this->ID;
+		return (string) $this->ID;
 	}
 
 	/**
