@@ -60,16 +60,32 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			return false;
 		}
 
-		$this->message_all_in_region(
-			new Region( sanitize_key( $this->posted['rcptn_region'] ) ),
-			sanitize_textarea_field( $this->posted['rcptn_message'] )
-		);
+		// Check whether to message all regions or just one.
+		if ( 'all' === $this->posted['rcptn_region'] ) {
+			$this->message_all_regions( sanitize_textarea_field( $this->posted['rcptn_message'] ) );
+		} else {
+			$this->message_all_in_region(
+				new Region( sanitize_key( $this->posted['rcptn_region'] ) ),
+				sanitize_textarea_field( $this->posted['rcptn_message'] )
+			);
+		}
 
 		// Check to see whether we had any errors.
 		if ( empty( $this->failed_sends ) ) {
 			// Everything worked, clear the message page.
 			$_POST = array();
 		}
+	}
+
+	/**
+	 * Message the members of all regions.
+	 *
+	 * @param string $message  The message to send.
+	 */
+	private function message_all_regions( $message ) {
+		$members = MemberRetriever::get_all_region_subscribers();
+
+		$this->message_members( $members, $message );
 	}
 
 	/**
@@ -81,6 +97,16 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	private function message_all_in_region( Region $region, $message ) {
 		$members = MemberRetriever::get_region_members_and_all_region_subscribers( $region );
 
+		$this->message_members( $members, $message );
+	}
+
+	/**
+	 * Message given members a given message.
+	 *
+	 * @param Member[] $members  The members to message.
+	 * @param string   $message  The message to send.
+	 */
+	private function message_members( $members, $message ) {
 		foreach ( $members as $member ) {
 			$sms_request = $member->send_message( $message );
 

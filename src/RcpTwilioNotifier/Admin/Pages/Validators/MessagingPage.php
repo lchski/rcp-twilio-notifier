@@ -73,6 +73,11 @@ class MessagingPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
+		// Special case for all regions option.
+		if ( 'all' === $this->posted['rcptn_region'] ) {
+			return true;
+		}
+
 		$region_validator = new Region( $this->regions );
 
 		if ( ! $region_validator->is_valid_region( $this->posted['rcptn_region'] ) ) {
