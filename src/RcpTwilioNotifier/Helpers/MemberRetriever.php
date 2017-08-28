@@ -27,15 +27,33 @@ class MemberRetriever {
 	public static function get_region_members_and_all_region_subscribers( Region $region ) {
 		$region_members = $region->get_members();
 
-		$all_region_subscribers = self::convert_users_to_members(
-			rcp_get_members_of_subscription(
-				get_option( 'rcptn_rcp_all_regions_subscription_id' ),
-				'all'
-			)
-		);
+		$all_region_subscribers = self::get_all_region_subscribers();
 
 		// @TODO: Improve this uniqueness check; it may fail sometimes.
 		return array_unique( array_merge( $region_members, $all_region_subscribers ), SORT_REGULAR );
+	}
+
+	/**
+	 * Retrieve the members who subscribe to an all-region plan.
+	 *
+	 * @return Member[]
+	 */
+	public static function get_all_region_subscribers() {
+		// 1: Retrieve the subscription IDs as an array.
+		$all_region_subscription_ids = AllRegionSubscriptionIdLister::convert_id_string_to_array( get_option( 'rcptn_rcp_all_regions_subscription_id' ) );
+
+		// 2: Convert the array of IDs into an array of arrays, each containing the WP_Users for that subscription ID.
+		$all_region_subscribers = array_map(
+			function( $subscription_id ) {
+					return rcp_get_members_of_subscription( $subscription_id, 'all' );
+			}, $all_region_subscription_ids
+		);
+
+		// 3: Merge the array of arrays containing the subscribers.
+		$merged_all_region_subscribers = array_merge( ...$all_region_subscribers );
+
+		// 4: Convert the subscribers (WP_Users) to members (RCPTN_Members).
+		return self::convert_users_to_members( $merged_all_region_subscribers );
 	}
 
 	/**
