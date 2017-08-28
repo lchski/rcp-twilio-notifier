@@ -70,6 +70,7 @@ class MessagingPage extends AbstractPage implements PageInterface {
 			$this->regions,
 			array(
 				'selected_region_slug' => isset( $_POST['rcptn_region'] ) ? $_POST['rcptn_region'] : false, // WPCS: CSRF ok.
+				'include_all_regions_option' => true,
 			)
 		);
 
