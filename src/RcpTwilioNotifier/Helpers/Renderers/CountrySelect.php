@@ -48,23 +48,9 @@ class CountrySelect {
 	public function render() {
 		?>
 		<select id="rcptn_phone_country_code" name="rcptn_phone_country_code" class="rcptn-registration-select">
-			<?php $this->render_default_option(); ?>
 			<?php $this->render_country_options(); ?>
 		</select>
 		<?php
-	}
-
-	/**
-	 * Render the default dropdown option.
-	 */
-	private function render_default_option() {
-
-		?>
-		<option value="none">
-			<?php echo esc_html( apply_filters( 'rcptn_phone_country_code_select_default_option', __( 'Select a country...', 'rcptn' ) ) ); ?>
-		</option>
-		<?php
-
 	}
 
 	/**
@@ -88,7 +74,7 @@ class CountrySelect {
 	}
 
 	/**
-	 * Get the currently selected country.
+	 * Get the currently selected country. US as default.
 	 *
 	 * @return string|bool
 	 */
@@ -101,7 +87,7 @@ class CountrySelect {
 			return get_user_meta( $this->args['user_id'], 'rcptn_phone_country_code', true );
 		}
 
-		return false;
+		return 'US';
 	}
 
 }
