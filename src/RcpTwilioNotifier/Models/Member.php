@@ -17,6 +17,15 @@ use Twilio\Rest\Client;
 class Member extends \RCP_Member {
 
 	/**
+	 * Provide a unique representation of the given RCPTN Member.
+	 *
+	 * @return int
+	 */
+	public function __toString() {
+		return $this->ID;
+	}
+
+	/**
 	 * Retrieve the member's home region, optionally filtered by `rcptn_member_get_home_region`.
 	 *
 	 * @return mixed
