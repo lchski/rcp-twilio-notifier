@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\Pages\Validators;
+use RcpTwilioNotifier\Helpers\AllRegionSubscriptionIdLister;
 use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 
 /**
@@ -130,7 +131,9 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 			return false;
 		}
 
-		foreach ( preg_split( '/,/', preg_replace( '/ /', '', $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) as $subscription_id ) {
+		$subscription_ids = AllRegionSubscriptionIdLister::convert_id_string_to_array( $this->posted['rcptn_rcp_all_regions_subscription_id'] );
+
+		foreach ( $subscription_ids as $subscription_id ) {
 			if ( false === rcp_get_subscription_details( $subscription_id ) ) {
 				$this->add_error(
 					// Translators: %d is the ID that does not exist as a subscription level.
