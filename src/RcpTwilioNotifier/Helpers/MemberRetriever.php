@@ -56,6 +56,19 @@ class MemberRetriever {
 	}
 
 	/**
+	 * Retrieve all subscribers.
+	 *
+	 * @return Member[]
+	 */
+	public static function get_all_subscribers() {
+		// Get all active RCP subscribers.
+		$rcp_members = rcp_get_members();
+
+		// Convert the WP_User objects to RCPTN Member objects.
+		return self::convert_users_to_members( $rcp_members );
+	}
+
+	/**
 	 * Converts WP_Users to our custom Member object.
 	 *
 	 * @param WP_User[] $users  Array of WP_User objects to convert.

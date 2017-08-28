@@ -83,7 +83,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * @param string $message  The message to send.
 	 */
 	private function message_all_regions( $message ) {
-		$members = MemberRetriever::get_all_region_subscribers();
+		$members = MemberRetriever::get_all_subscribers();
 
 		$this->message_members( $members, $message );
 	}
