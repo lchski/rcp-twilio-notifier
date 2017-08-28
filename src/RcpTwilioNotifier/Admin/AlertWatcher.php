@@ -44,13 +44,26 @@ class AlertWatcher {
 			return;
 		}
 
-		add_action( 'save_post_' . $this->alert_post_type, array( $this, 'add_messaging_notification' ) );
+		add_action( 'save_post_' . $this->alert_post_type, array( $this, 'add_messaging_notification' ), 10, 2 );
 	}
 
 	/**
 	 * Add the notification with the one-click messaging interface.
+	 *
+	 * @param int      $post_id  The post's ID.
+	 * @param \WP_Post $post     The post object.
 	 */
-	public function add_messaging_notification() {
+	public function add_messaging_notification( $post_id, $post ) {
+		// Bail if post revision.
+		if ( wp_is_post_revision( $post ) ) {
+			return;
+		}
+
+		// Bail if not published.
+		if ( isset( $post->post_status ) && 'publish' !== $post->post_status ) {
+			return;
+		}
+
 		$notifier = Notifier::get_instance();
 		$notifier->add_notice(
 			new Notice(
