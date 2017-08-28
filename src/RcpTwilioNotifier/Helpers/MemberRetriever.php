@@ -29,7 +29,6 @@ class MemberRetriever {
 
 		$all_region_subscribers = self::get_all_region_subscribers();
 
-		// @TODO: Improve this uniqueness check; it may fail sometimes.
 		return array_unique( array_merge( $region_members, $all_region_subscribers ), SORT_REGULAR );
 	}
 
