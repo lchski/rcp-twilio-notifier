@@ -61,6 +61,7 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 			'rcptn_twilio_token',
 			'rcptn_twilio_from_number',
 			'rcptn_rcp_addon_input_label',
+			'rcptn_rcp_all_regions_subscription_id',
 		);
 
 		foreach ( $setting_text_field_keys as $field_key ) {
@@ -74,15 +75,6 @@ class SettingsPage extends AbstractProcessor implements ProcessorInterface {
 
 		foreach ( $setting_text_field_keys as $field_key ) {
 			update_option( $field_key, sanitize_key( $this->posted[ $field_key ] ) );
-		}
-
-		// Integer fields.
-		$setting_integer_field_keys = array(
-			'rcptn_rcp_all_regions_subscription_id',
-		);
-
-		foreach ( $setting_integer_field_keys as $field_key ) {
-			update_option( $field_key, absint( $this->posted[ $field_key ] ) );
 		}
 
 		// Textarea fields.
