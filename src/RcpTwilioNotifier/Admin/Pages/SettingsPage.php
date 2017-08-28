@@ -222,7 +222,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 	 */
 	public function render_rcp_all_regions_subscription_id( $field_id ) {
 		?>
-			<input type="number" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
+			<input type="text" name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" value="<?php echo esc_attr( $this->get_field_value( $field_id ) ); ?>">
 		<?php
 	}
 

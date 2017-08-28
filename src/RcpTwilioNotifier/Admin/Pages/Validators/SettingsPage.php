@@ -119,21 +119,26 @@ class SettingsPage extends AbstractValidator implements ValidatorInterface {
 	 */
 	private function validate_rcp_all_regions_subscription_id() {
 		if ( ! isset( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) || 0 === strlen( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
-			$this->add_error( __( 'No RCP all regions subscription ID set.', 'rcptn' ) );
+			$this->add_error( __( 'No RCP all regions subscription IDs set.', 'rcptn' ) );
 
 			return false;
 		}
 
-		if ( false === is_numeric( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
-			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID is not a number.', 'rcptn' ) );
+		if ( preg_match( '/[^0-9, ]/', $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
+			$this->add_error( __( 'The string provided for the RCP all regions subscription IDs must contain only numbers, commas, and spaces.', 'rcptn' ) );
 
 			return false;
 		}
 
-		if ( false === rcp_get_subscription_details( $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) {
-			$this->add_error( __( 'The ID provided for the RCP all regions subscription ID does not exist as a subscription level.', 'rcptn' ) );
+		foreach ( preg_split( '/,/', preg_replace( '/ /', '', $this->posted['rcptn_rcp_all_regions_subscription_id'] ) ) as $subscription_id ) {
+			if ( false === rcp_get_subscription_details( $subscription_id ) ) {
+				$this->add_error(
+					// Translators: %d is the ID that does not exist as a subscription level.
+					sprintf( __( 'One of the IDs provided for the RCP all regions subscription IDs does not exist as a subscription level. (ID: %d)', 'rcptn' ), $subscription_id )
+				);
 
-			return false;
+				return false;
+			}
 		}
 
 		return true;
