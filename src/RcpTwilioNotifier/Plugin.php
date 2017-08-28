@@ -10,7 +10,6 @@
  */
 
 namespace RcpTwilioNotifier;
-use RcpTwilioNotifier\Admin\RegistrationJavascriptSupporter;
 
 /**
  * Class RcpTwilioNotifier\Plugin
@@ -105,7 +104,7 @@ class Plugin {
 		$subscription_addon_field = new Admin\SubscriptionField();
 		$subscription_addon_field->init();
 
-		$registration_javascript_supporter = new RegistrationJavascriptSupporter();
+		$registration_javascript_supporter = new Admin\RegistrationJavascriptSupporter();
 		$registration_javascript_supporter->init();
 
 		/**
