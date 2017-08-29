@@ -63,6 +63,13 @@ class Message {
 		}
 
 		$this->wp_post = $message_identifier;
+
+		$this->recipients = array();
+
+		$this->raw_body = $this->wp_post->post_content;
+		$this->body_data = array();
+
+		$this->send_attempts = array();
 	}
 
 	/**
@@ -108,18 +115,24 @@ class Message {
 		);
 
 		// Try to create the WP_Post.
-		$wp_post = wp_insert_post( $post_args, true );
+		$wp_post_id = wp_insert_post( $post_args, true );
 
 		// Bail if we got an error.
-		if ( is_wp_error( $wp_post ) ) {
-			return $wp_post;
+		if ( is_wp_error( $wp_post_id ) ) {
+			return $wp_post_id;
 		}
 
-		// Success! Create a new instance of the Message object, using the newly created post ID.
-		$message = new Message( $wp_post );
+		// Retrieve just the IDs from the array of Recipients.
+		$recipient_ids = array_map( function( Member $recipient ) {
+			return $recipient->ID;
+		}, $args['recipients'] );
 
 		// Setting metadata...
-		return $message;
+		add_post_meta( $wp_post_id, 'rcptn_recipient_ids', $recipient_ids );
+		add_post_meta( $wp_post_id, 'rcptn_body_data', $args['body_data'] );
+
+		// Return a new instance of the Message object now that all the settings are in place.
+		return new Message( $wp_post_id );
 	}
 
 }
