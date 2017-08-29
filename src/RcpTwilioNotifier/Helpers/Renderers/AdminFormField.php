@@ -19,7 +19,7 @@ class AdminFormField {
 	 * @param string       $id              The field's ID. Used for the field name, too.
 	 * @param string       $label           Short label for the field.
 	 * @param string|array $description     Longer description of the field. If an array, renders a paragraph for each item.
-	 * @param func         $field_callback  A callback to render the field. Receives the field’s ID as a parameter.
+	 * @param callable     $field_callback  A callback to render the field. Receives the field’s ID as a parameter.
 	 * @param array        $args {
 	 *          Optional. Finer control over various settings.
 	 *
