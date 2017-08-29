@@ -41,4 +41,21 @@ class Message {
 	 */
 	private $send_attempts;
 
+	/**
+	 * Create a new Message.
+	 *
+	 * @param array $args {
+	 *     Required. The data necessary to create a new Message.
+	 *
+	 *     @type Member[] $recipients  Recipients of the message.
+	 *     @type string   $raw_body    The unprocessed message body.
+	 *     @type array    $body_data   Data required to process the message body.
+	 * }
+	 *
+	 * @return Message
+	 */
+	public static function create( $args ) {
+		return new Message();
+	}
+
 }
