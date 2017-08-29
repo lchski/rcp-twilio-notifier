@@ -109,7 +109,7 @@ class MemberRetriever {
 	 * @return Member[]
 	 */
 	public static function remove_inactive_members( $members ) {
-		return array_keys( array_filter( $members, function( Member $member ) {
+		return array_values( array_filter( $members, function( Member $member ) {
 			return $member->is_active();
 		} ) );
 	}
