@@ -34,18 +34,11 @@ class Message {
 	private $recipients;
 
 	/**
-	 * The unprocessed body of the message.
+	 * The MessageBody instance representing the raw message and the data to process it.
 	 *
-	 * @var string
+	 * @var MessageBody
 	 */
-	private $raw_body;
-
-	/**
-	 * Additional data to include when processing the message.
-	 *
-	 * @var array
-	 */
-	private $body_data;
+	private $message_body;
 
 	/**
 	 * Attempted sends for each recipient, including retries.
@@ -72,8 +65,7 @@ class Message {
 
 		$this->recipients = MemberRetriever::convert_user_ids_to_members( get_post_meta( $this->wp_post->ID, 'rcptn_recipient_ids', true ) );
 
-		$this->raw_body = $this->wp_post->post_content;
-		$this->body_data = get_post_meta( $this->wp_post->ID, 'rcptn_body_data', true );
+		$this->message_body = new MessageBody( $this->wp_post->post_content, get_post_meta( $this->wp_post->ID, 'rcptn_body_data', true ) );
 
 		$this->send_attempts = array();
 	}
@@ -139,6 +131,17 @@ class Message {
 
 		// Return a new instance of the Message object now that all the settings are in place.
 		return new Message( $wp_post_id );
+	}
+
+	/**
+	 * Send the message to all recipients.
+	 */
+	public function send_to_all() {
+		foreach ( $this->recipients as $member ) {
+			$sms_request = $member->send_message( $this->message_body );
+
+			$this->record_send_attempt( $sms_request, $member );
+		}
 	}
 
 }
