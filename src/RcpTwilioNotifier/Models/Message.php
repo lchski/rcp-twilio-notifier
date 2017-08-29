@@ -140,35 +140,19 @@ class Message {
 	 */
 	public function send_to_all() {
 		foreach ( $this->recipients as $member ) {
-			$sms_request = $member->send_message( $this->message_body );
-
-			$this->record_send_attempt( $sms_request, $member );
+			$this->send_to_one( $member );
 		}
 	}
 
 	/**
 	 * Send the message to one recipient in particular.
 	 *
-	 * @param int $recipient_id  The ID of the recipient to message.
-	 *
-	 * @return \WP_Error|void
+	 * @param Member $recipient  The Member to message.
 	 */
-	public function send_to_one( $recipient_id ) {
-		$recipient = new Member( $recipient_id );
-
-		if ( ! in_array( $recipient, $this->recipients, true ) ) {
-			return new \WP_Error(
-				'rcptn_message_recipient_not_in_array',
-				__( 'The specified recipient is not in the original list of recipients for this message.', 'rcptn' ),
-				array(
-					'recipient_ID' => $recipient_id,
-				)
-			);
-		}
-
+	public function send_to_one( $recipient ) {
 		$sms_request = $recipient->send_message( $this->message_body );
 
-		$this->record_send_attempt( $sms_request, $member );
+		$this->record_send_attempt( $sms_request, $recipient );
 	}
 
 }
