@@ -67,7 +67,7 @@ class Message {
 			$message_post = $message_identifier;
 		}
 
-		$this->wp_post = $message_identifier;
+		$this->wp_post = $message_post;
 
 		$this->recipients = array();
 
