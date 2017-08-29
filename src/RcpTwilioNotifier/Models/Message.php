@@ -142,6 +142,8 @@ class Message {
 		foreach ( $this->recipients as $member ) {
 			$this->send( $member );
 		}
+
+		$this->save_send_attempts();
 	}
 
 	/**
@@ -151,6 +153,8 @@ class Message {
 	 */
 	public function send_to_one( $recipient ) {
 		$this->send( $recipient );
+
+		$this->save_send_attempts();
 	}
 
 	/**
@@ -186,6 +190,27 @@ class Message {
 				'status'    => 'success',
 			);
 		}
+	}
+
+	/**
+	 * Save the send attempts to metadata.
+	 *
+	 * @return bool|\WP_Error
+	 */
+	private function save_send_attempts() {
+		$update_attempt = update_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', $this->send_attempts );
+
+		if ( false === $update_attempt ) {
+			return new \WP_Error(
+				'rcptn_message_save_send_attempts_failed',
+				__( 'Failed to save the send attempts metadata.', 'rcptn' ),
+				array(
+					'send_attempts' => $this->send_attempts,
+				)
+			);
+		}
+
+		return true;
 	}
 
 }
