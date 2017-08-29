@@ -15,7 +15,7 @@ use RcpTwilioNotifier\Helpers\MemberRetriever;
 class Message {
 
 	/**
-	 * The
+	 * The post type slug for the Member CPT.
 	 */
 	const POST_TYPE = 'rcptn_message';
 
