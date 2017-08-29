@@ -140,19 +140,52 @@ class Message {
 	 */
 	public function send_to_all() {
 		foreach ( $this->recipients as $member ) {
-			$this->send_to_one( $member );
+			$this->send( $member );
 		}
 	}
 
 	/**
-	 * Send the message to one recipient in particular.
+	 * Send the message to one person in particular.
 	 *
 	 * @param Member $recipient  The Member to message.
 	 */
 	public function send_to_one( $recipient ) {
+		$this->send( $recipient );
+	}
+
+	/**
+	 * Send a message.
+	 *
+	 * Note: This is the private method handling sending only. The public `send_to_one`
+	 *       method handles saving metadata once the request is closed out.
+	 *
+	 * @param Member $recipient  The Member to message.
+	 */
+	private function send( $recipient ) {
 		$sms_request = $recipient->send_message( $this->message_body );
 
 		$this->record_send_attempt( $sms_request, $recipient );
+	}
+
+	/**
+	 * Record the SMS request.
+	 *
+	 * @param MessageInstance $sms_response  The SMS API response.
+	 * @param Member          $recipient     The member who was messaged.
+	 */
+	private function record_send_attempt( $sms_response, $recipient ) {
+		if ( $sms_response instanceof \WP_Error ) {
+			$this->send_attempts[] = array(
+				'recipient' => $recipient->ID,
+				'status'    => 'failed',
+				'error'     => $sms_response->get_error_message(),
+			);
+		} elseif ( $sms_response instanceof MessageInstance ) {
+			$this->send_attempts[] = array(
+				'recipient' => $recipient->ID,
+				'status'    => 'success',
+			);
+		}
 	}
 
 }
