@@ -79,7 +79,47 @@ class Message {
 	 * @return Message
 	 */
 	public static function create( $args ) {
-		return new Message();
+		$defaults = array(
+			'recipients' => array(),
+			'raw_body'   => '',
+			'body_data'  => array(),
+		);
+
+		$args = wp_parse_args( $args, $defaults );
+
+		// Make sure we have a list of recipients.
+		if ( empty( $args['recipients'] ) || 0 === count( $args['recipients'] ) ) {
+			return new WP_Error( 'rcptn_message_missing_recipients', __( 'No recipients were provided.', 'rcptn' ) );
+		}
+
+		// Make sure we have a message body.
+		if ( empty( $args['raw_body'] ) || 0 === strlen( $args['raw_body'] ) ) {
+			return new WP_Error( 'rcptn_message_missing_body', __( 'No message body was provided.', 'rcptn' ) );
+		}
+
+		// Set up arguments for the WP_Post.
+		$post_args = array(
+			'post_type'      => 'message',
+			'post_status'    => 'publish',
+			'post_author'    => wp_get_current_user()->ID,
+			'post_content'   => $args['raw_body'],
+			'comment_status' => 'closed',
+			'ping_status'    => 'closed',
+		);
+
+		// Try to create the WP_Post.
+		$wp_post = wp_insert_post( $post_args, true );
+
+		// Bail if we got an error.
+		if ( is_wp_error( $wp_post ) ) {
+			return $wp_post;
+		}
+
+		// Success! Create a new instance of the Message object, using the newly created post ID.
+		$message = new Message( $wp_post );
+
+		// Setting metadata...
+		return $message;
 	}
 
 }
