@@ -61,7 +61,7 @@ class AdminFormField {
 	 */
 	private static function render_required( $is_required ) {
 		if ( $is_required ) {
-			echo ' ' . esc_html( '(required)', 'rcptn' );
+			echo ' ' . esc_html__( '(required)', 'rcptn' );
 		}
 	}
 
