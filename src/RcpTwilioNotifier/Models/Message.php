@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Models;
+use RcpTwilioNotifier\Helpers\MemberRetriever;
 
 /**
  * A message sent to members.
@@ -69,10 +70,10 @@ class Message {
 
 		$this->wp_post = $message_post;
 
-		$this->recipients = array();
+		$this->recipients = MemberRetriever::convert_user_ids_to_members( get_post_meta( $this->wp_post->ID, 'rcptn_recipient_ids', true ) );
 
 		$this->raw_body = $this->wp_post->post_content;
-		$this->body_data = array();
+		$this->body_data = get_post_meta( $this->wp_post->ID, 'rcptn_body_data', true );
 
 		$this->send_attempts = array();
 	}

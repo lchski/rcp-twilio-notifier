@@ -83,4 +83,19 @@ class MemberRetriever {
 		return array_map( $converter, $users );
 	}
 
+	/**
+	 * Converts WP_User IDs to our custom Member object.
+	 *
+	 * @param int[] $user_ids  Array of WP_User IDs to convert.
+	 *
+	 * @return Member[]  The WP_Users objects, now converted to \RcpTwilioNotifier\Models\Member objects.
+	 */
+	public static function convert_user_ids_to_members( $user_ids ) {
+		$converter = function( $user_id ) {
+			return new Member( $user_id );
+		};
+
+		return array_map( $converter, $user_ids );
+	}
+
 }
