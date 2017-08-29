@@ -108,9 +108,11 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * @param string   $message  The message to send.
 	 */
 	private function message_members( $members, $message ) {
-		$message = new MessageBody( $message, array(
-			'post_ID' => ( isset( $this->posted['rcptn_extra_data']['post_ID'] ) ) ? $this->posted['rcptn_extra_data']['post_ID'] : null,
-		) );
+		$message = new MessageBody(
+			$message, array(
+				'post_ID' => ( isset( $this->posted['rcptn_extra_data']['post_ID'] ) ) ? $this->posted['rcptn_extra_data']['post_ID'] : null,
+			)
+		);
 
 		foreach ( $members as $member ) {
 			$sms_request = $member->send_message( $message );
