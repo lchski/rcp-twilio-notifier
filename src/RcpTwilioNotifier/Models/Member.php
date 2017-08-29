@@ -99,7 +99,7 @@ class Member extends \RCP_Member {
 	/**
 	 * Message the member's phone number.
 	 *
-	 * @param string $message  Message to send to the member.
+	 * @param MessageBody $message  Message to send to the member.
 	 */
 	public function send_message( $message ) {
 		// Verify that the member is active according to RCP.
@@ -107,8 +107,8 @@ class Member extends \RCP_Member {
 			return;
 		}
 
-		$merge_tag_processor = new MergeTags( $this );
-		$merged_message = $merge_tag_processor->replace_tags( $message );
+		$merge_tag_processor = new MergeTags( $this, $message->get_body_data() );
+		$merged_message = $merge_tag_processor->replace_tags( $message->get_raw_body() );
 
 		$twilio_client = new Client(
 			get_option( 'rcptn_twilio_sid' ),

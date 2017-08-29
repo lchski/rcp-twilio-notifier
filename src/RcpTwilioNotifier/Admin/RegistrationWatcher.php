@@ -8,6 +8,7 @@
 
 namespace RcpTwilioNotifier\Admin;
 use RcpTwilioNotifier\Models\Member;
+use RcpTwilioNotifier\Models\MessageBody;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 /**
@@ -55,7 +56,7 @@ class RegistrationWatcher {
 			return;
 		}
 
-		$sms_request = $member->send_message( $this->welcome_message );
+		$sms_request = $member->send_message( new MessageBody( $this->welcome_message ) );
 
 		if ( $sms_request instanceof \WP_Error ) {
 			// @TODO: Log the $sms_request response if it’s unsuccessful.

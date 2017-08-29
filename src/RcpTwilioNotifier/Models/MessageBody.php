@@ -33,7 +33,7 @@ class MessageBody {
 	 * @param string $raw_body   The message.
 	 * @param array  $body_data  Data to process the body.
 	 */
-	public function __construct( $raw_body, $body_data ) {
+	public function __construct( $raw_body, $body_data = array() ) {
 		$this->raw_body  = $raw_body;
 		$this->body_data = $body_data;
 	}

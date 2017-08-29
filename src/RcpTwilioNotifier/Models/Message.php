@@ -121,9 +121,11 @@ class Message {
 		}
 
 		// Retrieve just the IDs from the array of Recipients.
-		$recipient_ids = array_map( function( Member $recipient ) {
-			return $recipient->ID;
-		}, $args['recipients'] );
+		$recipient_ids = array_map(
+			function( Member $recipient ) {
+					return $recipient->ID;
+			}, $args['recipients']
+		);
 
 		// Setting metadata...
 		add_post_meta( $wp_post_id, 'rcptn_recipient_ids', $recipient_ids );

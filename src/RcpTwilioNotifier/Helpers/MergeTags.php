@@ -23,11 +23,19 @@ class MergeTags {
 	private $member;
 
 	/**
+	 * Data necessary to process strings.
+	 *
+	 * @var array
+	 */
+	private $additional_data;
+
+	/**
 	 * Set internal values.
 	 *
 	 * @param RcpTwilioNotifier\Models\Member|int $member_identifier  The ID of the member for whom we’re substituting values, or the Member itself.
+	 * @param array                               $additional_data  Additional data required to process a string.
 	 */
-	public function __construct( $member_identifier ) {
+	public function __construct( $member_identifier, $additional_data ) {
 		if ( is_numeric( $member_identifier ) ) {
 			// It’s an ID, create a new Member object from it.
 			$member = new Member( $member_identifier );
@@ -37,6 +45,7 @@ class MergeTags {
 		}
 
 		$this->member = $member;
+		$this->additional_data = $additional_data;
 	}
 
 	/**
@@ -76,7 +85,7 @@ class MergeTags {
 			case '|*LAST_NAME*|':
 				return $this->member->get( 'last_name' );
 			case '|*ALERT_LINK*|':
-				return get_permalink( $_POST['rcptn_extra_data']['post_ID'] ); // WPCS: CSRF ok.
+				return get_permalink( $this->additional_data['post_ID'] );
 			default:
 				return $tag;
 		}

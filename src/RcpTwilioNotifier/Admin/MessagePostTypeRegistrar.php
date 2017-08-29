@@ -40,13 +40,15 @@ class MessagePostTypeRegistrar {
 	 * Register the post type.
 	 */
 	public function register() {
-		register_post_type( $this->post_type_slug, array(
-			'label' => __( 'SMS Message', 'rcptn' ),
-			'public' => false,
-			'supports' => array(
-				'editor',
-				'custom-fields',
-			),
-		) );
+		register_post_type(
+			$this->post_type_slug, array(
+				'label' => __( 'SMS Message', 'rcptn' ),
+				'public' => false,
+				'supports' => array(
+					'editor',
+					'custom-fields',
+				),
+			)
+		);
 	}
 }
