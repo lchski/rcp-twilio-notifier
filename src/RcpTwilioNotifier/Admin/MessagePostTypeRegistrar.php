@@ -41,7 +41,7 @@ class MessagePostTypeRegistrar {
 	 */
 	public function register() {
 		register_post_type( $this->post_type_slug, array(
-			'labels' => __( 'SMS Message', 'rcptn' ),
+			'label' => __( 'SMS Message', 'rcptn' ),
 			'public' => false,
 			'supports' => array(
 				'editor',
