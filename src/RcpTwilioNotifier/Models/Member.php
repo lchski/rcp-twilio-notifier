@@ -100,6 +100,8 @@ class Member extends \RCP_Member {
 	 * Message the member's phone number.
 	 *
 	 * @param MessageBody $message  Message to send to the member.
+	 *
+	 * @return \Twilio\Rest\Api\V2010\Account\MessageInstance|void|\WP_Error
 	 */
 	public function send_message( $message ) {
 		// Verify that the member is active according to RCP.
