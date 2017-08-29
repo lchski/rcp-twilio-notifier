@@ -8,6 +8,7 @@
 
 namespace RcpTwilioNotifier\Models;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
+use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 /**
  * A message sent to members.
@@ -59,6 +60,14 @@ class Message {
 		} elseif ( $message_identifier instanceof \WP_Post ) {
 			// It’s already a \WP_Post object.
 			$message_post = $message_identifier;
+		} else {
+			return new \WP_Error(
+				'rcptn_message_no_wp_post',
+				__( 'Cannot find a WP Post using the identifier given.', 'rcptn' ),
+				array(
+					'message_identifier' => $message_identifier,
+				)
+			);
 		}
 
 		$this->wp_post = $message_post;
@@ -81,7 +90,7 @@ class Message {
 	 *     @type array    $body_data   Data required to process the message body.
 	 * }
 	 *
-	 * @return Message
+	 * @return Message|\WP_Error
 	 */
 	public static function create( $args ) {
 		$defaults = array(
@@ -94,12 +103,12 @@ class Message {
 
 		// Make sure we have a list of recipients.
 		if ( empty( $args['recipients'] ) || 0 === count( $args['recipients'] ) ) {
-			return new WP_Error( 'rcptn_message_missing_recipients', __( 'No recipients were provided.', 'rcptn' ) );
+			return new \WP_Error( 'rcptn_message_missing_recipients', __( 'No recipients were provided.', 'rcptn' ) );
 		}
 
 		// Make sure we have a message body.
 		if ( empty( $args['raw_body'] ) || 0 === strlen( $args['raw_body'] ) ) {
-			return new WP_Error( 'rcptn_message_missing_body', __( 'No message body was provided.', 'rcptn' ) );
+			return new \WP_Error( 'rcptn_message_missing_body', __( 'No message body was provided.', 'rcptn' ) );
 		}
 
 		// Set up arguments for the WP_Post.
