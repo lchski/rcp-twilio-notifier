@@ -156,6 +156,19 @@ class Message {
 	}
 
 	/**
+	 * Send the message to multiple specified people.
+	 *
+	 * @param Member[] $recipients  The Members to message.
+	 */
+	public function send_to_some( $recipients ) {
+		foreach ( $recipients as $recipient ) {
+			$this->send( $recipient );
+		}
+
+		$this->save_send_attempts();
+	}
+
+	/**
 	 * Send the message to one person in particular.
 	 *
 	 * @param Member $recipient  The Member to message.
