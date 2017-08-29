@@ -222,4 +222,33 @@ class Message {
 		return true;
 	}
 
+	/**
+	 * Check the send attempts to see if a given recipient has a record.
+	 *
+	 * @param Member $recipient  The recipient to check the send attempts for.
+	 *
+	 * @return bool|string|\WP_Error
+	 */
+	private function check_send_attempts_for_recipient( $recipient ) {
+		$send_attempt = array_values( array_filter( $this->send_attempts, function( $send_attempt ) use ( $recipient ) {
+			return $send_attempt['recipient'] === $recipient->ID;
+		} ) );
+
+		if ( empty( $send_attempt ) ) {
+			return false;
+		}
+
+		if ( 1 === count( $send_attempt ) ) {
+			return $send_attempt[0]['status'];
+		}
+
+		return new \WP_Error(
+			'rcptn_message_multiple_send_attempts',
+			__( 'Multiple send attempts exist for that recipient.', 'rcptn' ),
+			array(
+				'send_attempts' => $send_attempt,
+			)
+		);
+	}
+
 }
