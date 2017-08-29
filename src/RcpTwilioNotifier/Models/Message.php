@@ -14,6 +14,11 @@ namespace RcpTwilioNotifier\Models;
 class Message {
 
 	/**
+	 * The
+	 */
+	const POST_TYPE = 'rcptn_message';
+
+	/**
 	 * The WordPress Post this object represents.
 	 *
 	 * @var \WP_Post
