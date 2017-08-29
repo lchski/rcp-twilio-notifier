@@ -10,6 +10,7 @@ namespace RcpTwilioNotifier\Admin\Pages\Processors;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
 use RcpTwilioNotifier\Helpers\Notifier;
 use RcpTwilioNotifier\Models\Member;
+use RcpTwilioNotifier\Models\MessageBody;
 use RcpTwilioNotifier\Models\Notice;
 use RcpTwilioNotifier\Models\Region;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
@@ -107,6 +108,10 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * @param string   $message  The message to send.
 	 */
 	private function message_members( $members, $message ) {
+		$message = new MessageBody( $message, array(
+			'post_ID' => ( isset( $this->posted['rcptn_extra_data']['post_ID'] ) ) ? $this->posted['rcptn_extra_data']['post_ID'] : null,
+		) );
+
 		foreach ( $members as $member ) {
 			$sms_request = $member->send_message( $message );
 
