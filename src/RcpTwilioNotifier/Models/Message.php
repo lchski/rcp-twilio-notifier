@@ -14,6 +14,13 @@ namespace RcpTwilioNotifier\Models;
 class Message {
 
 	/**
+	 * The WordPress Post this object represents.
+	 *
+	 * @var \WP_Post
+	 */
+	private $wp_post;
+
+	/**
 	 * The recipients of this message.
 	 *
 	 * @var Member[]
@@ -40,6 +47,23 @@ class Message {
 	 * @var array
 	 */
 	private $send_attempts;
+
+	/**
+	 * Set internal values.
+	 *
+	 * @param int|\WP_Post $message_identifier  The ID of the \WP_Post this represents, or the \WP_Post itself.
+	 */
+	public function __construct( $message_identifier ) {
+		if ( is_numeric( $message_identifier ) ) {
+			// It’s an ID, create a new \WP_Post object from it.
+			$message_post = get_post( $message_identifier );
+		} elseif ( $message_identifier instanceof \WP_Post ) {
+			// It’s already a \WP_Post object.
+			$message_post = $message_identifier;
+		}
+
+		$this->wp_post = $message_identifier;
+	}
 
 	/**
 	 * Create a new Message.
