@@ -227,19 +227,23 @@ class Message {
 	 *
 	 * @param Member $recipient  The recipient to check the send attempts for.
 	 *
-	 * @return bool|string|\WP_Error
+	 * @return bool|array|\WP_Error
 	 */
-	private function check_send_attempts_for_recipient( $recipient ) {
-		$send_attempt = array_values( array_filter( $this->send_attempts, function( $send_attempt ) use ( $recipient ) {
-			return $send_attempt['recipient'] === $recipient->ID;
-		} ) );
+	public function check_send_attempts_for_recipient( $recipient ) {
+		$send_attempt = array_values(
+			array_filter(
+				$this->send_attempts, function( $send_attempt ) use ( $recipient ) {
+					return $send_attempt['recipient'] === $recipient->ID;
+				}
+			)
+		);
 
 		if ( empty( $send_attempt ) ) {
 			return false;
 		}
 
 		if ( 1 === count( $send_attempt ) ) {
-			return $send_attempt[0]['status'];
+			return $send_attempt[0];
 		}
 
 		return new \WP_Error(

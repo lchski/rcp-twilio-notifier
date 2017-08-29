@@ -10,10 +10,9 @@ namespace RcpTwilioNotifier\Admin\Pages\Processors;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
 use RcpTwilioNotifier\Helpers\Notifier;
 use RcpTwilioNotifier\Models\Member;
-use RcpTwilioNotifier\Models\MessageBody;
+use RcpTwilioNotifier\Models\Message;
 use RcpTwilioNotifier\Models\Notice;
 use RcpTwilioNotifier\Models\Region;
-use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 /**
  * Processes form submissions from our MessagingPage in the WordPress admin.
@@ -104,37 +103,45 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	/**
 	 * Message given members a given message.
 	 *
-	 * @param Member[] $members  The members to message.
-	 * @param string   $message  The message to send.
+	 * @param Member[] $members       The members to message.
+	 * @param string   $message_body  The message to send.
 	 */
-	private function message_members( $members, $message ) {
-		$message = new MessageBody(
-			$message, array(
-				'post_ID' => ( isset( $this->posted['rcptn_extra_data']['post_ID'] ) ) ? $this->posted['rcptn_extra_data']['post_ID'] : null,
+	private function message_members( $members, $message_body ) {
+		$message = Message::create(
+			array(
+				'recipients' => $members,
+				'raw_body'   => $message_body,
+				'body_data'  => array(
+					'post_ID' => ( isset( $this->posted['rcptn_extra_data']['post_ID'] ) ) ? $this->posted['rcptn_extra_data']['post_ID'] : null,
+				),
 			)
 		);
 
-		foreach ( $members as $member ) {
-			$sms_request = $member->send_message( $message );
+		$message->send_to_all();
 
-			$this->notify_on_send( $sms_request, $member );
+		foreach ( $members as $member ) {
+			$send_attempt = $message->check_send_attempts_for_recipient( $member );
+
+			if ( false !== $send_attempt && ! $send_attempt instanceof \WP_Error ) {
+				$this->notify_on_send( $send_attempt, $member );
+			}
 		}
 	}
 
 	/**
-	 * Create a notification based on the SMS request.
+	 * Create a notification based on a send attempt.
 	 *
-	 * @param MessageInstance $sms_response  The SMS API response.
-	 * @param Member          $member        The member who was messaged.
+	 * @param array  $send_attempt  The send attempt.
+	 * @param Member $member        The member who was messaged.
 	 */
-	private function notify_on_send( $sms_response, $member ) {
+	private function notify_on_send( $send_attempt, $member ) {
 		$notifier = Notifier::get_instance();
 
-		if ( $sms_response instanceof \WP_Error ) {
-			$notifier->add_notice( new Notice( 'error', $sms_response->get_error_message() ) );
+		if ( 'error' === $send_attempt['status'] ) {
+			$notifier->add_notice( new Notice( 'error', $send_attempt['error'] ) );
 
 			$this->failed_sends[] = $member->ID;
-		} elseif ( $sms_response instanceof MessageInstance ) {
+		} elseif ( 'success' === $send_attempt['status'] ) {
 			$notifier->add_notice(
 				new Notice(
 					'success',
