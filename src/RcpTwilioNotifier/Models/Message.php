@@ -226,9 +226,11 @@ class Message {
 		);
 
 		// Get the recipients of the failed sends as Member objects.
-		$recipients = array_map( function( $send_attempt ) {
-			return new Member( $send_attempt['recipient'] );
-		}, $failed_sends );
+		$recipients = array_map(
+			function( $send_attempt ) {
+					return new Member( $send_attempt['recipient'] );
+			}, $failed_sends
+		);
 
 		// Message the recipients of the failed sends.
 		$this->send_to_some( $recipients );
@@ -251,22 +253,35 @@ class Message {
 	/**
 	 * Record the SMS request.
 	 *
-	 * @param MessageInstance $sms_response  The SMS API response.
-	 * @param Member          $recipient     The member who was messaged.
+	 * @param MessageInstance|\WP_Error $sms_response  The SMS API response.
+	 * @param Member                    $recipient     The member who was messaged.
 	 */
 	private function record_send_attempt( $sms_response, $recipient ) {
 		if ( $sms_response instanceof \WP_Error ) {
-			$this->send_attempts[] = array(
+			$send_attempt = array(
 				'recipient' => $recipient->ID,
 				'status'    => 'failed',
 				'error'     => $sms_response->get_error_message(),
 			);
 		} elseif ( $sms_response instanceof MessageInstance ) {
-			$this->send_attempts[] = array(
+			$send_attempt = array(
 				'recipient' => $recipient->ID,
 				'status'    => 'success',
 			);
 		}
+
+		// If there's an existing send attempt for this recipient, overwrite the existing list to exclude that attempt.
+		// We don't want to have two attempts for the same recipient.
+		if ( false !== $this->get_send_attempts_for_recipient( $recipient ) ) {
+			$this->send_attempts = array_filter(
+				$this->send_attempts, function( $send_attempt ) use ( $recipient ) {
+					return $send_attempt['recipient'] !== $recipient->ID;
+				}
+			);
+		}
+
+		// Add the send attempt to the list.
+		$this->send_attempts[] = $send_attempt;
 	}
 
 	/**
