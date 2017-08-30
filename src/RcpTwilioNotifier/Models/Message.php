@@ -213,6 +213,28 @@ class Message {
 	}
 
 	/**
+	 * Resend the message to those for whom it failed previously.
+	 */
+	public function retry_failed_sends() {
+		// Get the failed sends.
+		$failed_sends = array_values(
+			array_filter(
+				$this->send_attempts, function( $send_attempt ) {
+					return 'failed' === $send_attempt['status'];
+				}
+			)
+		);
+
+		// Get the recipients of the failed sends as Member objects.
+		$recipients = array_map( function( $send_attempt ) {
+			return new Member( $send_attempt['recipient'] );
+		}, $failed_sends );
+
+		// Message the recipients of the failed sends.
+		$this->send_to_some( $recipients );
+	}
+
+	/**
 	 * Send a message.
 	 *
 	 * Note: This is the private method handling sending only. The public `send_to_one`
