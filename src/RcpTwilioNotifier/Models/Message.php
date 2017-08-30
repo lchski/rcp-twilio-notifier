@@ -76,7 +76,9 @@ class Message {
 
 		$this->message_body = new MessageBody( $this->wp_post->post_content, get_post_meta( $this->wp_post->ID, 'rcptn_body_data', true ) );
 
-		$this->send_attempts = array();
+		$send_attempts = get_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', true );
+
+		$this->send_attempts = ( '' !== $send_attempts ) ? $send_attempts : array();
 	}
 
 	/**
