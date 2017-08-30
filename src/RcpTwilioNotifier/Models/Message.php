@@ -227,6 +227,11 @@ class Message {
 			)
 		);
 
+		// Bail if there are no failed sends.
+		if ( empty( $failed_sends ) ) {
+			return;
+		}
+
 		// Get the recipients of the failed sends as Member objects.
 		$recipients = array_map(
 			function( $send_attempt ) {
