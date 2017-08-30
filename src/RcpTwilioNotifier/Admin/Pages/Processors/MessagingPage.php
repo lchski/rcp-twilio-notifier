@@ -120,7 +120,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 		$message->send_to_all();
 
 		foreach ( $members as $member ) {
-			$send_attempt = $message->check_send_attempts_for_recipient( $member );
+			$send_attempt = $message->get_send_attempts_for_recipient( $member );
 
 			if ( false !== $send_attempt && ! $send_attempt instanceof \WP_Error ) {
 				$this->notify_on_send( $send_attempt, $member );
