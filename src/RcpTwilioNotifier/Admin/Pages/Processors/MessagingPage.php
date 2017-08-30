@@ -137,7 +137,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	private function notify_on_send( $send_attempt, $member ) {
 		$notifier = Notifier::get_instance();
 
-		if ( 'error' === $send_attempt['status'] ) {
+		if ( 'failed' === $send_attempt['status'] ) {
 			$notifier->add_notice( new Notice( 'error', $send_attempt['error'] ) );
 
 			$this->failed_sends[] = $member->ID;
