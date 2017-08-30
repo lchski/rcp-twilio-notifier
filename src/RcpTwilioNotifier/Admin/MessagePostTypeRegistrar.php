@@ -43,11 +43,25 @@ class MessagePostTypeRegistrar {
 		register_post_type(
 			$this->post_type_slug, array(
 				'label' => __( 'SMS Message', 'rcptn' ),
-				'public' => false,
-				'supports' => array(
-					'editor',
-					'custom-fields',
+				'exclude_from_search' => true,
+				'publicly_queryable'  => false,
+				'show_in_nav_menus'   => false,
+				'show_ui'             => true,
+				'show_in_admin_bar'   => false,
+				'menu_icon'           => 'dashicons-testimonial',
+				'capability_type'     => 'post',
+				'capabilities'        => array(
+					'edit_post'          => 'rcp_view_members',
+					'read_post'          => 'rcp_view_members',
+					'delete_post'        => false,
+					'edit_posts'         => 'rcp_view_members',
+					'edit_others_posts'  => 'rcp_view_members',
+					'delete_posts'       => false,
+					'publish_posts'      => false,
+					'read_private_posts' => 'rcp_view_members',
+					'create_posts'       => false,
 				),
+				'supports' => false,
 			)
 		);
 	}

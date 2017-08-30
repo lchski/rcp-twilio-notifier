@@ -115,7 +115,7 @@ class Message {
 
 		// Set up arguments for the WP_Post.
 		$post_args = array(
-			'post_type'      => 'message',
+			'post_type'      => self::POST_TYPE,
 			'post_status'    => 'publish',
 			'post_author'    => wp_get_current_user()->ID,
 			'post_content'   => $args['raw_body'],
