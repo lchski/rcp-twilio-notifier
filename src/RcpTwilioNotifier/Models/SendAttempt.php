@@ -63,7 +63,7 @@ class SendAttempt {
 	 */
 	public function convert_to_array() {
 		$send_attempt = array(
-			'recipient' => $this->recipient,
+			'recipient' => $this->recipient->ID,
 			'status'    => $this->status,
 			'timestamp' => $this->timestamp,
 		);
@@ -92,7 +92,7 @@ class SendAttempt {
 	public static function create_from_array( $send_attempt ) {
 		if ( isset( $send_attempt['error'] ) ) {
 			return new self(
-				$send_attempt['recipient'],
+				new Member( $send_attempt['recipient'] ),
 				$send_attempt['status'],
 				$send_attempt['timestamp'],
 				$send_attempt['error']
@@ -100,10 +100,19 @@ class SendAttempt {
 		}
 
 		return new self(
-			$send_attempt['recipient'],
+			new Member( $send_attempt['recipient'] ),
 			$send_attempt['status'],
 			$send_attempt['timestamp']
 		);
+	}
+
+	/**
+	 * Was this attempt a failure?
+	 *
+	 * @return bool
+	 */
+	public function is_failed() {
+		return 'failed' === $this->status;
 	}
 
 }

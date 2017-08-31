@@ -44,7 +44,7 @@ class Message {
 	/**
 	 * Attempted sends for each recipient, including retries.
 	 *
-	 * @var array
+	 * @var SendAttempt[]
 	 */
 	private $send_attempts;
 
@@ -100,7 +100,11 @@ class Message {
 
 		$this->message_body = new MessageBody( $this->wp_post->post_content, get_post_meta( $this->wp_post->ID, 'rcptn_body_data', true ) );
 
-		$send_attempts = get_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', true );
+		$send_attempts = array_map(
+			function( array $send_attempt ) {
+					return SendAttempt::create_from_array( $send_attempt );
+			}, get_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', true )
+		);
 
 		$this->send_attempts = ( '' !== $send_attempts ) ? $send_attempts : array();
 	}
@@ -181,18 +185,12 @@ class Message {
 	}
 
 	/**
-	 * Get the send attempts, with the recipient IDs converted to Member objects.
+	 * Get the send attempts.
 	 *
-	 * @return array
+	 * @return SendAttempt[]
 	 */
 	public function get_send_attempts() {
-		return array_map(
-			function( $send_attempt ) {
-					$send_attempt['recipient'] = new Member( $send_attempt['recipient'] );
-
-					return $send_attempt;
-			}, $this->send_attempts
-		);
+		return $this->send_attempts;
 	}
 
 	/**
@@ -205,8 +203,8 @@ class Message {
 	public function get_send_attempts_for_recipient( $recipient ) {
 		$send_attempt = array_values(
 			array_filter(
-				$this->send_attempts, function( $send_attempt ) use ( $recipient ) {
-					return $send_attempt['recipient'] === $recipient->ID;
+				$this->send_attempts, function( SendAttempt $send_attempt ) use ( $recipient ) {
+					return $send_attempt->recipient->ID === $recipient->ID;
 				}
 			)
 		);
@@ -279,8 +277,8 @@ class Message {
 		// Get the failed sends.
 		$failed_sends = array_values(
 			array_filter(
-				$this->send_attempts, function( $send_attempt ) {
-					return 'failed' === $send_attempt['status'];
+				$this->send_attempts, function( SendAttempt $send_attempt ) {
+					return $send_attempt->is_failed();
 				}
 			)
 		);
@@ -292,8 +290,8 @@ class Message {
 
 		// Get the recipients of the failed sends as Member objects.
 		$recipients = array_map(
-			function( $send_attempt ) {
-					return new Member( $send_attempt['recipient'] );
+			function( SendAttempt $send_attempt ) {
+				return $send_attempt->recipient;
 			}, $failed_sends
 		);
 
@@ -323,16 +321,17 @@ class Message {
 	 */
 	private function record_send_attempt( $sms_response, $recipient ) {
 		if ( $sms_response instanceof \WP_Error ) {
-			$send_attempt = array(
-				'recipient' => $recipient->ID,
-				'status'    => 'failed',
-				'error'     => $sms_response->get_error_message(),
+			$send_attempt = new SendAttempt(
+				$recipient,
+				'failed',
+				time(),
+				$sms_response->get_error_message()
 			);
 		} elseif ( $sms_response instanceof MessageInstance ) {
-			$send_attempt = array(
-				'recipient' => $recipient->ID,
-				'status'    => 'success',
-				'date'      => $sms_response->dateSent->getTimestamp(),
+			$send_attempt = new SendAttempt(
+				$recipient,
+				'success',
+				$sms_response->dateSent->getTimestamp()
 			);
 		}
 
@@ -340,8 +339,8 @@ class Message {
 		// We don't want to have two attempts for the same recipient.
 		if ( false !== $this->get_send_attempts_for_recipient( $recipient ) ) {
 			$this->send_attempts = array_filter(
-				$this->send_attempts, function( $send_attempt ) use ( $recipient ) {
-					return $send_attempt['recipient'] !== $recipient->ID;
+				$this->send_attempts, function( SendAttempt $send_attempt ) use ( $recipient ) {
+					return $send_attempt->recipient->ID !== $recipient->ID;
 				}
 			);
 		}
@@ -356,7 +355,13 @@ class Message {
 	 * @return bool|\WP_Error
 	 */
 	private function save_send_attempts() {
-		$update_attempt = update_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', $this->send_attempts );
+		$update_attempt = update_post_meta(
+			$this->wp_post->ID, 'rcptn_send_attempts', array_map(
+				function( SendAttempt $send_attempt ) {
+						return $send_attempt->convert_to_array();
+				}, $this->send_attempts
+			)
+		);
 
 		if ( false === $update_attempt ) {
 			return new \WP_Error(
