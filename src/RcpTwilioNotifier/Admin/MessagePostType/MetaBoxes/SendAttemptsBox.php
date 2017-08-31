@@ -97,6 +97,14 @@ class SendAttemptsBox extends AbstractMetaBox {
 					?>
 				</tbody>
 			</table>
+			<form method="post" action="">
+				<input type="hidden" name="rcptn_message_id" value="<?php echo esc_attr( $this->message->get_ID() ); ?>">
+
+				<input type="hidden" name="rcptn-action" value="message-failed-recipients">
+				<?php wp_nonce_field( 'rcptn_message_failed_recipients_nonce', 'rcptn_message_failed_recipients_nonce' ); ?>
+
+				<button class="button button-primary" type="submit">Retry failed messages</button>
+			</form>
 		<?php
 	}
 

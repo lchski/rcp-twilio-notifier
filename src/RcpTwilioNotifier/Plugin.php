@@ -87,6 +87,9 @@ class Plugin {
 		$single_recipient_messaging_processor = new Admin\Pages\Processors\SingleRecipientMessagingProcessor();
 		$single_recipient_messaging_processor->init();
 
+		$failed_recipients_messaging_processor = new Admin\Pages\Processors\FailedRecipientsMessagingProcessor();
+		$failed_recipients_messaging_processor->init();
+
 		/**
 		 * Member fields
 		 */
