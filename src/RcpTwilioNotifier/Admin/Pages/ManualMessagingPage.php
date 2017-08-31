@@ -10,11 +10,20 @@ namespace RcpTwilioNotifier\Admin\Pages;
 use RcpTwilioNotifier\Helpers\Renderers\AdminFormField;
 use RcpTwilioNotifier\Helpers\Renderers\MessagingUi;
 use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
+use RcpTwilioNotifier\Models\Message;
 
 /**
  * WordPress admin page for messaging members by their region.
  */
 class ManualMessagingPage extends AbstractPage implements PageInterface {
+
+	/**
+	 * The slug of the parent page under which this page should sit.
+	 *
+	 * @see add_submenu_page
+	 * @var string
+	 */
+	protected $parent_slug;
 
 	/**
 	 * Page title
@@ -55,8 +64,9 @@ class ManualMessagingPage extends AbstractPage implements PageInterface {
 	public function __construct( $regions ) {
 		$this->regions = $regions;
 
+		$this->parent_slug = 'edit.php?post_type=' . Message::POST_TYPE;
 		$this->page_title = __( 'Region Notifier', 'rcptn' );
-		$this->menu_title = __( 'Region Notifier', 'rcptn' );
+		$this->menu_title = __( 'Send New', 'rcptn' );
 		$this->menu_slug = 'rcptn-region-notifier';
 	}
 

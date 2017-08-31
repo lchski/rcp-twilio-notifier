@@ -14,6 +14,13 @@ namespace RcpTwilioNotifier\Admin\Pages;
 abstract class AbstractPage {
 
 	/**
+	 * The slug of the parent page under which this page should sit.
+	 *
+	 * @var string
+	 */
+	protected $parent_slug = 'rcp-members';
+
+	/**
 	 * Hook into WordPress.
 	 */
 	public function init() {
@@ -25,7 +32,7 @@ abstract class AbstractPage {
 	 */
 	public function register_page() {
 		add_submenu_page(
-			'rcp-members',
+			$this->parent_slug,
 			$this->page_title,
 			$this->menu_title,
 			'rcp_view_members',
