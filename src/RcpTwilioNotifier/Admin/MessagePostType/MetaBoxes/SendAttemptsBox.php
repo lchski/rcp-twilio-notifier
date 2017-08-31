@@ -41,7 +41,18 @@ class SendAttemptsBox extends AbstractMetaBox {
 						$send_attempt_counter++;
 						?>
 						<tr class="<?php echo esc_attr( (0 !== $send_attempt_counter % 2) ? 'alternate' : '' ); ?>">
-							<td><?php echo esc_html( $send_attempt['recipient']->first_name . ' ' . $send_attempt['recipient']->last_name ); ?></td>
+							<td>
+								<?php
+								echo esc_html(
+									sprintf(
+										'%1$s %2$s (%3$s)',
+										$send_attempt['recipient']->first_name,
+										$send_attempt['recipient']->last_name,
+										$send_attempt['recipient']->get_phone_number()
+									)
+								);
+								?>
+							</td>
 							<td><?php echo esc_html( $send_attempt['status'] ); ?></td>
 						</tr>
 						<?php
