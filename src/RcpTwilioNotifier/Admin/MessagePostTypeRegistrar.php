@@ -43,14 +43,16 @@ class MessagePostTypeRegistrar {
 		register_post_type(
 			$this->post_type_slug, array(
 				'label' => __( 'SMS Message', 'rcptn' ),
-				'exclude_from_search' => true,
-				'publicly_queryable'  => false,
-				'show_in_nav_menus'   => false,
-				'show_ui'             => true,
-				'show_in_admin_bar'   => false,
-				'menu_icon'           => 'dashicons-testimonial',
-				'capability_type'     => 'post',
-				'capabilities'        => array(
+				'exclude_from_search'  => true,
+				'publicly_queryable'   => false,
+				'show_in_nav_menus'    => false,
+				'show_ui'              => true,
+				'show_in_admin_bar'    => false,
+				'menu_icon'            => 'dashicons-testimonial',
+				'capability_type'      => 'post',
+				'supports'             => false,
+				'register_meta_box_cb' => array( $this, 'register_meta_boxes' ),
+				'capabilities'         => array(
 					'edit_post'          => 'rcp_view_members',
 					'read_post'          => 'rcp_view_members',
 					'delete_post'        => false,
@@ -61,8 +63,16 @@ class MessagePostTypeRegistrar {
 					'read_private_posts' => 'rcp_view_members',
 					'create_posts'       => false,
 				),
-				'supports' => false,
 			)
 		);
+	}
+
+	/**
+	 * Register the meta boxes for the post type editing screen.
+	 *
+	 * @param \WP_Post $post  The currently edited post.
+	 */
+	public function register_meta_boxes( $post ) {
+
 	}
 }
