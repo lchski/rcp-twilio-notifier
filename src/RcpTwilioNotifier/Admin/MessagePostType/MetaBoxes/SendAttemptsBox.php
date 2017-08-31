@@ -66,9 +66,9 @@ class SendAttemptsBox extends AbstractMetaBox {
 									sprintf(
 										// translators: %1$s is recipient's first name; %2$s is recipient's last name; %3$s is recipient's phone number.
 										__( '%1$s %2$s (%3$s)', 'rcptn' ),
-										$send_attempt['recipient']->first_name,
-										$send_attempt['recipient']->last_name,
-										$send_attempt['recipient']->get_phone_number()
+										$send_attempt->recipient->first_name,
+										$send_attempt->recipient->last_name,
+										$send_attempt->recipient->get_phone_number()
 									)
 								);
 								?>
@@ -78,7 +78,7 @@ class SendAttemptsBox extends AbstractMetaBox {
 										sprintf(
 											// translators: %d is the recipient's user ID.
 											__( 'ID: %d', 'rcptn' ),
-											$send_attempt['recipient']->ID
+											$send_attempt->recipient->ID
 										)
 									);
 									?>
@@ -86,21 +86,15 @@ class SendAttemptsBox extends AbstractMetaBox {
 							</td>
 							<td>
 								<?php
-									$send_status = '';
-
-								switch ( $send_attempt['status'] ) {
-									case 'success':
-										// translators: %s is the send date.
-										$send_status = sprintf( __( 'Success <br><small>%s</small>', 'rcptn' ), (isset( $send_attempt['date'] ) ) ? date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $send_attempt['date'] ) : '' );
-										break;
-									case 'failed':
-										// translators: %s is the error message.
-										$send_status = sprintf( __( 'Failed <br><small>%s</small>', 'rcptn' ), $send_attempt['error'] );
-										break;
-									default:
-										// translators: %s is the unknown send attempt status.
-										$send_status = sprintf( __( 'Unknown (%s)', 'rcptn' ), $send_attempt['status'] );
-										break;
+								if ( $send_attempt->is_success() ) {
+									// translators: %s is the send date.
+									$send_status = sprintf( __( 'Success <br><small>%s</small>', 'rcptn' ), ( isset( $send_attempt->date ) ) ? date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $send_attempt->date ) : '' );
+								} elseif ( $send_attempt->is_failed() ) {
+									// translators: %s is the error message.
+									$send_status = sprintf( __( 'Failed <br><small>%s</small>', 'rcptn' ), $send_attempt->error );
+								} else {
+									// translators: %s is the unknown send attempt status.
+									$send_status = sprintf( __( 'Unknown (%s)', 'rcptn' ), $send_attempt->status );
 								}
 
 									echo wp_kses(
@@ -114,7 +108,7 @@ class SendAttemptsBox extends AbstractMetaBox {
 							<td>
 								<form method="post" action="<?php echo esc_attr( menu_page_url( 'rcptn-region-notifier', false ) ); ?>">
 									<input type="hidden" name="rcptn_message_id" value="<?php echo esc_attr( $this->message->get_ID() ); ?>">
-									<input type="hidden" name="rcptn_recipient_id" value="<?php echo esc_attr( $send_attempt['recipient']->ID ); ?>">
+									<input type="hidden" name="rcptn_recipient_id" value="<?php echo esc_attr( $send_attempt->recipient->ID ); ?>">
 
 									<input type="hidden" name="rcptn-action" value="message-single-recipient">
 									<?php wp_nonce_field( 'rcptn_message_single_recipient_nonce', 'rcptn_message_single_recipient_nonce' ); ?>
