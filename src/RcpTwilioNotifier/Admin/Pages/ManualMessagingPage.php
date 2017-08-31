@@ -1,6 +1,6 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\Admin\Pages\MessagingPage class
+ * RCP: RcpTwilioNotifier\Admin\Pages\ManualMessagingPage class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier\Admin\Pages
@@ -14,7 +14,7 @@ use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
 /**
  * WordPress admin page for messaging members by their region.
  */
-class MessagingPage extends AbstractPage implements PageInterface {
+class ManualMessagingPage extends AbstractPage implements PageInterface {
 
 	/**
 	 * Page title

@@ -1,6 +1,6 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\Admin\Pages\Processors\MessagingPage class
+ * RCP: RcpTwilioNotifier\Admin\Pages\Processors\ManualMessagingPage class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier\Admin|Pages\Processors
@@ -15,9 +15,9 @@ use RcpTwilioNotifier\Models\Notice;
 use RcpTwilioNotifier\Models\Region;
 
 /**
- * Processes form submissions from our MessagingPage in the WordPress admin.
+ * Processes form submissions from our ManualMessagingPage in the WordPress admin.
  */
-class MessagingPage extends AbstractProcessor implements ProcessorInterface {
+class ManualMessagingPage extends AbstractProcessor implements ProcessorInterface {
 
 	/**
 	 * The name of the action that this processor processes.
@@ -53,7 +53,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * Process!
 	 */
 	public function process() {
-		$validator = new \RcpTwilioNotifier\Admin\Pages\Validators\MessagingPage( $this->regions );
+		$validator = new \RcpTwilioNotifier\Admin\Pages\Validators\ManualMessagingPage( $this->regions );
 		$validator->init();
 
 		if ( ! $validator->is_valid() ) {
