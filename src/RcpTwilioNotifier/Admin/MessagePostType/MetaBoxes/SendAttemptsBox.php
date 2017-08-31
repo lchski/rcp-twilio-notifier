@@ -64,13 +64,25 @@ class SendAttemptsBox extends AbstractMetaBox {
 								<?php
 								echo esc_html(
 									sprintf(
-										'%1$s %2$s (%3$s)',
+										// translators: %1$s is recipient's first name; %2$s is recipient's last name; %3$s is recipient's phone number.
+										__( '%1$s %2$s (%3$s)', 'rcptn' ),
 										$send_attempt['recipient']->first_name,
 										$send_attempt['recipient']->last_name,
 										$send_attempt['recipient']->get_phone_number()
 									)
 								);
 								?>
+								<div class="row-actions">
+									<?php
+									echo esc_html(
+										sprintf(
+											// translators: %d is the recipient's user ID.
+											__( 'ID: %d', 'rcptn' ),
+											$send_attempt['recipient']->ID
+										)
+									);
+									?>
+								</div>
 							</td>
 							<td>
 								<?php
