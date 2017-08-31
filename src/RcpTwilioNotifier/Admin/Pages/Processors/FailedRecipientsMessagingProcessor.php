@@ -8,7 +8,6 @@
 
 namespace RcpTwilioNotifier\Admin\Pages\Processors;
 use RcpTwilioNotifier\Helpers\Notifier;
-use RcpTwilioNotifier\Models\Member;
 use RcpTwilioNotifier\Models\Message;
 use RcpTwilioNotifier\Models\Notice;
 
@@ -30,6 +29,13 @@ class FailedRecipientsMessagingProcessor extends AbstractProcessor implements Pr
 	 * @var string  Nonce name.
 	 */
 	protected $nonce_name = 'rcptn_message_failed_recipients_nonce';
+
+	/**
+	 * Whether or not this processor redirects after processing.
+	 *
+	 * @var bool
+	 */
+	protected $redirects_after_processing = true;
 
 	/**
 	 * Process!
@@ -55,7 +61,7 @@ class FailedRecipientsMessagingProcessor extends AbstractProcessor implements Pr
 		);
 
 		// We’re done! Redirect.
-		wp_safe_redirect( get_edit_post_link( absint( $this->posted['rcptn_message_id'] ) ) );
+		wp_safe_redirect( get_edit_post_link( absint( $this->posted['rcptn_message_id'] ), '' ) );
 	}
 
 

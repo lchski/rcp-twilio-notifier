@@ -32,6 +32,13 @@ class SingleRecipientMessagingProcessor extends AbstractProcessor implements Pro
 	protected $nonce_name = 'rcptn_message_single_recipient_nonce';
 
 	/**
+	 * Whether or not this processor redirects after processing.
+	 *
+	 * @var bool
+	 */
+	protected $redirects_after_processing = true;
+
+	/**
 	 * Process!
 	 */
 	public function process() {
@@ -62,7 +69,7 @@ class SingleRecipientMessagingProcessor extends AbstractProcessor implements Pro
 		);
 
 		// We’re done! Redirect.
-		wp_safe_redirect( get_edit_post_link( absint( $this->posted['rcptn_message_id'] ) ) );
+		wp_safe_redirect( get_edit_post_link( absint( $this->posted['rcptn_message_id'] ), '' ) );
 	}
 
 

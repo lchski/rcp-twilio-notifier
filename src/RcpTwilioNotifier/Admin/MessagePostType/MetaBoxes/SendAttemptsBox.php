@@ -81,7 +81,7 @@ class SendAttemptsBox extends AbstractMetaBox {
 								?>
 							</td>
 							<td>
-								<form method="post" action="">
+								<form method="post" action="<?php echo esc_attr( menu_page_url( 'rcptn-region-notifier', false ) ); ?>">
 									<input type="hidden" name="rcptn_message_id" value="<?php echo esc_attr( $this->message->get_ID() ); ?>">
 									<input type="hidden" name="rcptn_recipient_id" value="<?php echo esc_attr( $send_attempt['recipient']->ID ); ?>">
 
@@ -97,7 +97,7 @@ class SendAttemptsBox extends AbstractMetaBox {
 					?>
 				</tbody>
 			</table>
-			<form method="post" action="">
+			<form method="post" action="<?php echo esc_attr( menu_page_url( 'rcptn-region-notifier', false ) ); ?>">
 				<input type="hidden" name="rcptn_message_id" value="<?php echo esc_attr( $this->message->get_ID() ); ?>">
 
 				<input type="hidden" name="rcptn-action" value="message-failed-recipients">
