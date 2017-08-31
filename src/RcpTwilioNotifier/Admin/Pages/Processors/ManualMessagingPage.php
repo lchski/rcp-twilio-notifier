@@ -13,7 +13,6 @@ use RcpTwilioNotifier\Models\Member;
 use RcpTwilioNotifier\Models\Message;
 use RcpTwilioNotifier\Models\Notice;
 use RcpTwilioNotifier\Models\Region;
-use RcpTwilioNotifier\Models\SendAttempt;
 
 /**
  * Processes form submissions from our ManualMessagingPage in the WordPress admin.
@@ -35,11 +34,18 @@ class ManualMessagingPage extends AbstractProcessor implements ProcessorInterfac
 	protected $nonce_name = 'rcptn_send_single_message_nonce';
 
 	/**
-	 * List of members that we failed to send to.
+	 * Whether or not this processor redirects after processing.
 	 *
-	 * @var int[]
+	 * @var bool
 	 */
-	protected $failed_sends = array();
+	protected $redirects_after_processing = true;
+
+	/**
+	 * The message created by this form submission.
+	 *
+	 * @var Message
+	 */
+	private $message;
 
 	/**
 	 * Set internal values.
@@ -71,11 +77,17 @@ class ManualMessagingPage extends AbstractProcessor implements ProcessorInterfac
 			);
 		}
 
-		// Check to see whether we had any errors.
-		if ( empty( $this->failed_sends ) ) {
-			// Everything worked, clear the message page.
-			$_POST = array();
-		}
+		// Spread the good news!
+		$notifier = Notifier::get_instance();
+		$notifier->add_notice(
+			new Notice(
+				'success',
+				__( 'Queued the message.', 'rcptn' )
+			)
+		);
+
+		// We’re done! Redirect.
+		wp_safe_redirect( get_edit_post_link( $this->message->get_id(), '' ) );
 	}
 
 	/**
@@ -108,7 +120,7 @@ class ManualMessagingPage extends AbstractProcessor implements ProcessorInterfac
 	 * @param string   $message_body  The message to send.
 	 */
 	private function message_members( $members, $message_body ) {
-		$message = Message::create(
+		$this->message = Message::create(
 			array(
 				'recipients' => $members,
 				'raw_body'   => $message_body,
@@ -118,38 +130,7 @@ class ManualMessagingPage extends AbstractProcessor implements ProcessorInterfac
 			)
 		);
 
-		$message->send_to_all();
-
-		foreach ( $members as $member ) {
-			$send_attempt = $message->get_send_attempts_for_recipient( $member );
-
-			if ( false !== $send_attempt && ! $send_attempt instanceof \WP_Error ) {
-				$this->notify_on_send( $send_attempt, $member );
-			}
-		}
+		$this->message->send_to_all();
 	}
 
-	/**
-	 * Create a notification based on a send attempt.
-	 *
-	 * @param SendAttempt $send_attempt  The send attempt.
-	 * @param Member      $member        The member who was messaged.
-	 */
-	private function notify_on_send( $send_attempt, $member ) {
-		$notifier = Notifier::get_instance();
-
-		if ( $send_attempt->is_failed() ) {
-			$notifier->add_notice( new Notice( 'error', $send_attempt->error ) );
-
-			$this->failed_sends[] = $member->ID;
-		} elseif ( $send_attempt->is_success() ) {
-			$notifier->add_notice(
-				new Notice(
-					'success',
-					// translators: %1$s is the member’s name, %2$d is their phone number.
-					sprintf( __( 'Message successfully sent to %1$s (%2$s).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
-				)
-			);
-		}
-	}
 }
