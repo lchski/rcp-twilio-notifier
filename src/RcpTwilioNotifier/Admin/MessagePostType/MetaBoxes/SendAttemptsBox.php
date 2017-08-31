@@ -34,6 +34,24 @@ class SendAttemptsBox extends AbstractMetaBox {
 						<th scope="col"><?php esc_html_e( 'Actions', 'rcptn' ); ?></th>
 					</tr>
 				</thead>
+
+				<tfoot>
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>
+							<form method="post" action="<?php echo esc_attr( menu_page_url( 'rcptn-region-notifier', false ) ); ?>">
+								<input type="hidden" name="rcptn_message_id" value="<?php echo esc_attr( $this->message->get_ID() ); ?>">
+
+								<input type="hidden" name="rcptn-action" value="message-failed-recipients">
+								<?php wp_nonce_field( 'rcptn_message_failed_recipients_nonce', 'rcptn_message_failed_recipients_nonce' ); ?>
+
+								<button class="button button-primary" type="submit">Retry Failed Messages</button>
+							</form>
+						</td>
+					</tr>
+				</tfoot>
+
 				<tbody>
 					<?php
 						$send_attempt_counter = 0;
@@ -97,14 +115,6 @@ class SendAttemptsBox extends AbstractMetaBox {
 					?>
 				</tbody>
 			</table>
-			<form method="post" action="<?php echo esc_attr( menu_page_url( 'rcptn-region-notifier', false ) ); ?>">
-				<input type="hidden" name="rcptn_message_id" value="<?php echo esc_attr( $this->message->get_ID() ); ?>">
-
-				<input type="hidden" name="rcptn-action" value="message-failed-recipients">
-				<?php wp_nonce_field( 'rcptn_message_failed_recipients_nonce', 'rcptn_message_failed_recipients_nonce' ); ?>
-
-				<button class="button button-primary" type="submit">Retry failed messages</button>
-			</form>
 		<?php
 	}
 
