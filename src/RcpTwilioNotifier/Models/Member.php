@@ -129,7 +129,7 @@ class Member extends \RCP_Member {
 			$sms = new \WP_Error(
 				'rcptn_failed_sms',
 				// translators: %1$s is the Twilio SDK exception message, %2$d is the exception code.
-				sprintf( __( 'Twilio failed to send a message. (Twilio error: %1$s (%2$d))', 'rcptn' ), $e->getMessage(), $e->getCode() ),
+				sprintf( __( 'Twilio error: %1$s (%2$d)', 'rcptn' ), $e->getMessage(), $e->getCode() ),
 				$e
 			);
 		}
