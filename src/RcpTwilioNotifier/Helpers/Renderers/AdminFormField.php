@@ -71,6 +71,10 @@ class AdminFormField {
 	 * @param array|string $description  Longer description for the field.
 	 */
 	private static function render_description( $description ) {
+		if ( is_string( $description ) && '' === $description ) {
+			return;
+		}
+
 		$renderer = function( $text ) {
 			echo '<p class="description">' . esc_html( $text ) . '</p>';
 		};
