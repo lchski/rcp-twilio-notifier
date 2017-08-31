@@ -118,6 +118,7 @@ class Message {
 			'post_type'      => self::POST_TYPE,
 			'post_status'    => 'publish',
 			'post_author'    => wp_get_current_user()->ID,
+			'post_title'     => wp_trim_words( $args['raw_body'], 15 ),
 			'post_content'   => $args['raw_body'],
 			'comment_status' => 'closed',
 			'ping_status'    => 'closed',
