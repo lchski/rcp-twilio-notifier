@@ -9,6 +9,7 @@
 namespace RcpTwilioNotifier\Admin\MessagePostType;
 
 use RcpTwilioNotifier\Admin\MessagePostType\MetaBoxes\MessageBodyBox;
+use RcpTwilioNotifier\Admin\MessagePostType\MetaBoxes\SendAttemptsBox;
 use RcpTwilioNotifier\Models\Message;
 
 /**
@@ -76,5 +77,8 @@ class Registrar {
 	public function register_meta_boxes( $post ) {
 		$message_body_box = new MessageBodyBox( $post );
 		$message_body_box->register();
+
+		$send_attempts_box = new SendAttemptsBox( $post );
+		$send_attempts_box->register();
 	}
 }
