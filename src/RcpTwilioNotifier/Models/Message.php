@@ -100,13 +100,13 @@ class Message {
 
 		$this->message_body = new MessageBody( $this->wp_post->post_content, get_post_meta( $this->wp_post->ID, 'rcptn_body_data', true ) );
 
-		$send_attempts = array_map(
-			function( array $send_attempt ) {
-					return SendAttempt::create_from_array( $send_attempt );
-			}, get_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', true )
-		);
+		$send_attempts = get_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', true );
 
-		$this->send_attempts = ( '' !== $send_attempts ) ? $send_attempts : array();
+		$this->send_attempts = ( '' !== $send_attempts ) ? array_map(
+			function( array $send_attempt ) {
+				return SendAttempt::create_from_array( $send_attempt );
+			}, $send_attempts
+		) : array();
 	}
 
 	/**
