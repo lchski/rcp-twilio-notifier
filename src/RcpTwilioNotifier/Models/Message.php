@@ -148,6 +148,19 @@ class Message {
 	}
 
 	/**
+	 * Get the send attempts, with the recipient IDs converted to Member objects.
+	 *
+	 * @return array
+	 */
+	public function get_send_attempts() {
+		return array_map( function( $send_attempt ) {
+			$send_attempt['recipient'] = new Member( $send_attempt['recipient'] );
+
+			return $send_attempt;
+		}, $this->send_attempts );
+	}
+
+	/**
 	 * Get the send attempts for a given recipient.
 	 *
 	 * @param Member $recipient  The recipient to check the send attempts for.
