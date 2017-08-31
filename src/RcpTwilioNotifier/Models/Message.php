@@ -148,6 +148,15 @@ class Message {
 	}
 
 	/**
+	 * Get the Message’s ID (aka the ID of the WP Post the Message represents).
+	 *
+	 * @return int
+	 */
+	public function get_id() {
+		return $this->wp_post->ID;
+	}
+
+	/**
 	 * Get the send attempts, with the recipient IDs converted to Member objects.
 	 *
 	 * @return array

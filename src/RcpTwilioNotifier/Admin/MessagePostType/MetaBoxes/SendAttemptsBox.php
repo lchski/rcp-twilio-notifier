@@ -31,6 +31,7 @@ class SendAttemptsBox extends AbstractMetaBox {
 					<tr>
 						<th scope="col"><?php esc_html_e( 'Recipient', 'rcptn' ); ?></th>
 						<th scope="col"><?php esc_html_e( 'Status', 'rcptn' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Actions', 'rcptn' ); ?></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -78,6 +79,17 @@ class SendAttemptsBox extends AbstractMetaBox {
 										)
 									);
 								?>
+							</td>
+							<td>
+								<form method="post" action="">
+									<input type="hidden" name="rcptn_message_id" value="<?php echo esc_attr( $this->message->get_ID() ); ?>">
+									<input type="hidden" name="rcptn_recipient_id" value="<?php echo esc_attr( $send_attempt['recipient']->ID ); ?>">
+
+									<input type="hidden" name="rcptn-action" value="message-single-recipient">
+									<?php wp_nonce_field( 'rcptn_message_single_recipient_nonce', 'rcptn_message_single_recipient_nonce' ); ?>
+
+									<button class="button button-link button-small" type="submit">Resend</button>
+								</form>
 							</td>
 						</tr>
 						<?php
