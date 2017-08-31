@@ -41,7 +41,7 @@ abstract class AbstractMetaBox {
 	 * @param \WP_Post $post  The currently edited post.
 	 */
 	public function __construct( \WP_Post $post ) {
-		$this->message = new Message( $post );
+		$this->message = Message::find( $post );
 	}
 
 	/**

@@ -62,7 +62,7 @@ class SingleRecipientMessagingProcessor extends AbstractValidator implements Val
 			return false;
 		}
 
-		if ( ! new Message( absint( $this->posted['rcptn_message_id'] ) ) instanceof Message ) {
+		if ( ! Message::find( absint( $this->posted['rcptn_message_id'] ) ) instanceof Message ) {
 			$this->add_error( __( 'Could not find a Message with that ID.', 'rcptn' ) );
 
 			return false;

@@ -45,19 +45,21 @@ class SingleRecipientMessagingProcessor extends AbstractProcessor implements Pro
 		// Message.
 		$recipient = new Member( absint( $this->posted['rcptn_recipient_id'] ) );
 
-		$message = new Message( absint( $this->posted['rcptn_message_id'] ) );
+		$message = Message::find( absint( $this->posted['rcptn_message_id'] ) );
 		$message->send_to_one( $recipient );
 
 		$notifier = Notifier::get_instance();
-		$notifier->add_notice( new Notice(
-			'success',
-			sprintf(
-				// translators: %1$s is the recipient's full name, %2$s is their phone number.
-				__( 'Attempted to resend the message to %1$s (%2$s).', 'rcptn' ),
-				$recipient->first_name . ' ' . $recipient->last_name,
-				$recipient->get_phone_number()
+		$notifier->add_notice(
+			new Notice(
+				'success',
+				sprintf(
+					// translators: %1$s is the recipient's full name, %2$s is their phone number.
+					 __( 'Attempted to resend the message to %1$s (%2$s).', 'rcptn' ),
+					$recipient->first_name . ' ' . $recipient->last_name,
+					$recipient->get_phone_number()
+				)
 			)
-		) );
+		);
 
 		// We’re done! Redirect.
 		wp_safe_redirect( get_edit_post_link( absint( $this->posted['rcptn_message_id'] ) ) );

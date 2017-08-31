@@ -49,18 +49,22 @@ class Message {
 	private $send_attempts;
 
 	/**
-	 * Set internal values.
+	 * Create a Message instance using an identifier.
 	 *
 	 * @param int|\WP_Post $message_identifier  The ID of the \WP_Post this represents, or the \WP_Post itself.
+	 *
+	 * @return Message|\WP_Error
 	 */
-	public function __construct( $message_identifier ) {
+	public static function find( $message_identifier ) {
 		if ( is_numeric( $message_identifier ) ) {
 			// It’s an ID, create a new \WP_Post object from it.
 			$message_post = get_post( $message_identifier );
 		} elseif ( $message_identifier instanceof \WP_Post ) {
 			// It’s already a \WP_Post object.
 			$message_post = $message_identifier;
-		} else {
+		}
+
+		if ( ! $message_post instanceof \WP_Post ) {
 			return new \WP_Error(
 				'rcptn_message_no_wp_post',
 				__( 'Cannot find a WP Post using the identifier given.', 'rcptn' ),
@@ -81,6 +85,15 @@ class Message {
 			);
 		}
 
+		return new self( $message_post );
+	}
+
+	/**
+	 * Set internal values.
+	 *
+	 * @param \WP_Post $message_post  The \WP_Post this represents.
+	 */
+	private function __construct( $message_post ) {
 		$this->wp_post = $message_post;
 
 		$this->recipients = MemberRetriever::convert_user_ids_to_members( get_post_meta( $this->wp_post->ID, 'rcptn_recipient_ids', true ) );
@@ -155,7 +168,7 @@ class Message {
 		add_post_meta( $wp_post_id, 'rcptn_body_data', $args['body_data'] );
 
 		// Return a new instance of the Message object now that all the settings are in place.
-		return new Message( $wp_post_id );
+		return self::find( $wp_post_id );
 	}
 
 	/**
