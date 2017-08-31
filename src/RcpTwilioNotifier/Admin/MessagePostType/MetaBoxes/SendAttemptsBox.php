@@ -53,7 +53,32 @@ class SendAttemptsBox extends AbstractMetaBox {
 								);
 								?>
 							</td>
-							<td><?php echo esc_html( $send_attempt['status'] ); ?></td>
+							<td>
+								<?php
+									$send_status = '';
+
+								switch ( $send_attempt['status'] ) {
+									case 'success':
+										$send_status = __( 'Success', 'rcptn' );
+										break;
+									case 'failed':
+										// translators: %s is the error message.
+										$send_status = sprintf( __( 'Failed <br><small>%s</small>', 'rcptn' ), $send_attempt['error'] );
+										break;
+									default:
+										// translators: %s is the unknown send attempt status.
+										$send_status = sprintf( __( 'Unknown (%s)', 'rcptn' ), $send_attempt['status'] );
+										break;
+								}
+
+									echo wp_kses(
+										$send_status, array(
+											'br' => array(),
+											'small' => array(),
+										)
+									);
+								?>
+							</td>
 						</tr>
 						<?php
 					}
