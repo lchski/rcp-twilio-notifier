@@ -7,6 +7,7 @@
  */
 
 namespace RcpTwilioNotifier\Admin\MessagePostType\MetaBoxes;
+use RcpTwilioNotifier\Helpers\Renderers\AdminFormField;
 
 /**
  * Displays the body of the Message.
@@ -26,7 +27,25 @@ class MessageBodyBox extends AbstractMetaBox {
 	 */
 	public function render() {
 		?>
-			<textarea name="rcptn_message_body" id="rcptn_message_body" style="width: 100%;" rows="4" disabled><?php echo esc_html( $this->message->get_message_body()->get_raw_body() ); ?></textarea>
+			<table class="form-table">
+				<tbody>
+					<?php
+						AdminFormField::render(
+							'rcptn_message_content',
+							__( 'Message', 'rcptn' ),
+							'',
+							function( $field_id ) {
+								?>
+								<textarea name="<?php echo esc_attr( $field_id ); ?>" id="<?php echo esc_attr( $field_id ); ?>" style="width: 100%;" rows="4" disabled><?php echo esc_html( $this->message->get_message_body()->get_raw_body() ); ?></textarea>
+								<?php
+							},
+							array(
+								'required' => false,
+							)
+						);
+					?>
+				</tbody>
+			</table>
 		<?php
 	}
 
