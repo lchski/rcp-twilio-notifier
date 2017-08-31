@@ -332,6 +332,7 @@ class Message {
 			$send_attempt = array(
 				'recipient' => $recipient->ID,
 				'status'    => 'success',
+				'date'      => $sms_response->dateSent->getTimestamp(),
 			);
 		}
 

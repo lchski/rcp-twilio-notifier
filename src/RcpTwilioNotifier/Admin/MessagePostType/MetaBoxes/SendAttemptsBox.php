@@ -90,7 +90,8 @@ class SendAttemptsBox extends AbstractMetaBox {
 
 								switch ( $send_attempt['status'] ) {
 									case 'success':
-										$send_status = __( 'Success', 'rcptn' );
+										// translators: %s is the send date.
+										$send_status = sprintf( __( 'Success <br><small>%s</small>', 'rcptn' ), (isset( $send_attempt['date'] ) ) ? date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $send_attempt['date'] ) : '' );
 										break;
 									case 'failed':
 										// translators: %s is the error message.
