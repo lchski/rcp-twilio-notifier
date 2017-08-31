@@ -107,6 +107,15 @@ class SendAttempt {
 	}
 
 	/**
+	 * Was this attempt a success?
+	 *
+	 * @return bool
+	 */
+	public function is_success() {
+		return 'success' === $this->status;
+	}
+
+	/**
 	 * Was this attempt a failure?
 	 *
 	 * @return bool

@@ -13,6 +13,7 @@ use RcpTwilioNotifier\Models\Member;
 use RcpTwilioNotifier\Models\Message;
 use RcpTwilioNotifier\Models\Notice;
 use RcpTwilioNotifier\Models\Region;
+use RcpTwilioNotifier\Models\SendAttempt;
 
 /**
  * Processes form submissions from our ManualMessagingPage in the WordPress admin.
@@ -131,17 +132,17 @@ class ManualMessagingPage extends AbstractProcessor implements ProcessorInterfac
 	/**
 	 * Create a notification based on a send attempt.
 	 *
-	 * @param array  $send_attempt  The send attempt.
-	 * @param Member $member        The member who was messaged.
+	 * @param SendAttempt $send_attempt  The send attempt.
+	 * @param Member      $member        The member who was messaged.
 	 */
 	private function notify_on_send( $send_attempt, $member ) {
 		$notifier = Notifier::get_instance();
 
-		if ( 'failed' === $send_attempt['status'] ) {
-			$notifier->add_notice( new Notice( 'error', $send_attempt['error'] ) );
+		if ( $send_attempt->is_failed() ) {
+			$notifier->add_notice( new Notice( 'error', $send_attempt->error ) );
 
 			$this->failed_sends[] = $member->ID;
-		} elseif ( 'success' === $send_attempt['status'] ) {
+		} elseif ( $send_attempt->is_success() ) {
 			$notifier->add_notice(
 				new Notice(
 					'success',

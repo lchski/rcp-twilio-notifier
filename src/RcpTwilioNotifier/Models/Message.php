@@ -198,7 +198,7 @@ class Message {
 	 *
 	 * @param Member $recipient  The recipient to check the send attempts for.
 	 *
-	 * @return bool|array|\WP_Error
+	 * @return bool|SendAttempt[]|\WP_Error
 	 */
 	public function get_send_attempts_for_recipient( $recipient ) {
 		$send_attempt = array_values(
