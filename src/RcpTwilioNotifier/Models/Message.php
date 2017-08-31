@@ -70,6 +70,17 @@ class Message {
 			);
 		}
 
+		// Check for the right post type.
+		if ( self::POST_TYPE !== get_post_type( $message_post ) ) {
+			return new \WP_Error(
+				'rcptn_message_wrong_post_type',
+				__( 'The WP Post of the identifier given is not of the Message post type.', 'rcptn' ),
+				array(
+					'message_post' => $message_post,
+				)
+			);
+		}
+
 		$this->wp_post = $message_post;
 
 		$this->recipients = MemberRetriever::convert_user_ids_to_members( get_post_meta( $this->wp_post->ID, 'rcptn_recipient_ids', true ) );
