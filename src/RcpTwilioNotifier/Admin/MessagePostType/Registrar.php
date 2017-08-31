@@ -1,19 +1,19 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\Admin\MessagePostTypeRegistrar class
+ * RCP: RcpTwilioNotifier\Admin\MessagePostType\Registrar class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier\Admin
  */
 
-namespace RcpTwilioNotifier\Admin;
+namespace RcpTwilioNotifier\Admin\MessagePostType;
 
 use RcpTwilioNotifier\Models\Message;
 
 /**
  * Registers the Message custom post type with WordPress.
  */
-class MessagePostTypeRegistrar {
+class Registrar {
 
 	/**
 	 * The slug for the post type.

@@ -63,7 +63,7 @@ class Plugin {
 		$settings_verifier->remind_if_settings_not_present();
 
 		// Load Message post type.
-		$message_post_type_registrar = new Admin\MessagePostTypeRegistrar();
+		$message_post_type_registrar = new Admin\MessagePostType\Registrar();
 		$message_post_type_registrar->init();
 
 		/**
