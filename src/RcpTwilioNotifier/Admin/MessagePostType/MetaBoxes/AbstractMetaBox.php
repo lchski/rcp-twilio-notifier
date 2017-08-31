@@ -7,11 +7,19 @@
  */
 
 namespace RcpTwilioNotifier\Admin\MessagePostType\MetaBoxes;
+use RcpTwilioNotifier\Models\Message;
 
 /**
  * Handles routine meta box registration function, based on values set in the child class.
  */
 abstract class AbstractMetaBox {
+
+	/**
+	 * The currently edited Message.
+	 *
+	 * @var Message
+	 */
+	protected $message;
 
 	/**
 	 * The meta box's ID.
@@ -26,6 +34,15 @@ abstract class AbstractMetaBox {
 	 * @var string
 	 */
 	protected $title;
+
+	/**
+	 * Set internal values.
+	 *
+	 * @param \WP_Post $post  The currently edited post.
+	 */
+	public function __construct( \WP_Post $post ) {
+		$this->message = new Message( $post );
+	}
 
 	/**
 	 * Register the meta box.
