@@ -105,7 +105,7 @@ class SendAttemptsBox extends AbstractMetaBox {
 				<?php
 				if ( $send_attempt->is_success() ) {
 					$send_status = sprintf(
-					    // translators: %s is the send date.
+						// translators: %s is the send date.
 						__( 'Success <br><small>%s</small>', 'rcptn' ),
 						( is_int( $send_attempt->timestamp ) )
 							? date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $send_attempt->timestamp )
