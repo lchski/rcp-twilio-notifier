@@ -26,7 +26,29 @@ class SendAttemptsBox extends AbstractMetaBox {
 	 */
 	public function render() {
 		?>
+			<table class="widefat fixed" cellspacing="0">
+				<thead>
+					<tr>
+						<th scope="col"><?php esc_html_e( 'Recipient', 'rcptn' ); ?></th>
+						<th scope="col"><?php esc_html_e( 'Status', 'rcptn' ); ?></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+						$send_attempt_counter = 0;
 
+					foreach ( $this->message->get_send_attempts() as $send_attempt ) {
+						$send_attempt_counter++;
+						?>
+						<tr class="<?php echo esc_attr( (0 !== $send_attempt_counter % 2) ? 'alternate' : '' ); ?>">
+							<td><?php echo esc_html( $send_attempt['recipient']->first_name . ' ' . $send_attempt['recipient']->last_name ); ?></td>
+							<td><?php echo esc_html( $send_attempt['status'] ); ?></td>
+						</tr>
+						<?php
+					}
+					?>
+				</tbody>
+			</table>
 		<?php
 	}
 

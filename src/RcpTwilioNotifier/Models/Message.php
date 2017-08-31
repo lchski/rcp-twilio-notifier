@@ -153,11 +153,13 @@ class Message {
 	 * @return array
 	 */
 	public function get_send_attempts() {
-		return array_map( function( $send_attempt ) {
-			$send_attempt['recipient'] = new Member( $send_attempt['recipient'] );
+		return array_map(
+			function( $send_attempt ) {
+					$send_attempt['recipient'] = new Member( $send_attempt['recipient'] );
 
-			return $send_attempt;
-		}, $this->send_attempts );
+					return $send_attempt;
+			}, $this->send_attempts
+		);
 	}
 
 	/**
