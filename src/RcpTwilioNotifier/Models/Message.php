@@ -180,6 +180,15 @@ class Message {
 	}
 
 	/**
+	 * Get the message's body.
+	 *
+	 * @return MessageBody
+	 */
+	public function get_message_body() {
+		return $this->message_body;
+	}
+
+	/**
 	 * Send the message to all recipients.
 	 */
 	public function send_to_all() {

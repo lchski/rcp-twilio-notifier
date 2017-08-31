@@ -48,11 +48,25 @@ abstract class AbstractMetaBox {
 	 * Register the meta box.
 	 */
 	public function register() {
+		$this->set_parent_values();
+
 		add_meta_box(
 			$this->id,
 			$this->title,
-			array( $this, 'render' )
+			array( $this, 'render' ),
+			null,
+			'normal'
 		);
 	}
+
+	/**
+	 * Child set internal values.
+	 */
+	abstract protected function set_parent_values();
+
+	/**
+	 * Render the meta box's content.
+	 */
+	abstract public function render();
 
 }

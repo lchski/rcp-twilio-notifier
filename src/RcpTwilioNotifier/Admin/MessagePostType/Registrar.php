@@ -8,6 +8,7 @@
 
 namespace RcpTwilioNotifier\Admin\MessagePostType;
 
+use RcpTwilioNotifier\Admin\MessagePostType\MetaBoxes\MessageBodyBox;
 use RcpTwilioNotifier\Models\Message;
 
 /**
@@ -73,6 +74,7 @@ class Registrar {
 	 * @param \WP_Post $post  The currently edited post.
 	 */
 	public function register_meta_boxes( $post ) {
-
+		$message_body_box = new MessageBodyBox( $post );
+		$message_body_box->register();
 	}
 }
