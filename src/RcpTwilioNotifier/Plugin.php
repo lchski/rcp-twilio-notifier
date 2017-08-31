@@ -82,6 +82,12 @@ class Plugin {
 		$admin_settings_page_processor->init();
 
 		/**
+		 * Other processors
+		 */
+		$single_recipient_messaging_processor = new Admin\Pages\Processors\SingleRecipientMessagingProcessor();
+		$single_recipient_messaging_processor->init();
+
+		/**
 		 * Member fields
 		 */
 		$region_registration_field = new Admin\MemberFields\Region\Registration( $this->regions );

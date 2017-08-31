@@ -56,7 +56,7 @@ class SingleRecipientMessagingProcessor extends AbstractValidator implements Val
 			return false;
 		}
 
-		if ( ! is_int( $this->posted['rcptn_message_id'] ) ) {
+		if ( ! is_numeric( $this->posted['rcptn_message_id'] ) ) {
 			$this->add_error( __( 'Message ID must be an integer.', 'rcptn' ) );
 
 			return false;
@@ -83,7 +83,7 @@ class SingleRecipientMessagingProcessor extends AbstractValidator implements Val
 			return false;
 		}
 
-		if ( ! is_int( $this->posted['rcptn_recipient_id'] ) ) {
+		if ( ! is_numeric( $this->posted['rcptn_recipient_id'] ) ) {
 			$this->add_error( __( 'Recipient ID must be an integer.', 'rcptn' ) );
 
 			return false;
