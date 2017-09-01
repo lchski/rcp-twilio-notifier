@@ -441,9 +441,11 @@ class Message {
 		);
 
 		// Sort the array by recipient ID, from lowest to highest.
-		usort( $send_attempts_formatted_for_database, function( $a, $b ) {
-			return $a['recipient'] > $b['recipient'];
-		} );
+		usort(
+			$send_attempts_formatted_for_database, function( $a, $b ) {
+				return $a['recipient'] > $b['recipient'];
+			}
+		);
 
 		// Save the sorted send attempts array.
 		$update_attempt = update_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', $send_attempts_formatted_for_database );

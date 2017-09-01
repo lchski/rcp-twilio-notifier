@@ -27,6 +27,7 @@ class SendAttemptsBox extends AbstractMetaBox {
 	 */
 	public function render() {
 		?>
+			<p><?php esc_html_e( 'If there are pending messages below, refresh the page to check for updates.', 'rcptn' ); ?></p>
 			<table class="widefat fixed" cellspacing="0">
 				<thead>
 					<tr>
