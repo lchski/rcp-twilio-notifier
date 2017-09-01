@@ -178,11 +178,7 @@ class Message {
 		// Create preliminary send attempts for each recipient.
 		$send_attempts = array_map(
 			function( Member $recipient ) {
-				$send_attempt = new SendAttempt(
-					$recipient,
-					'pending',
-					time()
-				);
+				$send_attempt = self::generate_pending_send_attempt_for_recipient( $recipient );
 
 				return $send_attempt->convert_to_array();
 			}, $args['recipients']
@@ -376,28 +372,53 @@ class Message {
 			);
 		}
 
-		$this->record_send_attempt( $send_attempt, $recipient );
+		$this->record_send_attempt( $send_attempt );
+	}
+
+	/**
+	 * Generate pending SendAttempts for a list of recipients.
+	 *
+	 * @param Member[] $recipients  The members to generate the pending attempt for.
+	 */
+	private function record_pending_send_attempts( $recipients ) {
+		foreach ( $recipients as $recipient ) {
+			$this->record_send_attempt( self::generate_pending_send_attempt_for_recipient( $recipient ) );
+		}
+	}
+
+	/**
+	 * Create a pending SendAttempt for a given recipient.
+	 *
+	 * @param Member $recipient  The recipient to generate the pending attempt for.
+	 *
+	 * @return SendAttempt
+	 */
+	private static function generate_pending_send_attempt_for_recipient( $recipient ) {
+		return new SendAttempt(
+			$recipient,
+			'pending',
+			time()
+		);
 	}
 
 	/**
 	 * Record a SendAttempt for a given Member.
 	 *
-	 * @param SendAttempt $send_attempt  The SendAttempt.
-	 * @param Member      $recipient     The member who was messaged.
+	 * @param SendAttempt $new_send_attempt  The SendAttempt.
 	 */
-	private function record_send_attempt( $send_attempt, $recipient ) {
+	private function record_send_attempt( $new_send_attempt ) {
 		// If there's an existing send attempt for this recipient, overwrite the existing list to exclude that attempt.
 		// We don't want to have two attempts for the same recipient.
 		if ( false !== $this->get_send_attempts_for_recipient( $recipient ) ) {
 			$this->send_attempts = array_filter(
-				$this->send_attempts, function( SendAttempt $send_attempt ) use ( $recipient ) {
-					return $send_attempt->recipient->ID !== $recipient->ID;
+				$this->send_attempts, function( SendAttempt $send_attempt ) use ( $new_send_attempt ) {
+					return $send_attempt->recipient->ID !== $new_send_attempt->recipient->ID;
 				}
 			);
 		}
 
 		// Add the send attempt to the list.
-		$this->send_attempts[] = $send_attempt;
+		$this->send_attempts[] = $new_send_attempt;
 	}
 
 	/**
