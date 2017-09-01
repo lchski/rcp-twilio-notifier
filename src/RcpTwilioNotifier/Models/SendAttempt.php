@@ -23,7 +23,7 @@ class SendAttempt {
 	/**
 	 * The status of the attempt.
 	 *
-	 * @var 'success'|'failed'
+	 * @var 'pending'|'success'|'failed'
 	 */
 	public $status;
 
@@ -44,10 +44,10 @@ class SendAttempt {
 	/**
 	 * Create internal values.
 	 *
-	 * @param Member             $recipient  Recipient.
-	 * @param 'success'|'failed' $status     Status.
-	 * @param int                $timestamp  Timestamp.
-	 * @param null|string        $error      Error message.
+	 * @param Member      $recipient  Recipient.
+	 * @param string      $status     Status. @see $this->status for accepted values.
+	 * @param int         $timestamp  Timestamp.
+	 * @param null|string $error      Error message.
 	 */
 	public function __construct( $recipient, $status, $timestamp, $error = null ) {
 		$this->recipient = $recipient;
@@ -104,6 +104,15 @@ class SendAttempt {
 			$send_attempt['status'],
 			$send_attempt['timestamp']
 		);
+	}
+
+	/**
+	 * Is this attempt pending?
+	 *
+	 * @return bool
+	 */
+	public function is_pending() {
+		return 'pending' === $this->status;
 	}
 
 	/**
