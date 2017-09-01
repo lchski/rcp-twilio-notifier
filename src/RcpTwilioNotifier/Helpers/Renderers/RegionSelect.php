@@ -21,15 +21,6 @@ class RegionSelect {
 	private $regions;
 
 	/**
-	 * The user ID to render the select for.
-	 *
-	 * This affects the currently selected item, if there is one.
-	 *
-	 * @var int
-	 */
-	private $user_id;
-
-	/**
 	 * Set internal state.
 	 *
 	 * @param array $regions  Regions to choose from in select.

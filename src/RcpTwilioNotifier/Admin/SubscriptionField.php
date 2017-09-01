@@ -70,14 +70,14 @@ class SubscriptionField {
 	public function render_input( $field_id ) {
 		$rcp_levels = new \RCP_Levels();
 
-		if ( isset( $this->posted[ $field_id ] ) ) {
-			$field_value = $this->posted[ $field_id ];
-		}
-
 		$field_value = $rcp_levels->get_meta( $this->level->id, 'rcptn_add_on_level_id', true );
 
 		if ( false === $field_value ) {
 			$field_value = '';
+		}
+
+		if ( isset( $this->posted[ $field_id ] ) ) {
+			$field_value = $this->posted[ $field_id ];
 		}
 
 		?>

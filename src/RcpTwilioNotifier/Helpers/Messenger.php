@@ -26,6 +26,8 @@ class Messenger extends \WP_Background_Process {
 	 * Send the message.
 	 *
 	 * @param array $messaging_task  The messaging task, in the form output by MessagingTask->convert_to_array.
+	 *
+	 * @return array|bool
 	 */
 	protected function task( $messaging_task ) {
 		$messaging_task = MessagingTask::create_from_array( $messaging_task );

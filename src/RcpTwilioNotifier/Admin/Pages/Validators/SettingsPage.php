@@ -8,7 +8,6 @@
 
 namespace RcpTwilioNotifier\Admin\Pages\Validators;
 use RcpTwilioNotifier\Helpers\AllRegionSubscriptionIdLister;
-use RcpTwilioNotifier\Helpers\Validators\PhoneNumber;
 
 /**
  * Validates form submissions from our SettingsPage in the WordPress admin.

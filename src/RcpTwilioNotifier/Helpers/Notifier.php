@@ -31,13 +31,6 @@ class Notifier {
 	private static $instance;
 
 	/**
-	 * List of notices.
-	 *
-	 * @var array
-	 */
-	private $notices = array();
-
-	/**
 	 * Return the unique plugin instance.
 	 *
 	 * @return Notifier

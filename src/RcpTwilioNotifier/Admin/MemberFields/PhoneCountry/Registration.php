@@ -11,8 +11,6 @@ namespace RcpTwilioNotifier\Admin\MemberFields\PhoneCountry;
 use RcpTwilioNotifier\Admin\MemberFields\AbstractRegistration;
 use RcpTwilioNotifier\Helpers\CountryLister;
 use RcpTwilioNotifier\Helpers\Renderers\CountrySelect;
-use RcpTwilioNotifier\Helpers\Renderers\RegionSelect;
-use RcpTwilioNotifier\Helpers\Validators\Region;
 
 /**
  * Adds a phone country field to the RCP registration process.

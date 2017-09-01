@@ -7,6 +7,9 @@
  */
 
 namespace RcpTwilioNotifier\Models;
+use libphonenumber\NumberParseException;
+use libphonenumber\PhoneNumberFormat;
+use libphonenumber\PhoneNumberUtil;
 use RcpTwilioNotifier\Helpers\MergeTags;
 use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
@@ -68,15 +71,15 @@ class Member extends \RCP_Member {
 	 * @return string
 	 */
 	public function get_formatted_phone_number() {
-		$phone_util = \libphonenumber\PhoneNumberUtil::getInstance();
+		$phone_util = PhoneNumberUtil::getInstance();
 
 		try {
 			$phone_number_proto = $phone_util->parse( $this->get_phone_number(), $this->get_phone_country_code() );
 
-			$formatted_phone_number = $phone_util->format( $phone_number_proto, \libphonenumber\PhoneNumberFormat::E164 );
+			$formatted_phone_number = $phone_util->format( $phone_number_proto, PhoneNumberFormat::E164 );
 
 			return apply_filters( 'rcptn_member_get_formatted_phone_number', $formatted_phone_number, $this->ID, $this );
-		} catch ( \libphonenumber\NumberParseException $e ) {
+		} catch ( NumberParseException $e ) {
 			return new \WP_Error(
 				'rcptn_libphonenumber_format', 'RCPTN Exception: "' . $e->getMessage() . '" (libphonenumber NumberParseException: ' . $e->getCode() . ')', array(
 					'exception' => $e,
