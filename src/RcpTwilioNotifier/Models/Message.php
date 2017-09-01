@@ -383,9 +383,13 @@ class Message {
 	 * @param Member[] $recipients  The members to generate the pending attempt for.
 	 */
 	private function record_pending_send_attempts( $recipients ) {
+		// Set internal values for the recipients to pending.
 		foreach ( $recipients as $recipient ) {
 			$this->record_send_attempt( self::generate_pending_send_attempt_for_recipient( $recipient ) );
 		}
+
+		// Save the new send attempts.
+		$this->save_send_attempts();
 	}
 
 	/**
@@ -411,7 +415,7 @@ class Message {
 	private function record_send_attempt( $new_send_attempt ) {
 		// If there's an existing send attempt for this recipient, overwrite the existing list to exclude that attempt.
 		// We don't want to have two attempts for the same recipient.
-		if ( false !== $this->get_send_attempts_for_recipient( $recipient ) ) {
+		if ( false !== $this->get_send_attempts_for_recipient( $new_send_attempt->recipient ) ) {
 			$this->send_attempts = array_filter(
 				$this->send_attempts, function( SendAttempt $send_attempt ) use ( $new_send_attempt ) {
 					return $send_attempt->recipient->ID !== $new_send_attempt->recipient->ID;
