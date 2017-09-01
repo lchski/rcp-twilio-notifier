@@ -39,6 +39,7 @@ class Registrar {
 
 		add_filter( 'bulk_actions-edit-' . $this->post_type_slug, array( $this, 'remove_bulk_actions' ) );
 		add_filter( 'post_row_actions', array( $this, 'remove_row_actions' ) );
+		add_filter( 'get_user_option_screen_layout_' . $this->post_type_slug, array( $this, 'set_one_column_editor_layout' ) );
 		add_action( 'admin_menu', array( $this, 'remove_publish_box' ) );
 	}
 
@@ -131,6 +132,15 @@ class Registrar {
 		unset( $actions['inline hide-if-no-js'] );
 
 		return $actions;
+	}
+
+	/**
+	 * Force the editor to one column on the CPT page.
+	 *
+	 * @return int
+	 */
+	public function set_one_column_editor_layout() {
+		return 1;
 	}
 
 	/**
