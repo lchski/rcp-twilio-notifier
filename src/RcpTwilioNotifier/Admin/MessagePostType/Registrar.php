@@ -45,6 +45,7 @@ class Registrar {
 		// Message viewer modifications.
 		add_filter( 'get_user_option_screen_layout_' . $this->post_type_slug, array( $this, 'set_one_column_editor_layout' ) );
 		add_action( 'admin_menu', array( $this, 'remove_publish_box' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'dequeue_autosave_script' ) );
 	}
 
 	/**
@@ -152,6 +153,15 @@ class Registrar {
 	 */
 	public function remove_publish_box() {
 		remove_meta_box( 'submitdiv', $this->post_type_slug, 'side' );
+	}
+
+	/**
+	 * Dequeue the autosave script.
+	 */
+	public function dequeue_autosave_script() {
+		if ( get_post_type() === $this->post_type_slug ) {
+			wp_dequeue_script( 'autosave' );
+		}
 	}
 
 }
