@@ -114,6 +114,14 @@ class SendAttemptsBox extends AbstractMetaBox {
 				} elseif ( $send_attempt->is_failed() ) {
 					// translators: %s is the error message.
 					$send_status = sprintf( __( 'Failed <br><small>%s</small>', 'rcptn' ), $send_attempt->error );
+				} elseif ( $send_attempt->is_pending() ) {
+					$send_status = sprintf(
+						// translators: %s is the queued date.
+						__( 'Pending <br><small>Queued at %s</small>', 'rcptn' ),
+						( is_int( $send_attempt->timestamp ) )
+							? date_i18n( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), $send_attempt->timestamp )
+							: ''
+					);
 				} else {
 					// translators: %s is the unknown send attempt status.
 					$send_status = sprintf( __( 'Unknown (%s)', 'rcptn' ), $send_attempt->status );
