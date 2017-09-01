@@ -405,13 +405,20 @@ class Message {
 	 * @return bool|\WP_Error
 	 */
 	private function save_send_attempts() {
-		$update_attempt = update_post_meta(
-			$this->wp_post->ID, 'rcptn_send_attempts', array_map(
-				function( SendAttempt $send_attempt ) {
-						return $send_attempt->convert_to_array();
-				}, $this->send_attempts
-			)
+		// Convert the SendAttempts to arrays, to save it in the database.
+		$send_attempts_formatted_for_database = array_map(
+			function( SendAttempt $send_attempt ) {
+				return $send_attempt->convert_to_array();
+			}, $this->send_attempts
 		);
+
+		// Sort the array by recipient ID, from lowest to highest.
+		usort( $send_attempts_formatted_for_database, function( $a, $b ) {
+			return $a['recipient'] > $b['recipient'];
+		} );
+
+		// Save the sorted send attempts array.
+		$update_attempt = update_post_meta( $this->wp_post->ID, 'rcptn_send_attempts', $send_attempts_formatted_for_database );
 
 		if ( false === $update_attempt ) {
 			return new \WP_Error(
