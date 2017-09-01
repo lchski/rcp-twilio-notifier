@@ -8,6 +8,7 @@
 
 namespace RcpTwilioNotifier\Models;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
+use RcpTwilioNotifier\Helpers\Messenger;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 /**
@@ -47,6 +48,13 @@ class Message {
 	 * @var SendAttempt[]
 	 */
 	private $send_attempts;
+
+	/**
+	 * Whether send attempts should be queued.
+	 *
+	 * @var bool
+	 */
+	private $is_queueing_enabled = false;
 
 	/**
 	 * Create a Message instance using an identifier.
@@ -250,9 +258,22 @@ class Message {
 	}
 
 	/**
+	 * Enable message queueing.
+	 */
+	public function enable_queueing() {
+		$this->is_queueing_enabled = true;
+	}
+
+	/**
 	 * Send the message to all recipients.
 	 */
 	public function send_to_all() {
+		// Check if we should use the queued version of this function.
+		if ( $this->is_queueing_enabled ) {
+			$this->send_to_all_queued();
+			return;
+		}
+
 		foreach ( $this->recipients as $member ) {
 			$this->send( $member );
 		}
@@ -311,6 +332,21 @@ class Message {
 
 		// Message the recipients of the failed sends.
 		$this->send_to_some( $recipients );
+	}
+
+	/**
+	 * Send to all via a messaging queue.
+	 */
+	private function send_to_all_queued() {
+		$messaging_queue = new Messenger();
+
+		foreach ( $this->recipients as $recipient ) {
+			$messaging_task = new MessagingTask( $this->get_id(), $recipient->ID );
+
+			$messaging_queue->push_to_queue( $messaging_task->convert_to_array() );
+		}
+
+		$messaging_queue->save()->dispatch();
 	}
 
 	/**
