@@ -167,9 +167,23 @@ class Message {
 			}, $args['recipients']
 		);
 
+		// Create preliminary send attempts for each recipient.
+		$send_attempts = array_map(
+			function( Member $recipient ) {
+				$send_attempt = new SendAttempt(
+					$recipient,
+					'pending',
+					time()
+				);
+
+				return $send_attempt->convert_to_array();
+			}, $args['recipients']
+		);
+
 		// Setting metadata...
 		add_post_meta( $wp_post_id, 'rcptn_recipient_ids', $recipient_ids );
 		add_post_meta( $wp_post_id, 'rcptn_body_data', $args['body_data'] );
+		add_post_meta( $wp_post_id, 'rcptn_send_attempts', $send_attempts );
 
 		// Return a new instance of the Message object now that all the settings are in place.
 		return self::find( $wp_post_id );
