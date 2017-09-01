@@ -66,6 +66,9 @@ class Plugin {
 		$message_post_type_registrar = new Admin\MessagePostType\Registrar();
 		$message_post_type_registrar->init();
 
+		// Init the messaging queue.
+		$messaging_queue = Helpers\MessagingQueue::get_instance();
+
 		/**
 		 * Admin pages and their processors
 		 */

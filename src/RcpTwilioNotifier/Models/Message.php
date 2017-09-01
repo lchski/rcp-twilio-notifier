@@ -8,7 +8,7 @@
 
 namespace RcpTwilioNotifier\Models;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
-use RcpTwilioNotifier\Helpers\Messenger;
+use RcpTwilioNotifier\Helpers\MessagingQueue;
 use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 /**
@@ -338,7 +338,7 @@ class Message {
 	 * Send to all via a messaging queue.
 	 */
 	private function send_to_all_queued() {
-		$messaging_queue = new Messenger();
+		$messaging_queue = MessagingQueue::get_instance();
 
 		foreach ( $this->recipients as $recipient ) {
 			$messaging_task = new MessagingTask( $this->get_id(), $recipient->ID );
