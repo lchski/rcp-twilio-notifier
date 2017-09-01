@@ -38,8 +38,8 @@ class Registrar {
 		add_action( 'init', array( $this, 'register' ) );
 
 		add_filter( 'bulk_actions-edit-' . $this->post_type_slug, array( $this, 'remove_bulk_actions' ) );
-
 		add_filter( 'post_row_actions', array( $this, 'remove_row_actions' ) );
+		add_action( 'admin_menu', array( $this, 'remove_publish_box' ) );
 	}
 
 	/**
@@ -132,4 +132,12 @@ class Registrar {
 
 		return $actions;
 	}
+
+	/**
+	 * Remove the publish box on the CPT page.
+	 */
+	public function remove_publish_box() {
+		remove_meta_box( 'submitdiv', $this->post_type_slug, 'side' );
+	}
+
 }
