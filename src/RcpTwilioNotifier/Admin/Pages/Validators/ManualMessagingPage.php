@@ -1,6 +1,6 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\Admin\Pages\Validators\MessagingPage class
+ * RCP: RcpTwilioNotifier\Admin\Pages\Validators\ManualMessagingPage class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier\Admin|Pages\Validators
@@ -11,9 +11,9 @@ use RcpTwilioNotifier\Helpers\Validators\MessageBody;
 use RcpTwilioNotifier\Helpers\Validators\Region;
 
 /**
- * Validates form submissions from our MessagingPage in the WordPress admin.
+ * Validates form submissions from our ManualMessagingPage in the WordPress admin.
  */
-class MessagingPage extends AbstractValidator implements ValidatorInterface {
+class ManualMessagingPage extends AbstractValidator implements ValidatorInterface {
 
 	/**
 	 * List of regions available for messaging.

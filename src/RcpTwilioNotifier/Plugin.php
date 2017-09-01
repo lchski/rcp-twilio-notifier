@@ -62,13 +62,20 @@ class Plugin {
 		$settings_verifier->init();
 		$settings_verifier->remind_if_settings_not_present();
 
+		// Load Message post type.
+		$message_post_type_registrar = new Admin\MessagePostType\Registrar();
+		$message_post_type_registrar->init();
+
+		// Init the messaging queue.
+		$messaging_queue = Helpers\MessagingQueue::get_instance();
+
 		/**
 		 * Admin pages and their processors
 		 */
-		$admin_messaging_page = new Admin\Pages\MessagingPage( $this->regions );
+		$admin_messaging_page = new Admin\Pages\ManualMessagingPage( $this->regions );
 		$admin_messaging_page->init();
 
-		$admin_messaging_page_processor = new Admin\Pages\Processors\MessagingPage( $this->regions );
+		$admin_messaging_page_processor = new Admin\Pages\Processors\ManualMessagingPage( $this->regions );
 		$admin_messaging_page_processor->init();
 
 		$admin_settings_page = new Admin\Pages\SettingsPage();
@@ -76,6 +83,15 @@ class Plugin {
 
 		$admin_settings_page_processor = new Admin\Pages\Processors\SettingsPage();
 		$admin_settings_page_processor->init();
+
+		/**
+		 * Other processors
+		 */
+		$single_recipient_messaging_processor = new Admin\Pages\Processors\SingleRecipientMessagingProcessor();
+		$single_recipient_messaging_processor->init();
+
+		$failed_recipients_messaging_processor = new Admin\Pages\Processors\FailedRecipientsMessagingProcessor();
+		$failed_recipients_messaging_processor->init();
 
 		/**
 		 * Member fields

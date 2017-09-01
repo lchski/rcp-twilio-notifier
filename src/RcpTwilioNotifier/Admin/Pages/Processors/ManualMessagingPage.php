@@ -1,6 +1,6 @@
 <?php
 /**
- * RCP: RcpTwilioNotifier\Admin\Pages\Processors\MessagingPage class
+ * RCP: RcpTwilioNotifier\Admin\Pages\Processors\ManualMessagingPage class
  *
  * @package WordPress
  * @subpackage RcpTwilioNotifier\Admin|Pages\Processors
@@ -10,14 +10,14 @@ namespace RcpTwilioNotifier\Admin\Pages\Processors;
 use RcpTwilioNotifier\Helpers\MemberRetriever;
 use RcpTwilioNotifier\Helpers\Notifier;
 use RcpTwilioNotifier\Models\Member;
+use RcpTwilioNotifier\Models\Message;
 use RcpTwilioNotifier\Models\Notice;
 use RcpTwilioNotifier\Models\Region;
-use Twilio\Rest\Api\V2010\Account\MessageInstance;
 
 /**
- * Processes form submissions from our MessagingPage in the WordPress admin.
+ * Processes form submissions from our ManualMessagingPage in the WordPress admin.
  */
-class MessagingPage extends AbstractProcessor implements ProcessorInterface {
+class ManualMessagingPage extends AbstractProcessor implements ProcessorInterface {
 
 	/**
 	 * The name of the action that this processor processes.
@@ -34,11 +34,18 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	protected $nonce_name = 'rcptn_send_single_message_nonce';
 
 	/**
-	 * List of members that we failed to send to.
+	 * Whether or not this processor redirects after processing.
 	 *
-	 * @var int[]
+	 * @var bool
 	 */
-	protected $failed_sends = array();
+	protected $redirects_after_processing = true;
+
+	/**
+	 * The message created by this form submission.
+	 *
+	 * @var Message
+	 */
+	private $message;
 
 	/**
 	 * Set internal values.
@@ -53,7 +60,7 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	 * Process!
 	 */
 	public function process() {
-		$validator = new \RcpTwilioNotifier\Admin\Pages\Validators\MessagingPage( $this->regions );
+		$validator = new \RcpTwilioNotifier\Admin\Pages\Validators\ManualMessagingPage( $this->regions );
 		$validator->init();
 
 		if ( ! $validator->is_valid() ) {
@@ -70,11 +77,17 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 			);
 		}
 
-		// Check to see whether we had any errors.
-		if ( empty( $this->failed_sends ) ) {
-			// Everything worked, clear the message page.
-			$_POST = array();
-		}
+		// Spread the good news!
+		$notifier = Notifier::get_instance();
+		$notifier->add_notice(
+			new Notice(
+				'success',
+				__( 'Queued the message.', 'rcptn' )
+			)
+		);
+
+		// We’re done! Redirect.
+		wp_safe_redirect( get_edit_post_link( $this->message->get_id(), '' ) );
 	}
 
 	/**
@@ -103,38 +116,22 @@ class MessagingPage extends AbstractProcessor implements ProcessorInterface {
 	/**
 	 * Message given members a given message.
 	 *
-	 * @param Member[] $members  The members to message.
-	 * @param string   $message  The message to send.
+	 * @param Member[] $members       The members to message.
+	 * @param string   $message_body  The message to send.
 	 */
-	private function message_members( $members, $message ) {
-		foreach ( $members as $member ) {
-			$sms_request = $member->send_message( $message );
+	private function message_members( $members, $message_body ) {
+		$this->message = Message::create(
+			array(
+				'recipients' => $members,
+				'raw_body'   => $message_body,
+				'body_data'  => array(
+					'post_ID' => ( isset( $this->posted['rcptn_extra_data']['post_ID'] ) ) ? $this->posted['rcptn_extra_data']['post_ID'] : null,
+				),
+			)
+		);
 
-			$this->notify_on_send( $sms_request, $member );
-		}
+		$this->message->enable_queueing();
+		$this->message->send_to_all();
 	}
 
-	/**
-	 * Create a notification based on the SMS request.
-	 *
-	 * @param MessageInstance $sms_response  The SMS API response.
-	 * @param Member          $member        The member who was messaged.
-	 */
-	private function notify_on_send( $sms_response, $member ) {
-		$notifier = Notifier::get_instance();
-
-		if ( $sms_response instanceof \WP_Error ) {
-			$notifier->add_notice( new Notice( 'error', $sms_response->get_error_message() ) );
-
-			$this->failed_sends[] = $member->ID;
-		} elseif ( $sms_response instanceof MessageInstance ) {
-			$notifier->add_notice(
-				new Notice(
-					'success',
-					// translators: %1$s is the member’s name, %2$d is their phone number.
-					sprintf( __( 'Message successfully sent to %1$s (%2$s).', 'rcptn' ), $member->first_name . ' ' . $member->last_name, $member->get_phone_number() )
-				)
-			);
-		}
-	}
 }

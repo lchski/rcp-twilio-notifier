@@ -30,4 +30,10 @@
 			<property name="strict_class_file_names" value="false" />
 		</properties>
 	</rule>
+
+	<rule ref="WordPress.NamingConventions.ValidVariableName">
+		<properties>
+			<property name="customPropertiesWhitelist" value="dateSent" type="array" />
+		</properties>
+	</rule>
 </ruleset>

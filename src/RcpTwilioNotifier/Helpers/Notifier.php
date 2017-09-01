@@ -73,6 +73,12 @@ class Notifier {
 	 * Render the notices to the admin.
 	 */
 	public function render_notices() {
+		// Check to see if we’re going to redirect. If so, we don’t want to display
+		// the notices on this request; we want to save them for the next.
+		if ( defined( 'RCPTN_WILL_REDIRECT' ) && RCPTN_WILL_REDIRECT ) {
+			return;
+		}
+
 		$notices = $this->get_notices();
 
 		if ( empty( $notices ) ) {

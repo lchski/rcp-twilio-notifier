@@ -21,6 +21,13 @@ abstract class AbstractProcessor {
 	protected $posted;
 
 	/**
+	 * Whether or not this processor redirects after processing.
+	 *
+	 * @var bool
+	 */
+	protected $redirects_after_processing = false;
+
+	/**
 	 * Hook into WordPress, on any admin page.
 	 */
 	public function init() {
@@ -38,6 +45,11 @@ abstract class AbstractProcessor {
 			return;
 		}
 
+		// Check to see if we’re in an autosave.
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
 		// If there's no action from our plugin, there's nothing to process.
 		if ( ! isset( $this->posted['rcptn-action'] ) ) {
 			return;
@@ -51,6 +63,10 @@ abstract class AbstractProcessor {
 		// If the nonce doesn’t validate, we’re not processing anything.
 		if ( ! wp_verify_nonce( $this->posted[ $this->nonce_name ], $this->nonce_name ) ) {
 			wp_die( esc_html__( 'Nonce verification failed.', 'rcptn' ) );
+		}
+
+		if ( $this->redirects_after_processing ) {
+			define( 'RCPTN_WILL_REDIRECT', true );
 		}
 
 		// Everything checks out... we’re good to process!

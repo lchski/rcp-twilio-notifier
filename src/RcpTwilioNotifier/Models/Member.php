@@ -99,7 +99,9 @@ class Member extends \RCP_Member {
 	/**
 	 * Message the member's phone number.
 	 *
-	 * @param string $message  Message to send to the member.
+	 * @param MessageBody $message  Message to send to the member.
+	 *
+	 * @return \Twilio\Rest\Api\V2010\Account\MessageInstance|void|\WP_Error
 	 */
 	public function send_message( $message ) {
 		// Verify that the member is active according to RCP.
@@ -107,8 +109,8 @@ class Member extends \RCP_Member {
 			return;
 		}
 
-		$merge_tag_processor = new MergeTags( $this );
-		$merged_message = $merge_tag_processor->replace_tags( $message );
+		$merge_tag_processor = new MergeTags( $this, $message->get_body_data() );
+		$merged_message = $merge_tag_processor->replace_tags( $message->get_raw_body() );
 
 		$twilio_client = new Client(
 			get_option( 'rcptn_twilio_sid' ),
@@ -127,7 +129,7 @@ class Member extends \RCP_Member {
 			$sms = new \WP_Error(
 				'rcptn_failed_sms',
 				// translators: %1$s is the Twilio SDK exception message, %2$d is the exception code.
-				sprintf( __( 'Twilio failed to send a message. (Twilio error: %1$s (%2$d))', 'rcptn' ), $e->getMessage(), $e->getCode() ),
+				sprintf( __( 'Twilio error: %1$s (%2$d)', 'rcptn' ), $e->getMessage(), $e->getCode() ),
 				$e
 			);
 		}

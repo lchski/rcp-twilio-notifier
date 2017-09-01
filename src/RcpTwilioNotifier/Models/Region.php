@@ -50,7 +50,9 @@ class Region {
 				'meta_value' => $this->slug,
 			);
 
-			$this->members = MemberRetriever::convert_users_to_members( get_users( $query_args ) );
+			$members = MemberRetriever::convert_users_to_members( get_users( $query_args ) );
+
+			$this->members = MemberRetriever::remove_inactive_members( $members );
 		}
 
 		return apply_filters( 'rcptn_region_get_members', $this->members, $this->slug, $this );
