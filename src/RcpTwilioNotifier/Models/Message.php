@@ -245,6 +245,21 @@ class Message {
 	}
 
 	/**
+	 * Get the send attempts with failed statuses.
+	 *
+	 * @return SendAttempt[]
+	 */
+	public function get_failed_send_attempts() {
+		return array_values(
+			array_filter(
+				$this->send_attempts, function( SendAttempt $send_attempt ) {
+					return $send_attempt->is_failed();
+				}
+			)
+		);
+	}
+
+	/**
 	 * Get the message's body.
 	 *
 	 * @return MessageBody
@@ -302,13 +317,7 @@ class Message {
 	 */
 	public function retry_failed_sends() {
 		// Get the failed sends.
-		$failed_sends = array_values(
-			array_filter(
-				$this->send_attempts, function( SendAttempt $send_attempt ) {
-					return $send_attempt->is_failed();
-				}
-			)
-		);
+		$failed_sends = $this->get_failed_send_attempts();
 
 		// Bail if there are no failed sends.
 		if ( empty( $failed_sends ) ) {
