@@ -35,10 +35,14 @@ class Registrar {
 	 * Add hooks with WordPress.
 	 */
 	public function init() {
+		// Register.
 		add_action( 'init', array( $this, 'register' ) );
 
+		// Message list modifications.
 		add_filter( 'bulk_actions-edit-' . $this->post_type_slug, array( $this, 'remove_bulk_actions' ) );
 		add_filter( 'post_row_actions', array( $this, 'remove_row_actions' ) );
+
+		// Message viewer modifications.
 		add_filter( 'get_user_option_screen_layout_' . $this->post_type_slug, array( $this, 'set_one_column_editor_layout' ) );
 		add_action( 'admin_menu', array( $this, 'remove_publish_box' ) );
 	}
