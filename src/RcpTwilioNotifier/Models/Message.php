@@ -361,31 +361,31 @@ class Message {
 	private function send( $recipient ) {
 		$sms_request = $recipient->send_message( $this->message_body );
 
-		$this->record_send_attempt( $sms_request, $recipient );
-	}
-
-	/**
-	 * Record the SMS request.
-	 *
-	 * @param MessageInstance|\WP_Error $sms_response  The SMS API response.
-	 * @param Member                    $recipient     The member who was messaged.
-	 */
-	private function record_send_attempt( $sms_response, $recipient ) {
-		if ( $sms_response instanceof \WP_Error ) {
+		if ( $sms_request instanceof \WP_Error ) {
 			$send_attempt = new SendAttempt(
 				$recipient,
 				'failed',
 				time(),
-				$sms_response->get_error_message()
+				$sms_request->get_error_message()
 			);
-		} elseif ( $sms_response instanceof MessageInstance ) {
+		} elseif ( $sms_request instanceof MessageInstance ) {
 			$send_attempt = new SendAttempt(
 				$recipient,
 				'success',
-				$sms_response->dateSent->getTimestamp()
+				$sms_request->dateSent->getTimestamp()
 			);
 		}
 
+		$this->record_send_attempt( $send_attempt, $recipient );
+	}
+
+	/**
+	 * Record a SendAttempt for a given Member.
+	 *
+	 * @param SendAttempt $send_attempt  The SendAttempt.
+	 * @param Member      $recipient     The member who was messaged.
+	 */
+	private function record_send_attempt( $send_attempt, $recipient ) {
 		// If there's an existing send attempt for this recipient, overwrite the existing list to exclude that attempt.
 		// We don't want to have two attempts for the same recipient.
 		if ( false !== $this->get_send_attempts_for_recipient( $recipient ) ) {
