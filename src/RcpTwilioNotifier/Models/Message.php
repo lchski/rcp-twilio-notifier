@@ -322,6 +322,8 @@ class Message {
 			}, $failed_sends
 		);
 
+		$this->record_pending_send_attempts( $recipients );
+
 		// Enable queueing.
 		$this->enable_queueing();
 
