@@ -68,7 +68,7 @@ class SendAttempt {
 			'timestamp' => $this->timestamp,
 		);
 
-		if ( ! null === $this->error ) {
+		if ( null !== $this->error ) {
 			$send_attempt['error'] = $this->error;
 		}
 
