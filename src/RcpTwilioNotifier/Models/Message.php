@@ -268,17 +268,7 @@ class Message {
 	 * Send the message to all recipients.
 	 */
 	public function send_to_all() {
-		// Check if we should use the queued version of this function.
-		if ( $this->is_queueing_enabled ) {
-			$this->send_to_all_queued();
-			return;
-		}
-
-		foreach ( $this->recipients as $member ) {
-			$this->send( $member );
-		}
-
-		$this->save_send_attempts();
+		$this->send_to_multiple( $this->recipients );
 	}
 
 	/**
@@ -286,7 +276,13 @@ class Message {
 	 *
 	 * @param Member[] $recipients  The Members to message.
 	 */
-	public function send_to_some( $recipients ) {
+	public function send_to_multiple( $recipients ) {
+		// Check if we should use the queued version of this function.
+		if ( $this->is_queueing_enabled ) {
+			$this->send_to_multiple_queued( $recipients );
+			return;
+		}
+
 		foreach ( $recipients as $recipient ) {
 			$this->send( $recipient );
 		}
@@ -330,17 +326,22 @@ class Message {
 			}, $failed_sends
 		);
 
+		// Enable queueing.
+		$this->enable_queueing();
+
 		// Message the recipients of the failed sends.
-		$this->send_to_some( $recipients );
+		$this->send_to_multiple( $recipients );
 	}
 
 	/**
-	 * Send to all via a messaging queue.
+	 * Send the message to multiple specified people via the messaging queue.
+	 *
+	 * @param Member[] $recipients  The Members to message.
 	 */
-	private function send_to_all_queued() {
+	private function send_to_multiple_queued( $recipients ) {
 		$messaging_queue = MessagingQueue::get_instance();
 
-		foreach ( $this->recipients as $recipient ) {
+		foreach ( $recipients as $recipient ) {
 			$messaging_task = new MessagingTask( $this->get_id(), $recipient->ID );
 
 			$messaging_queue->push_to_queue( $messaging_task->convert_to_array() );
