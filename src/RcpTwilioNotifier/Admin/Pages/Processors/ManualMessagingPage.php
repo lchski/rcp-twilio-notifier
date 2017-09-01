@@ -130,6 +130,7 @@ class ManualMessagingPage extends AbstractProcessor implements ProcessorInterfac
 			)
 		);
 
+		$this->message->enable_queueing();
 		$this->message->send_to_all();
 	}
 
