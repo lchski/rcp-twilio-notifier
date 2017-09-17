@@ -129,7 +129,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 						AdminFormField::render(
 							'rcptn_rcp_all_regions_subscription_id',
 							__( 'RCP All Regions Subscription ID', 'rcptn' ),
-							__( 'The ID of the RCP subscription for all regions. Active subscribers to this subscription will receive all text alerts, regardless of their region.', 'rcptn' ),
+							__( 'The IDs of the RCP all-region subscriptions. Active subscribers to any of these subscriptions will receive all text alerts, regardless of their region. If there are multiple all-region subscriptions, enter the ID of each, separated by a comma (e.g. “2, 4, 6” if the subscription IDs of the all region subscription levels are 2, 4, and 6).', 'rcptn' ),
 							array( $this, 'render_rcp_all_regions_subscription_id' )
 						);
 						?>
@@ -138,7 +138,7 @@ class SettingsPage extends AbstractPage implements PageInterface {
 						AdminFormField::render(
 							'rcptn_rcp_addon_input_label',
 							__( 'Registration Add-on Input Label', 'rcptn' ),
-							__( 'The label for the checkbox that enables the all regions add-on during the RCP registration process. For example, “Enable all regions add-on”. If the difference in subscription price is always the same, you could use “Enable all regions add-on ($5)”, substituting $5 with the actual price. (Note: If you enter a price here, that does not affect the actual pricing of the subscriptions. The subscription pricing is controlled through the regular RCP settings.', 'rcptn' ),
+							__( 'The label for the checkbox that enables the all regions add-on during the RCP registration process. For example, “Enable all regions add-on”. If the difference in subscription price is always the same, you could use “Enable all regions add-on ($5)”, substituting $5 with the actual price. (Note: If you enter a price here, that does not affect the actual pricing of the subscriptions. The subscription pricing is controlled through the regular RCP settings.)', 'rcptn' ),
 							array( $this, 'render_rcp_addon_input_label' )
 						);
 						?>
