@@ -133,7 +133,6 @@ class Registrar {
 
 		unset( $actions['edit'] );
 		unset( $actions['view'] );
-		unset( $actions['trash'] );
 		unset( $actions['inline hide-if-no-js'] );
 
 		return $actions;
