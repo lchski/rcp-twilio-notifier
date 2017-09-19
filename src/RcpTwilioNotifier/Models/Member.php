@@ -112,6 +112,18 @@ class Member extends \RCP_Member {
 			return;
 		}
 
+		$formatted_phone_number = $this->get_formatted_phone_number();
+
+		// Bail if we don't have a phone number.
+		if ( is_wp_error( $formatted_phone_number ) || 0 === strlen( $formatted_phone_number ) ) {
+			return new \WP_Error(
+				'rcptn_failed_sms_phone_number',
+				// translators: %s is the recipient's phone number.
+				sprintf( __( 'Couldn’t send the SMS because of the phone number: %s', 'rcptn' ), $formatted_phone_number ),
+				$formatted_phone_number
+			);
+		}
+
 		$merge_tag_processor = new MergeTags( $this, $message->get_body_data() );
 		$merged_message = $merge_tag_processor->replace_tags( $message->get_raw_body() );
 
@@ -122,7 +134,7 @@ class Member extends \RCP_Member {
 
 		try {
 			$sms = $twilio_client->messages->create(
-				$this->get_formatted_phone_number(),
+				$formatted_phone_number,
 				array(
 					'from' => get_option( 'rcptn_twilio_from_number' ),
 					'body' => $merged_message,

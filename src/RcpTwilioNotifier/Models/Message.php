@@ -381,6 +381,12 @@ class Message {
 				'success',
 				$sms_request->dateSent->getTimestamp()
 			);
+		} else {
+			$send_attempt = new SendAttempt(
+				$recipient,
+				'unknown',
+				time()
+			);
 		}
 
 		$this->record_send_attempt( $send_attempt );

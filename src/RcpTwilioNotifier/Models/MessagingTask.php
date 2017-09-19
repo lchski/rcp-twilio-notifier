@@ -43,6 +43,11 @@ class MessagingTask {
 	 * Attempt to send the message.
 	 */
 	public function dispatch() {
+		// Bail if we can't find the message.
+		if ( is_wp_error( $this->message ) ) {
+			return;
+		}
+
 		$this->message->send_to_one( $this->recipient );
 	}
 
