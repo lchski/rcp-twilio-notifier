@@ -68,7 +68,7 @@ class Member extends \RCP_Member {
 	/**
 	 * Get the member's phone number, formatted for API calls.
 	 *
-	 * @return string
+	 * @return string|\WP_Error
 	 */
 	public function get_formatted_phone_number() {
 		$phone_util = PhoneNumberUtil::getInstance();
@@ -114,12 +114,21 @@ class Member extends \RCP_Member {
 
 		$formatted_phone_number = $this->get_formatted_phone_number();
 
-		// Bail if we don't have a phone number.
-		if ( is_wp_error( $formatted_phone_number ) || 0 === strlen( $formatted_phone_number ) ) {
+		// Bail if we our attempt at retrieving a phone number gave us an error.
+		if ( is_wp_error( $formatted_phone_number ) ) {
 			return new \WP_Error(
-				'rcptn_failed_sms_phone_number',
-				// translators: %s is the recipient's phone number.
-				sprintf( __( 'Couldn’t send the SMS because of the phone number: %s', 'rcptn' ), $formatted_phone_number ),
+				'rcptn_failed_sms_phone_number_wp_error',
+				// translators: %s is the WP Error message from trying to retrieve the formatted number.
+				sprintf( __( 'RCPTN Exception: Couldn’t send the SMS because of the recipient’s phone number. %s', 'rcptn' ), $formatted_phone_number->get_error_message() ),
+				$formatted_phone_number
+			);
+		}
+
+		// Bail if our phone number is empty.
+		if ( 0 === strlen( $formatted_phone_number ) ) {
+			return new \WP_Error(
+				'rcptn_failed_sms_phone_number_length',
+				__( 'RCPTN Exception: Couldn’t send the SMS because the recipient’s phone number is blank.', 'rcptn' ),
 				$formatted_phone_number
 			);
 		}
